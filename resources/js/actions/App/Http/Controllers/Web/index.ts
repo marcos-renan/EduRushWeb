@@ -1,6 +1,8 @@
+import Admin from './Admin'
 import Student from './Student'
 const Web = {
-    Student: Object.assign(Student, Student),
+    Admin: Object.assign(Admin, Admin),
+Student: Object.assign(Student, Student),
 }
 
 export default Web
