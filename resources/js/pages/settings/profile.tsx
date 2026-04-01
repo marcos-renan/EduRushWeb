@@ -5,14 +5,12 @@ import {
     CheckCircle2,
     Mail,
     UploadCloud,
-    UserCircle2,
     X,
 } from 'lucide-react';
 import { useMemo, useRef, useState } from 'react';
 import DeleteUser from '@/components/delete-user';
 import InputError from '@/components/input-error';
 import { send } from '@/routes/verification';
-import { edit } from '@/routes/profile';
 
 type StudentProfile = {
     grade_year: number;
@@ -572,12 +570,3 @@ function createImage(url: string): Promise<HTMLImageElement> {
         image.src = url;
     });
 }
-
-Profile.layout = {
-    breadcrumbs: [
-        {
-            title: 'Perfil',
-            href: edit(),
-        },
-    ],
-};

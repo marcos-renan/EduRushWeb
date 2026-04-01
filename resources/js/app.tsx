@@ -2,6 +2,7 @@ import { createInertiaApp } from '@inertiajs/react';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { initializeTheme } from '@/hooks/use-appearance';
 import AppLayout from '@/layouts/app-layout';
+import AccountLayout from '@/layouts/account-layout';
 import AdminLayout from '@/layouts/admin-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import SettingsLayout from '@/layouts/settings/layout';
@@ -23,6 +24,8 @@ createInertiaApp({
                 return StudentLayout;
             case name.startsWith('admin/'):
                 return AdminLayout;
+            case name === 'settings/profile':
+                return AccountLayout;
             case name.startsWith('settings/'):
                 return [AppLayout, SettingsLayout];
             default:
