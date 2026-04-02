@@ -1,9 +1,13 @@
 import { Head, Link } from '@inertiajs/react';
 import { Lock, Play, X } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 
+const NODE_SIZE = 62;
+const ROAD_STROKE = 5;
+
 type TrailLesson = {
+    external_id?: string;
     title: string;
     slug: string;
     objective: string;
@@ -29,6 +33,11 @@ type Props = {
     trail: Trail;
 };
 
+type NodePosition = {
+    x: number;
+    y: number;
+};
+
 function difficultyLabel(difficulty?: string | null) {
     const value = String(difficulty ?? '').toLowerCase().trim();
     if (['advanced', 'hard', 'dificil'].includes(value)) return 'Difícil';
@@ -36,18 +45,99 @@ function difficultyLabel(difficulty?: string | null) {
     return 'Fácil';
 }
 
+function buildNodePositions(total: number, width: number): NodePosition[] {
+    if (total <= 0) return [];
+
+    const horizontalPadding = 56;
+    const centerX = width / 2;
+    const amplitude = Math.max(
+        36,
+        Math.min(92, (width - horizontalPadding * 2) / 2),
+    );
+    const verticalSpacing = 116;
+    const topOffset = 62;
+
+    return Array.from({ length: total }, (_, index) => {
+        const progress = total === 1 ? 0 : index / (total - 1);
+        const wave =
+            Math.sin(progress * Math.PI * 2.6) * 0.6 +
+            (index % 2 === 0 ? -0.55 : 0.55);
+        const x = Math.max(
+            horizontalPadding,
+            Math.min(width - horizontalPadding, centerX + wave * amplitude),
+        );
+        const y = topOffset + index * verticalSpacing;
+
+        return { x, y };
+    });
+}
+
 export default function StudentTrail({ trail }: Props) {
     const [selectedLesson, setSelectedLesson] = useState<TrailLesson | null>(
         null,
     );
-    const rows = useMemo(
+    const roadmapRef = useRef<HTMLDivElement | null>(null);
+    const [roadmapWidth, setRoadmapWidth] = useState(0);
+
+    useEffect(() => {
+        const element = roadmapRef.current;
+        if (!element) return;
+
+        const updateWidth = () => {
+            const width = Math.round(element.clientWidth);
+            if (width > 0) {
+                setRoadmapWidth((previous) =>
+                    previous === width ? previous : width,
+                );
+            }
+        };
+
+        updateWidth();
+
+        if (typeof ResizeObserver !== 'undefined') {
+            const observer = new ResizeObserver(updateWidth);
+            observer.observe(element);
+            return () => observer.disconnect();
+        }
+
+        window.addEventListener('resize', updateWidth);
+        return () => window.removeEventListener('resize', updateWidth);
+    }, []);
+
+    const nodes = useMemo(
         () =>
             trail.lessons.map((lesson, index) => {
                 const side = index % 2 === 0 ? 'left' : 'right';
-                const isProgressed = lesson.is_completed;
-                return { lesson, side, isProgressed, index };
+                const status = lesson.is_locked
+                    ? 'locked'
+                    : lesson.is_completed
+                      ? 'completed'
+                      : 'available';
+
+                return {
+                    lesson,
+                    side,
+                    status,
+                    index,
+                    key: lesson.external_id || lesson.slug || `lesson-${index}`,
+                };
             }),
         [trail.lessons],
+    );
+    const positions = useMemo(
+        () => buildNodePositions(nodes.length, Math.max(roadmapWidth, 320)),
+        [nodes.length, roadmapWidth],
+    );
+    const roadmapHeight = useMemo(
+        () => Math.max(nodes.length * 116 + 110, 260),
+        [nodes.length],
+    );
+    const focusNodeKey = useMemo(
+        () =>
+            nodes.find((node) => node.status === 'available')?.key ??
+            nodes.find((node) => node.status !== 'locked')?.key ??
+            null,
+        [nodes],
     );
 
     return (
@@ -71,71 +161,103 @@ export default function StudentTrail({ trail }: Props) {
                 </div>
 
                 <div className="relative overflow-hidden rounded-3xl border border-[#BFE0FF] bg-white p-4 dark:border-[#263753] dark:bg-[#111C33]">
-                    <div className="mx-auto w-full max-w-4xl py-3">
-                        {rows.map(({ lesson, side, isProgressed, index }) => {
-                            const status = lesson.is_locked
-                                ? 'locked'
-                                : lesson.is_completed
-                                  ? 'completed'
-                                  : 'available';
+                    <div
+                        ref={roadmapRef}
+                        className="relative mx-auto w-full max-w-4xl overflow-visible rounded-[20px] bg-[#F4F8FF] dark:bg-[#111C33]"
+                        style={{ height: `${roadmapHeight}px` }}
+                    >
+                        {nodes.slice(0, -1).map((node, index) => {
+                            const current = positions[index];
+                            const next = positions[index + 1];
+                            if (!current || !next) return null;
+
+                            const dx = next.x - current.x;
+                            const dy = next.y - current.y;
+                            const length = Math.hypot(dx, dy);
+                            const angle = Math.atan2(dy, dx);
+                            const isSegmentProgressed =
+                                node.status === 'completed';
 
                             return (
                                 <div
-                                    key={lesson.slug}
+                                    key={`road-segment-${node.key}`}
                                     className={cn(
-                                        'relative flex',
-                                        side === 'left'
-                                            ? 'justify-start'
-                                            : 'justify-end',
-                                        index < rows.length - 1 && 'pb-16',
+                                        'absolute rounded-full',
+                                        isSegmentProgressed
+                                            ? 'bg-[#1DBC80] dark:bg-[#1E9E6A]'
+                                            : 'bg-[#A9D3FF] dark:bg-[#365173]',
                                     )}
+                                    style={{
+                                        left: `${current.x}px`,
+                                        top: `${current.y}px`,
+                                        width: `${length}px`,
+                                        height: `${ROAD_STROKE}px`,
+                                        transform: `translateY(-${ROAD_STROKE / 2}px) rotate(${angle}rad)`,
+                                        transformOrigin: 'left center',
+                                    }}
+                                />
+                            );
+                        })}
+
+                        {nodes.map(({ lesson, status, index, key }) => {
+                            const point = positions[index];
+                            if (!point) return null;
+                            const highlightPulse =
+                                key === focusNodeKey && status !== 'locked';
+                            const Icon =
+                                status === 'locked'
+                                    ? Lock
+                                    : status === 'completed'
+                                      ? null
+                                      : Play;
+
+                            return (
+                                <div
+                                    key={key}
+                                    className="absolute"
+                                    style={{
+                                        left: `${point.x - NODE_SIZE / 2}px`,
+                                        top: `${point.y - NODE_SIZE / 2}px`,
+                                    }}
                                 >
-                                    <div className="relative w-72 text-center sm:w-80">
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                setSelectedLesson(lesson)
-                                            }
-                                            className="group inline-flex flex-col items-center"
-                                        >
-                                            <span
-                                                className={cn(
-                                                    'relative inline-flex h-16 w-16 items-center justify-center rounded-full border-2 shadow-[0_8px_18px_rgba(5,16,44,0.28)] transition group-hover:scale-105',
-                                                    status === 'completed' &&
-                                                        'border-[#1E9E6A] bg-[#1DBC80]',
-                                                    status === 'locked' &&
-                                                        'border-[#7B8CAF] bg-[#AAB6D3]',
-                                                    status === 'available' &&
-                                                        'border-[#0F4BC9] bg-[#1565FF]',
-                                                )}
-                                            >
-                                                {status === 'locked' ? (
-                                                    <Lock className="h-5 w-5 text-white" />
-                                                ) : status === 'completed' ? (
-                                                    <span className="text-lg font-black text-white">
-                                                        ✓
-                                                    </span>
-                                                ) : (
-                                                    <Play className="ml-0.5 h-5 w-5 text-white" />
-                                                )}
-                                            </span>
+                                    {highlightPulse ? (
+                                        <span className="pointer-events-none absolute -inset-[2px] rounded-full border-2 border-[#1565FF] opacity-40 animate-ping dark:border-[#2E66CC]" />
+                                    ) : null}
 
-                                            <span className="mt-2 block max-w-[210px] text-center text-xs font-bold text-[#2F3E63] dark:text-[#B4C3E3]">
-                                                {lesson.position}. {lesson.title}
-                                            </span>
-                                        </button>
+                                    <span
+                                        className={cn(
+                                            'pointer-events-none absolute left-[1px] top-[5px] h-[60px] w-[60px] rounded-full',
+                                            status === 'completed' &&
+                                                'bg-[#108A5D] dark:bg-[#116243]',
+                                            status === 'locked' &&
+                                                'bg-[#8291B2] dark:bg-[#39465E]',
+                                            status === 'available' &&
+                                                'bg-[#0F4BC9] dark:bg-[#264C95]',
+                                        )}
+                                    />
 
-                                        {index < rows.length - 1 ? (
-                                            <span
-                                                className={cn(
-                                                    'pointer-events-none absolute left-1/2 top-16 h-16 w-1 -translate-x-1/2 rounded-full',
-                                                    isProgressed
-                                                        ? 'bg-[#1DBC80]'
-                                                        : 'bg-[#8CC4FF]/70 dark:bg-[#8CC4FF]/30',
-                                                )}
-                                            />
+                                    <button
+                                        type="button"
+                                        onClick={() => setSelectedLesson(lesson)}
+                                        className={cn(
+                                            'relative inline-flex h-[62px] w-[62px] items-center justify-center rounded-full border-2 transition hover:scale-105 active:translate-y-[4px] active:scale-95',
+                                            'shadow-[0_4px_10px_rgba(0,0,0,0.2)]',
+                                            status === 'completed' &&
+                                                'border-[#1DBC80] bg-[#1DBC80] dark:border-[#1E9E6A] dark:bg-[#1E9E6A]',
+                                            status === 'locked' &&
+                                                'border-[#AAB6D3] bg-[#AAB6D3] dark:border-[#536280] dark:bg-[#536280]',
+                                            status === 'available' &&
+                                                'border-[#1565FF] bg-[#1565FF] dark:border-[#2E66CC] dark:bg-[#2E66CC]',
+                                        )}
+                                    >
+                                        {status === 'completed' ? (
+                                            <span className="text-lg font-black text-white">
+                                                ✓
+                                            </span>
+                                        ) : Icon ? (
+                                            <Icon className="h-5 w-5 text-white" />
                                         ) : null}
-                                    </div>
+                                    </button>
                                 </div>
                             );
                         })}
