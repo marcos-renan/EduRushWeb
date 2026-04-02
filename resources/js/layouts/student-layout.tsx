@@ -1,6 +1,8 @@
 import { Link, usePage } from '@inertiajs/react';
 import { LogOut, Moon, Sun, User2 } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import energyAnimation from '@/assets/animations/energy.json';
+import SafeLottie from '@/components/safe-lottie';
 import { logout } from '@/routes';
 import { useAppearance } from '@/hooks/use-appearance';
 import { cn } from '@/lib/utils';
@@ -23,6 +25,11 @@ type SharedProps = {
     studentProfile?: StudentProfileProps | null;
 };
 
+type EnergyChangedDetail = {
+    energy?: number;
+    delta?: number;
+};
+
 export default function StudentLayout({
     children,
     studentProfile,
@@ -34,6 +41,12 @@ export default function StudentLayout({
     const user = page.props.auth?.user ?? null;
     const profile = studentProfile ?? page.props.studentProfile ?? null;
     const [open, setOpen] = useState(false);
+    const [displayEnergy, setDisplayEnergy] = useState<number>(
+        profile?.energy ?? 0,
+    );
+    const [energyFlash, setEnergyFlash] = useState<'up' | 'down' | null>(null);
+    const [showEnergyFx, setShowEnergyFx] = useState(false);
+    const flashTimeoutRef = useRef<number | null>(null);
     const { resolvedAppearance, updateAppearance } = useAppearance();
 
     const photoUrl = useMemo(() => {
@@ -49,7 +62,76 @@ export default function StudentLayout({
     const navItems = [
         { label: 'Dashboard', href: '/student/dashboard' },
         { label: 'Matérias', href: '/student/materias' },
+        { label: 'Ranking', href: '/student/ranking' },
+        { label: 'Amigos', href: '/student/amigos' },
     ];
+
+    useEffect(() => {
+        const profileEnergy = profile?.energy ?? 0;
+        setDisplayEnergy((previous) => {
+            if (previous === profileEnergy) return previous;
+
+            setEnergyFlash(profileEnergy > previous ? 'up' : 'down');
+            setShowEnergyFx(true);
+            if (flashTimeoutRef.current) {
+                window.clearTimeout(flashTimeoutRef.current);
+            }
+            flashTimeoutRef.current = window.setTimeout(() => {
+                setEnergyFlash(null);
+                setShowEnergyFx(false);
+            }, 900);
+
+            return profileEnergy;
+        });
+    }, [profile?.energy]);
+
+    useEffect(() => {
+        const onEnergyChanged = (event: Event) => {
+            const detail = (event as CustomEvent<EnergyChangedDetail>).detail;
+            const nextEnergy = Number(detail?.energy);
+            if (Number.isNaN(nextEnergy)) return;
+
+            setDisplayEnergy((previous) => {
+                if (previous === nextEnergy) return previous;
+
+                const direction =
+                    detail?.delta && detail.delta !== 0
+                        ? detail.delta > 0
+                            ? 'up'
+                            : 'down'
+                        : nextEnergy > previous
+                          ? 'up'
+                          : 'down';
+
+                setEnergyFlash(direction);
+                setShowEnergyFx(true);
+                if (flashTimeoutRef.current) {
+                    window.clearTimeout(flashTimeoutRef.current);
+                }
+                flashTimeoutRef.current = window.setTimeout(() => {
+                    setEnergyFlash(null);
+                    setShowEnergyFx(false);
+                }, 900);
+
+                return nextEnergy;
+            });
+        };
+
+        window.addEventListener(
+            'edurush:energy-changed',
+            onEnergyChanged as EventListener,
+        );
+
+        return () => {
+            window.removeEventListener(
+                'edurush:energy-changed',
+                onEnergyChanged as EventListener,
+            );
+            if (flashTimeoutRef.current) {
+                window.clearTimeout(flashTimeoutRef.current);
+            }
+        };
+    }, []);
 
     return (
         <div className="min-h-screen bg-[linear-gradient(135deg,#0A2A80_0%,#0D47C0_40%,#1565FF_100%)] p-3 sm:p-5">
@@ -110,13 +192,32 @@ export default function StudentLayout({
                             </button>
 
                             <div className="inline-flex items-center gap-2 rounded-full border border-[#BFE0FF] bg-white px-3 py-1.5 dark:border-[#263753] dark:bg-[#111C33]">
-                                <img
-                                    src="/icons/energy.png"
-                                    alt="Energia"
-                                    className="h-4 w-4"
-                                />
-                                <span className="text-sm font-black text-[#1565FF] dark:text-[#9CC0FF]">
-                                    {profile?.energy ?? 0}
+                                <div className="relative h-4 w-4">
+                                    <img
+                                        src="/icons/energy.png"
+                                        alt="Energia"
+                                        className="h-4 w-4"
+                                    />
+                                    {showEnergyFx ? (
+                                        <SafeLottie
+                                            animationData={energyAnimation}
+                                            loop={false}
+                                            autoplay
+                                            className="pointer-events-none absolute -left-3 -top-3 h-10 w-10"
+                                        />
+                                    ) : null}
+                                </div>
+                                <span
+                                    className={cn(
+                                        'text-sm font-black transition-all duration-300',
+                                        energyFlash === 'up'
+                                            ? '-translate-y-0.5 text-[#1E9E6A] dark:text-[#6EE7B7]'
+                                            : energyFlash === 'down'
+                                              ? 'translate-y-0.5 text-[#D92D4E] dark:text-[#FF9DB1]'
+                                              : 'text-[#1565FF] dark:text-[#9CC0FF]',
+                                    )}
+                                >
+                                    {displayEnergy}
                                 </span>
                             </div>
 
@@ -151,18 +252,6 @@ export default function StudentLayout({
                                             <p className="truncate text-xs font-semibold text-[#5B6B93] dark:text-[#8EA1C7]">
                                                 {user?.email ?? ''}
                                             </p>
-                                        </div>
-
-                                        <div className="mb-2 grid grid-cols-3 gap-2 text-center text-xs font-bold">
-                                            <div className="rounded-lg bg-[#F4F8FF] p-2 text-[#2F3E63] dark:bg-[#0B1428] dark:text-[#B4C3E3]">
-                                                Nv. {profile?.level ?? 1}
-                                            </div>
-                                            <div className="rounded-lg bg-[#F4F8FF] p-2 text-[#2F3E63] dark:bg-[#0B1428] dark:text-[#B4C3E3]">
-                                                XP {profile?.total_xp ?? 0}
-                                            </div>
-                                            <div className="rounded-lg bg-[#F4F8FF] p-2 text-[#2F3E63] dark:bg-[#0B1428] dark:text-[#B4C3E3]">
-                                                Seq. {profile?.current_streak ?? 0}
-                                            </div>
                                         </div>
 
                                         <div className="space-y-1">

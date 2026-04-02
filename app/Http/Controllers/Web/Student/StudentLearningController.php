@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web\Student;
 
 use App\Exceptions\InsufficientEnergyException;
 use App\Http\Controllers\Controller;
+use App\Services\Api\StudentFriendApiService;
 use App\Services\Api\StudentLessonApiService;
 use App\Services\Api\StudentMissionApiService;
 use App\Services\Api\StudentProfileApiService;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -24,6 +26,7 @@ class StudentLearningController extends Controller
         private readonly StudentProfileApiService $profileService,
         private readonly StudentQuestionApiService $questionService,
         private readonly StudentLessonApiService $lessonService,
+        private readonly StudentFriendApiService $friendService,
     ) {
     }
 
@@ -143,6 +146,126 @@ class StudentLearningController extends Controller
         }
     }
 
+    public function friends(Request $request): Response
+    {
+        $user = $request->user();
+        $query = trim((string) $request->query('query', ''));
+        $friendsPayload = $this->friendService->listFriends($user);
+        $requestsPayload = $this->friendService->listRequests($user);
+        $profilePayload = $this->profileService->show($user);
+        $searchPayload = $query !== ''
+            ? $this->friendService->search($user, $query)
+            : [
+                'data' => [],
+                'meta' => [
+                    'query' => '',
+                    'total_results' => 0,
+                ],
+            ];
+
+        return Inertia::render('student/friends', [
+            'query' => $query,
+            'friends' => $friendsPayload['data'] ?? [],
+            'friendMeta' => $friendsPayload['meta'] ?? [],
+            'requests' => $requestsPayload['data'] ?? ['incoming' => [], 'outgoing' => []],
+            'requestMeta' => $requestsPayload['meta'] ?? [],
+            'searchResults' => $searchPayload['data'] ?? [],
+            'searchMeta' => $searchPayload['meta'] ?? [],
+            'studentProfile' => $profilePayload['data']['student_profile'] ?? null,
+        ]);
+    }
+
+    public function ranking(Request $request): Response
+    {
+        $user = $request->user();
+        $rankingPayload = $this->friendService->ranking($user);
+        $profilePayload = $this->profileService->show($user);
+
+        return Inertia::render('student/ranking', [
+            'ranking' => $rankingPayload['data'] ?? [],
+            'rankingMeta' => $rankingPayload['meta'] ?? [],
+            'studentProfile' => $profilePayload['data']['student_profile'] ?? null,
+        ]);
+    }
+
+    public function sendFriendRequest(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'username' => ['required', 'string', 'max:40'],
+        ]);
+
+        try {
+            $response = $this->friendService->sendRequest($request->user(), (string) $validated['username']);
+            $message = (string) ($response['data']['message'] ?? 'Pedido enviado com sucesso.');
+
+            return redirect()
+                ->route('student.friends', ['query' => $request->query('query', '')])
+                ->with('success', $message);
+        } catch (ModelNotFoundException) {
+            return redirect()
+                ->route('student.friends', ['query' => $request->query('query', '')])
+                ->with('error', 'Usuário não encontrado.');
+        } catch (ValidationException $exception) {
+            return redirect()
+                ->route('student.friends', ['query' => $request->query('query', '')])
+                ->withErrors($exception->errors())
+                ->with('error', $this->firstValidationErrorMessage($exception));
+        }
+    }
+
+    public function acceptFriendRequest(Request $request, string $requestExternalId): RedirectResponse
+    {
+        try {
+            $response = $this->friendService->acceptRequest($request->user(), $requestExternalId);
+            $message = (string) ($response['data']['message'] ?? 'Pedido aceito com sucesso.');
+
+            return redirect()
+                ->route('student.friends')
+                ->with('success', $message);
+        } catch (ModelNotFoundException) {
+            return redirect()
+                ->route('student.friends')
+                ->with('error', 'Pedido não encontrado.');
+        }
+    }
+
+    public function rejectFriendRequest(Request $request, string $requestExternalId): RedirectResponse
+    {
+        try {
+            $response = $this->friendService->rejectRequest($request->user(), $requestExternalId);
+            $message = (string) ($response['data']['message'] ?? 'Pedido recusado.');
+
+            return redirect()
+                ->route('student.friends')
+                ->with('success', $message);
+        } catch (ModelNotFoundException) {
+            return redirect()
+                ->route('student.friends')
+                ->with('error', 'Pedido não encontrado.');
+        }
+    }
+
+    public function removeFriend(Request $request, string $friendExternalId): RedirectResponse
+    {
+        try {
+            $response = $this->friendService->removeFriend($request->user(), $friendExternalId);
+            $message = (string) ($response['data']['message'] ?? 'Amizade removida.');
+
+            return redirect()
+                ->route('student.friends')
+                ->with('success', $message);
+        } catch (ModelNotFoundException) {
+            return redirect()
+                ->route('student.friends')
+                ->with('error', 'Amigo não encontrado.');
+        } catch (ValidationException $exception) {
+            return redirect()
+                ->route('student.friends')
+                ->withErrors($exception->errors())
+                ->with('error', $this->firstValidationErrorMessage($exception));
+        }
+    }
+
     /**
      * @param  array<int, array<string, mixed>>  $trails
      * @return array<int, array<string, mixed>>
@@ -207,5 +330,12 @@ class StudentLearningController extends Controller
 
         return null;
     }
-}
 
+    private function firstValidationErrorMessage(ValidationException $exception): string
+    {
+        return collect($exception->errors())
+            ->flatten()
+            ->map(fn ($message): string => (string) $message)
+            ->first() ?? 'Não foi possível concluir a ação.';
+    }
+}

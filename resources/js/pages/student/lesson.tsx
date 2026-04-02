@@ -1,7 +1,11 @@
 import { Head, Link } from '@inertiajs/react';
-import Lottie from 'lottie-react';
 import { AlertTriangle, ArrowLeft, CheckCircle2, XCircle } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import confettiAnimation from '@/assets/animations/confetti.json';
+import errorAnimation from '@/assets/animations/error.json';
+import successAnimation from '@/assets/animations/success.json';
+import trophyAnimation from '@/assets/animations/trophy.json';
+import SafeLottie from '@/components/safe-lottie';
 
 type Lesson = {
     title: string;
@@ -50,6 +54,13 @@ type LessonSubmitResult = {
             passed: boolean;
             already_completed: boolean;
             earned_xp: number;
+            energy_delta?: number;
+        };
+        student_profile?: {
+            energy?: number;
+            level?: number;
+            total_xp?: number;
+            current_streak?: number;
         };
         completed_missions?: MissionHighlight[];
         unlocked_badges?: BadgeHighlight[];
@@ -61,8 +72,6 @@ type Props = {
     questions: Question[];
     trails: Trail[];
 };
-
-type LottieAnimationData = Record<string, unknown>;
 
 export default function StudentLesson({ lesson, questions, trails }: Props) {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -80,80 +89,12 @@ export default function StudentLesson({ lesson, questions, trails }: Props) {
     const [result, setResult] = useState<LessonSubmitResult['data'] | null>(
         null,
     );
-    const [animations, setAnimations] = useState<{
-        success: LottieAnimationData | null;
-        error: LottieAnimationData | null;
-        trophy: LottieAnimationData | null;
-        confetti: LottieAnimationData | null;
-    }>({
-        success: null,
-        error: null,
-        trophy: null,
-        confetti: null,
-    });
+    const [showConfetti, setShowConfetti] = useState(false);
 
     const correctAudioRef = useRef<HTMLAudioElement | null>(null);
     const wrongAudioRef = useRef<HTMLAudioElement | null>(null);
     const winAudioRef = useRef<HTMLAudioElement | null>(null);
     const playedWinRef = useRef(false);
-
-    useEffect(() => {
-        let mounted = true;
-
-        const loadAnimations = async () => {
-            try {
-                const [
-                    successAnimation,
-                    errorAnimation,
-                    trophyAnimation,
-                    confettiAnimation,
-                ] = await Promise.all([
-                    fetch('/animations/success.json').then(async (response) =>
-                        response.ok
-                            ? ((await response.json()) as LottieAnimationData)
-                            : null,
-                    ),
-                    fetch('/animations/error.json').then(async (response) =>
-                        response.ok
-                            ? ((await response.json()) as LottieAnimationData)
-                            : null,
-                    ),
-                    fetch('/animations/trophy.json').then(async (response) =>
-                        response.ok
-                            ? ((await response.json()) as LottieAnimationData)
-                            : null,
-                    ),
-                    fetch('/animations/confetti.json').then(async (response) =>
-                        response.ok
-                            ? ((await response.json()) as LottieAnimationData)
-                            : null,
-                    ),
-                ]);
-
-                if (!mounted) return;
-
-                setAnimations({
-                    success: successAnimation,
-                    error: errorAnimation,
-                    trophy: trophyAnimation,
-                    confetti: confettiAnimation,
-                });
-            } catch {
-                if (!mounted) return;
-                setAnimations({
-                    success: null,
-                    error: null,
-                    trophy: null,
-                    confetti: null,
-                });
-            }
-        };
-
-        void loadAnimations();
-        return () => {
-            mounted = false;
-        };
-    }, []);
 
     useEffect(() => {
         if (typeof window === 'undefined') return;
@@ -281,6 +222,17 @@ export default function StudentLesson({ lesson, questions, trails }: Props) {
             }
 
             setResult(payload.data);
+            const newEnergy = payload?.data?.student_profile?.energy;
+            if (typeof window !== 'undefined' && typeof newEnergy === 'number') {
+                window.dispatchEvent(
+                    new CustomEvent('edurush:energy-changed', {
+                        detail: {
+                            energy: newEnergy,
+                            delta: payload?.data?.progress?.energy_delta ?? 0,
+                        },
+                    }),
+                );
+            }
         } catch (error) {
             setSubmitError(
                 error instanceof Error
@@ -335,22 +287,31 @@ export default function StudentLesson({ lesson, questions, trails }: Props) {
     useEffect(() => {
         if (!hasPassed || !result) {
             playedWinRef.current = false;
+            setShowConfetti(false);
             return;
         }
 
         if (playedWinRef.current) return;
         playedWinRef.current = true;
         playAudio(winAudioRef.current, 0.95);
+
+        const timeoutId = window.setTimeout(() => {
+            setShowConfetti(true);
+        }, 450);
+
+        return () => {
+            window.clearTimeout(timeoutId);
+        };
     }, [hasPassed, result]);
 
     return (
         <>
             <Head title={lesson.title} />
 
-            {hasPassed && animations.confetti ? (
+            {hasPassed && showConfetti ? (
                 <div className="pointer-events-none fixed inset-0 z-40">
-                    <Lottie
-                        animationData={animations.confetti}
+                    <SafeLottie
+                        animationData={confettiAnimation}
                         loop={false}
                         autoplay
                         className="h-full w-full"
@@ -379,16 +340,12 @@ export default function StudentLesson({ lesson, questions, trails }: Props) {
                     hasPassed ? (
                         <div className="rounded-3xl border border-[#BFE0FF] bg-white p-6 text-center dark:border-[#263753] dark:bg-[#111C33]">
                             <div className="mx-auto h-44 w-44">
-                                {animations.trophy ? (
-                                    <Lottie
-                                        animationData={animations.trophy}
-                                        loop={false}
-                                        autoplay
-                                        className="h-full w-full"
-                                    />
-                                ) : (
-                                    <CheckCircle2 className="mx-auto h-full w-full text-[#FFB43F]" />
-                                )}
+                                <SafeLottie
+                                    animationData={trophyAnimation}
+                                    loop={false}
+                                    autoplay
+                                    className="h-full w-full"
+                                />
                             </div>
 
                             <p className="text-3xl font-black text-[#FFB43F]">
@@ -625,24 +582,20 @@ export default function StudentLesson({ lesson, questions, trails }: Props) {
                                     ) : isCurrentChecked ? (
                                         <span className="inline-flex items-center gap-2">
                                             {isCurrentCorrect &&
-                                            animations.success ? (
-                                                <Lottie
+                                            successAnimation ? (
+                                                <SafeLottie
                                                     key={`${currentQuestion.external_id}-success`}
-                                                    animationData={
-                                                        animations.success
-                                                    }
+                                                    animationData={successAnimation}
                                                     loop={false}
                                                     autoplay
                                                     className="h-9 w-9 scale-[1.9]"
                                                 />
                                             ) : null}
                                             {!isCurrentCorrect &&
-                                            animations.error ? (
-                                                <Lottie
+                                            errorAnimation ? (
+                                                <SafeLottie
                                                     key={`${currentQuestion.external_id}-error`}
-                                                    animationData={
-                                                        animations.error
-                                                    }
+                                                    animationData={errorAnimation}
                                                     loop={false}
                                                     autoplay
                                                     className="h-9 w-9 scale-[2.2]"
