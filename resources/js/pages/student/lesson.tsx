@@ -1,6 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
+import Lottie from 'lottie-react';
 import { AlertTriangle, ArrowLeft, CheckCircle2, XCircle } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 type Lesson = {
     title: string;
@@ -26,6 +27,18 @@ type Trail = {
     lessons: TrailLesson[];
 };
 
+type MissionHighlight = {
+    title: string;
+    reward_xp: number;
+    mission_type?: string;
+};
+
+type BadgeHighlight = {
+    name: string;
+    icon?: string;
+    color_hex?: string;
+};
+
 type LessonSubmitResult = {
     data: {
         quiz: {
@@ -38,6 +51,8 @@ type LessonSubmitResult = {
             already_completed: boolean;
             earned_xp: number;
         };
+        completed_missions?: MissionHighlight[];
+        unlocked_badges?: BadgeHighlight[];
     };
 };
 
@@ -46,6 +61,8 @@ type Props = {
     questions: Question[];
     trails: Trail[];
 };
+
+type LottieAnimationData = Record<string, unknown>;
 
 export default function StudentLesson({ lesson, questions, trails }: Props) {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -63,6 +80,104 @@ export default function StudentLesson({ lesson, questions, trails }: Props) {
     const [result, setResult] = useState<LessonSubmitResult['data'] | null>(
         null,
     );
+    const [animations, setAnimations] = useState<{
+        success: LottieAnimationData | null;
+        error: LottieAnimationData | null;
+        trophy: LottieAnimationData | null;
+        confetti: LottieAnimationData | null;
+    }>({
+        success: null,
+        error: null,
+        trophy: null,
+        confetti: null,
+    });
+
+    const correctAudioRef = useRef<HTMLAudioElement | null>(null);
+    const wrongAudioRef = useRef<HTMLAudioElement | null>(null);
+    const winAudioRef = useRef<HTMLAudioElement | null>(null);
+    const playedWinRef = useRef(false);
+
+    useEffect(() => {
+        let mounted = true;
+
+        const loadAnimations = async () => {
+            try {
+                const [
+                    successAnimation,
+                    errorAnimation,
+                    trophyAnimation,
+                    confettiAnimation,
+                ] = await Promise.all([
+                    fetch('/animations/success.json').then(async (response) =>
+                        response.ok
+                            ? ((await response.json()) as LottieAnimationData)
+                            : null,
+                    ),
+                    fetch('/animations/error.json').then(async (response) =>
+                        response.ok
+                            ? ((await response.json()) as LottieAnimationData)
+                            : null,
+                    ),
+                    fetch('/animations/trophy.json').then(async (response) =>
+                        response.ok
+                            ? ((await response.json()) as LottieAnimationData)
+                            : null,
+                    ),
+                    fetch('/animations/confetti.json').then(async (response) =>
+                        response.ok
+                            ? ((await response.json()) as LottieAnimationData)
+                            : null,
+                    ),
+                ]);
+
+                if (!mounted) return;
+
+                setAnimations({
+                    success: successAnimation,
+                    error: errorAnimation,
+                    trophy: trophyAnimation,
+                    confetti: confettiAnimation,
+                });
+            } catch {
+                if (!mounted) return;
+                setAnimations({
+                    success: null,
+                    error: null,
+                    trophy: null,
+                    confetti: null,
+                });
+            }
+        };
+
+        void loadAnimations();
+        return () => {
+            mounted = false;
+        };
+    }, []);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+
+        correctAudioRef.current = new Audio('/sounds/correct.mpeg');
+        wrongAudioRef.current = new Audio('/sounds/wrong.mpeg');
+        winAudioRef.current = new Audio('/sounds/win.mpeg');
+
+        return () => {
+            [correctAudioRef.current, wrongAudioRef.current, winAudioRef.current]
+                .filter((audio): audio is HTMLAudioElement => !!audio)
+                .forEach((audio) => {
+                    audio.pause();
+                    audio.currentTime = 0;
+                });
+        };
+    }, []);
+
+    const playAudio = (audio: HTMLAudioElement | null, volume = 1) => {
+        if (!audio) return;
+        audio.volume = volume;
+        audio.currentTime = 0;
+        void audio.play().catch(() => undefined);
+    };
 
     const currentQuestion = questions[currentIndex];
     const selectedOption = currentQuestion
@@ -74,7 +189,8 @@ export default function StudentLesson({ lesson, questions, trails }: Props) {
     const isCurrentCorrect = currentQuestion
         ? !!isCorrectByQuestion[currentQuestion.external_id]
         : false;
-    const isLastQuestion = questions.length > 0 && currentIndex === questions.length - 1;
+    const isLastQuestion =
+        questions.length > 0 && currentIndex === questions.length - 1;
 
     const nextProgressTarget = useMemo(() => {
         const flat = trails ?? [];
@@ -177,6 +293,7 @@ export default function StudentLesson({ lesson, questions, trails }: Props) {
     };
 
     const resetAttempt = () => {
+        playedWinRef.current = false;
         setCurrentIndex(0);
         setAnswersByQuestion({});
         setCheckedByQuestion({});
@@ -198,6 +315,8 @@ export default function StudentLesson({ lesson, questions, trails }: Props) {
                 ...state,
                 [currentQuestion.external_id]: isCorrect,
             }));
+
+            playAudio(isCorrect ? correctAudioRef.current : wrongAudioRef.current, isCorrect ? 0.9 : 1);
             return;
         }
 
@@ -213,11 +332,33 @@ export default function StudentLesson({ lesson, questions, trails }: Props) {
     const hasFailed = !!result && !result.progress.passed;
     const showRetryButton = !!result && result.quiz.score < 100;
 
+    useEffect(() => {
+        if (!hasPassed || !result) {
+            playedWinRef.current = false;
+            return;
+        }
+
+        if (playedWinRef.current) return;
+        playedWinRef.current = true;
+        playAudio(winAudioRef.current, 0.95);
+    }, [hasPassed, result]);
+
     return (
         <>
             <Head title={lesson.title} />
 
-            <section className="mx-auto w-full max-w-3xl space-y-5">
+            {hasPassed && animations.confetti ? (
+                <div className="pointer-events-none fixed inset-0 z-40">
+                    <Lottie
+                        animationData={animations.confetti}
+                        loop={false}
+                        autoplay
+                        className="h-full w-full"
+                    />
+                </div>
+            ) : null}
+
+            <section className="relative mx-auto w-full max-w-3xl space-y-5">
                 <div className="rounded-3xl border border-[#BFE0FF] bg-white p-6 dark:border-[#263753] dark:bg-[#111C33]">
                     <Link
                         href="/student/dashboard"
@@ -235,59 +376,141 @@ export default function StudentLesson({ lesson, questions, trails }: Props) {
                 </div>
 
                 {result ? (
-                    <div className="rounded-3xl border border-[#BFE0FF] bg-white p-6 dark:border-[#263753] dark:bg-[#111C33]">
-                        {hasPassed ? (
-                            <>
-                                <p className="text-2xl font-black text-[#1565FF]">
-                                    Parabéns, você passou.
-                                </p>
-                                <p className="mt-2 text-sm font-medium text-[#5B6B93] dark:text-[#8EA1C7]">
-                                    Você acertou {result.quiz.correct_answers} de{' '}
-                                    {result.quiz.total_questions} questões (
-                                    {result.quiz.score}%).
-                                </p>
-                            </>
-                        ) : hasFailed ? (
-                            <>
-                                <p className="text-2xl font-black text-[#D92D4E]">
-                                    Infelizmente não foi dessa vez.
-                                </p>
-                                <p className="mt-2 text-sm font-medium text-[#5B6B93] dark:text-[#8EA1C7]">
-                                    Você acertou {result.quiz.correct_answers} de{' '}
-                                    {result.quiz.total_questions} questões (
-                                    {result.quiz.score}%).
-                                </p>
-                            </>
-                        ) : null}
+                    hasPassed ? (
+                        <div className="rounded-3xl border border-[#BFE0FF] bg-white p-6 text-center dark:border-[#263753] dark:bg-[#111C33]">
+                            <div className="mx-auto h-44 w-44">
+                                {animations.trophy ? (
+                                    <Lottie
+                                        animationData={animations.trophy}
+                                        loop={false}
+                                        autoplay
+                                        className="h-full w-full"
+                                    />
+                                ) : (
+                                    <CheckCircle2 className="mx-auto h-full w-full text-[#FFB43F]" />
+                                )}
+                            </div>
 
-                        <div className="mt-5 flex flex-wrap gap-2">
-                            {showRetryButton ? (
+                            <p className="text-3xl font-black text-[#FFB43F]">
+                                Parabéns você passou!
+                            </p>
+                            <p className="mt-2 text-sm font-bold text-[#5B6B93] dark:text-white">
+                                Excelente desempenho nesta lição.
+                            </p>
+                            <p className="mt-2 text-sm font-semibold text-[#5B6B93] dark:text-white">
+                                Você acertou {result.quiz.correct_answers} de{' '}
+                                {result.quiz.total_questions} questões.
+                            </p>
+                            <p className="text-sm font-semibold text-[#5B6B93] dark:text-white">
+                                Pontuação: {result.quiz.score}%
+                            </p>
+
+                            <p className="mt-2 text-sm font-black text-[#1E9E6A]">
+                                {result.progress.already_completed
+                                    ? 'Esta lição já tinha sido concluída antes.'
+                                    : `+${result.progress.earned_xp} XP ganhos.`}
+                            </p>
+
+                            {(result.completed_missions ?? []).length > 0 ? (
+                                <div className="mt-4 rounded-2xl border border-[#BFE0FF] bg-[#F6FAFF] p-3 text-left dark:border-[#263753] dark:bg-[#0B1428]">
+                                    <p className="text-xs font-black uppercase tracking-[0.08em] text-[#1565FF]">
+                                        Missões concluídas
+                                    </p>
+                                    <div className="mt-2 space-y-1">
+                                        {(result.completed_missions ?? []).map(
+                                            (mission, index) => (
+                                                <p
+                                                    key={`${mission.title}-${index}`}
+                                                    className="text-sm font-semibold text-[#2F3E63] dark:text-[#B4C3E3]"
+                                                >
+                                                    {mission.title} (+
+                                                    {mission.reward_xp} XP)
+                                                </p>
+                                            ),
+                                        )}
+                                    </div>
+                                </div>
+                            ) : null}
+
+                            {(result.unlocked_badges ?? []).length > 0 ? (
+                                <div className="mt-3 rounded-2xl border border-[#BFE0FF] bg-[#F6FAFF] p-3 text-left dark:border-[#263753] dark:bg-[#0B1428]">
+                                    <p className="text-xs font-black uppercase tracking-[0.08em] text-[#1565FF]">
+                                        Badges desbloqueados
+                                    </p>
+                                    <div className="mt-2 space-y-1">
+                                        {(result.unlocked_badges ?? []).map(
+                                            (badge, index) => (
+                                                <p
+                                                    key={`${badge.name}-${index}`}
+                                                    className="text-sm font-semibold text-[#2F3E63] dark:text-[#B4C3E3]"
+                                                >
+                                                    {badge.name}
+                                                </p>
+                                            ),
+                                        )}
+                                    </div>
+                                </div>
+                            ) : null}
+
+                            <div className="mt-5 flex flex-wrap justify-center gap-2">
+                                {showRetryButton ? (
+                                    <button
+                                        type="button"
+                                        onClick={resetAttempt}
+                                        className="rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-4 py-2 text-sm font-bold text-[#2F3E63] dark:border-[#263753] dark:bg-[#0B1428] dark:text-[#B4C3E3]"
+                                    >
+                                        Refazer
+                                    </button>
+                                ) : (
+                                    <Link
+                                        href="/student/dashboard"
+                                        className="rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-4 py-2 text-sm font-bold text-[#2F3E63] dark:border-[#263753] dark:bg-[#0B1428] dark:text-[#B4C3E3]"
+                                    >
+                                        Voltar
+                                    </Link>
+                                )}
+
+                                {nextProgressTarget ? (
+                                    <Link
+                                        href={nextProgressTarget.href}
+                                        className="rounded-xl bg-[#1565FF] px-4 py-2 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)]"
+                                    >
+                                        {nextProgressTarget.label}
+                                    </Link>
+                                ) : null}
+                            </div>
+                        </div>
+                    ) : hasFailed ? (
+                        <div className="rounded-3xl border border-[#BFE0FF] bg-white p-6 text-center dark:border-[#263753] dark:bg-[#111C33]">
+                            <img
+                                src="/images/defeat.png"
+                                alt="Derrota"
+                                className="mx-auto h-44 w-44 object-contain"
+                            />
+                            <p className="mt-2 text-3xl font-black text-[#0F1A3B] dark:text-[#E7EEFF]">
+                                Infelizmente não foi dessa vez!
+                            </p>
+                            <p className="mt-2 text-sm font-bold text-[#5B6B93] dark:text-[#8EA1C7]">
+                                Mas você pode tentar mais uma vez!
+                            </p>
+
+                            <div className="mt-5 flex flex-wrap justify-center gap-2">
                                 <button
                                     type="button"
                                     onClick={resetAttempt}
                                     className="rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-4 py-2 text-sm font-bold text-[#2F3E63] dark:border-[#263753] dark:bg-[#0B1428] dark:text-[#B4C3E3]"
                                 >
-                                    Refazer
+                                    Tentar de novo
                                 </button>
-                            ) : (
                                 <Link
                                     href="/student/dashboard"
-                                    className="rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-4 py-2 text-sm font-bold text-[#2F3E63] dark:border-[#263753] dark:bg-[#0B1428] dark:text-[#B4C3E3]"
+                                    className="rounded-xl bg-[#1565FF] px-4 py-2 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)]"
                                 >
                                     Voltar
                                 </Link>
-                            )}
-
-                            {hasPassed && nextProgressTarget ? (
-                                <Link
-                                    href={nextProgressTarget.href}
-                                    className="rounded-xl bg-[#1565FF] px-4 py-2 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)]"
-                                >
-                                    {nextProgressTarget.label}
-                                </Link>
-                            ) : null}
+                            </div>
                         </div>
-                    </div>
+                    ) : null
                 ) : (
                     <div className="rounded-3xl border border-[#BFE0FF] bg-white p-6 dark:border-[#263753] dark:bg-[#111C33]">
                         {questions.length === 0 ? (
@@ -297,7 +520,8 @@ export default function StudentLesson({ lesson, questions, trails }: Props) {
                         ) : (
                             <>
                                 <p className="text-xs font-black uppercase tracking-[0.1em] text-[#1565FF]">
-                                    Questão {currentIndex + 1} de {questions.length}
+                                    Questão {currentIndex + 1} de{' '}
+                                    {questions.length}
                                 </p>
                                 <h2 className="mt-2 text-xl font-black text-[#0F1A3B] dark:text-[#E7EEFF]">
                                     {currentQuestion.prompt}
@@ -387,13 +611,48 @@ export default function StudentLesson({ lesson, questions, trails }: Props) {
                                         isSubmitting
                                     }
                                     onClick={handlePrimaryAction}
-                                    className="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-[#1565FF] px-4 py-3 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] disabled:cursor-not-allowed disabled:opacity-55"
+                                    className={cn(
+                                        'mt-5 inline-flex h-12 w-full items-center justify-center rounded-xl px-4 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] disabled:cursor-not-allowed disabled:opacity-55',
+                                        isCurrentChecked
+                                            ? isCurrentCorrect
+                                                ? 'bg-[#2F855A]'
+                                                : 'bg-[#DE5A5A]'
+                                            : 'bg-[#1565FF]',
+                                    )}
                                 >
-                                    {isSubmitting
-                                        ? 'Enviando...'
-                                        : isCurrentChecked
-                                          ? 'Continuar'
-                                          : 'Verificar'}
+                                    {isSubmitting ? (
+                                        'Enviando...'
+                                    ) : isCurrentChecked ? (
+                                        <span className="inline-flex items-center gap-2">
+                                            {isCurrentCorrect &&
+                                            animations.success ? (
+                                                <Lottie
+                                                    key={`${currentQuestion.external_id}-success`}
+                                                    animationData={
+                                                        animations.success
+                                                    }
+                                                    loop={false}
+                                                    autoplay
+                                                    className="h-9 w-9 scale-[1.9]"
+                                                />
+                                            ) : null}
+                                            {!isCurrentCorrect &&
+                                            animations.error ? (
+                                                <Lottie
+                                                    key={`${currentQuestion.external_id}-error`}
+                                                    animationData={
+                                                        animations.error
+                                                    }
+                                                    loop={false}
+                                                    autoplay
+                                                    className="h-9 w-9 scale-[2.2]"
+                                                />
+                                            ) : null}
+                                            <span>Continuar</span>
+                                        </span>
+                                    ) : (
+                                        'Verificar'
+                                    )}
                                 </button>
                             </>
                         )}
@@ -404,3 +663,6 @@ export default function StudentLesson({ lesson, questions, trails }: Props) {
     );
 }
 
+function cn(...parts: Array<string | false | null | undefined>) {
+    return parts.filter(Boolean).join(' ');
+}
