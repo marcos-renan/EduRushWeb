@@ -139,6 +139,9 @@ export default function StudentTrail({ trail }: Props) {
             null,
         [nodes],
     );
+    const selectedLessonDifficulty = selectedLesson
+        ? difficultyLabel(selectedLesson.difficulty)
+        : 'Fácil';
 
     return (
         <>
@@ -289,15 +292,35 @@ export default function StudentTrail({ trail }: Props) {
                         </p>
 
                         <div className="mt-3 flex flex-wrap gap-2 text-xs font-bold">
-                            <span className="rounded-full bg-[#E8F2FF] px-3 py-1 text-[#1565FF] dark:bg-[#142645] dark:text-[#9CC0FF]">
+                            <span
+                                className={cn(
+                                    'rounded-full px-3 py-1',
+                                    !selectedLesson.is_locked &&
+                                        !selectedLesson.is_completed
+                                        ? 'bg-[#E8FFF4] text-[#108A5D] dark:bg-[#12392B] dark:text-[#72E0B5]'
+                                        : selectedLesson.is_completed
+                                          ? 'bg-[#FFF8E1] text-[#C79100] dark:bg-[#3B3318] dark:text-[#F6D57A]'
+                                        : 'bg-[#EEF2F8] text-[#5B6B93] dark:bg-[#2A354D] dark:text-[#A7B7D8]',
+                                )}
+                            >
                                 {selectedLesson.is_completed
                                     ? 'Concluída'
                                     : selectedLesson.is_locked
                                       ? 'Bloqueada'
                                       : 'Disponível'}
                             </span>
-                            <span className="rounded-full bg-[#E8F2FF] px-3 py-1 text-[#1565FF] dark:bg-[#142645] dark:text-[#9CC0FF]">
-                                Dificuldade: {difficultyLabel(selectedLesson.difficulty)}
+                            <span
+                                className={cn(
+                                    'rounded-full px-3 py-1',
+                                    selectedLessonDifficulty === 'Fácil' &&
+                                        'bg-[#E8FFF4] text-[#108A5D] dark:bg-[#12392B] dark:text-[#72E0B5]',
+                                    selectedLessonDifficulty === 'Médio' &&
+                                        'bg-[#FFF8E1] text-[#C79100] dark:bg-[#3B3318] dark:text-[#F6D57A]',
+                                    selectedLessonDifficulty === 'Difícil' &&
+                                        'bg-[#FFECEC] text-[#C23D3D] dark:bg-[#3B1E25] dark:text-[#FFA3A3]',
+                                )}
+                            >
+                                Dificuldade: {selectedLessonDifficulty}
                             </span>
                             <span className="rounded-full bg-[#E8F2FF] px-3 py-1 text-[#1565FF] dark:bg-[#142645] dark:text-[#9CC0FF]">
                                 +{selectedLesson.xp_reward} XP
