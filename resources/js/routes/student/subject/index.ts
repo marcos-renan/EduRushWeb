@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::show
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:60
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:63
  * @route '/student/materias/{subjectSlug}'
  */
 export const show = (args: { subjectSlug: string | number } | [subjectSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::show
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:60
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:63
  * @route '/student/materias/{subjectSlug}'
  */
 show.url = (args: { subjectSlug: string | number } | [subjectSlug: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -44,7 +44,7 @@ show.url = (args: { subjectSlug: string | number } | [subjectSlug: string | numb
 
 /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::show
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:60
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:63
  * @route '/student/materias/{subjectSlug}'
  */
 show.get = (args: { subjectSlug: string | number } | [subjectSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -53,7 +53,7 @@ show.get = (args: { subjectSlug: string | number } | [subjectSlug: string | numb
 })
 /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::show
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:60
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:63
  * @route '/student/materias/{subjectSlug}'
  */
 show.head = (args: { subjectSlug: string | number } | [subjectSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -63,7 +63,7 @@ show.head = (args: { subjectSlug: string | number } | [subjectSlug: string | num
 
     /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::show
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:60
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:63
  * @route '/student/materias/{subjectSlug}'
  */
     const showForm = (args: { subjectSlug: string | number } | [subjectSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -73,7 +73,7 @@ show.head = (args: { subjectSlug: string | number } | [subjectSlug: string | num
 
             /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::show
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:60
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:63
  * @route '/student/materias/{subjectSlug}'
  */
         showForm.get = (args: { subjectSlug: string | number } | [subjectSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -82,7 +82,7 @@ show.head = (args: { subjectSlug: string | number } | [subjectSlug: string | num
         })
             /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::show
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:60
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:63
  * @route '/student/materias/{subjectSlug}'
  */
         showForm.head = (args: { subjectSlug: string | number } | [subjectSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

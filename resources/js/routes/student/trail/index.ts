@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::show
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:82
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:85
  * @route '/student/trilhas/{trailSlug}'
  */
 export const show = (args: { trailSlug: string | number } | [trailSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::show
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:82
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:85
  * @route '/student/trilhas/{trailSlug}'
  */
 show.url = (args: { trailSlug: string | number } | [trailSlug: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -44,7 +44,7 @@ show.url = (args: { trailSlug: string | number } | [trailSlug: string | number ]
 
 /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::show
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:82
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:85
  * @route '/student/trilhas/{trailSlug}'
  */
 show.get = (args: { trailSlug: string | number } | [trailSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -53,7 +53,7 @@ show.get = (args: { trailSlug: string | number } | [trailSlug: string | number ]
 })
 /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::show
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:82
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:85
  * @route '/student/trilhas/{trailSlug}'
  */
 show.head = (args: { trailSlug: string | number } | [trailSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -63,7 +63,7 @@ show.head = (args: { trailSlug: string | number } | [trailSlug: string | number 
 
     /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::show
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:82
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:85
  * @route '/student/trilhas/{trailSlug}'
  */
     const showForm = (args: { trailSlug: string | number } | [trailSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -73,7 +73,7 @@ show.head = (args: { trailSlug: string | number } | [trailSlug: string | number 
 
             /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::show
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:82
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:85
  * @route '/student/trilhas/{trailSlug}'
  */
         showForm.get = (args: { trailSlug: string | number } | [trailSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -82,7 +82,7 @@ show.head = (args: { trailSlug: string | number } | [trailSlug: string | number 
         })
             /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::show
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:82
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:85
  * @route '/student/trilhas/{trailSlug}'
  */
         showForm.head = (args: { trailSlug: string | number } | [trailSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

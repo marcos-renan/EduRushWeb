@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::show
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:98
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:101
  * @route '/student/licoes/{lessonSlug}'
  */
 export const show = (args: { lessonSlug: string | number } | [lessonSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::show
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:98
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:101
  * @route '/student/licoes/{lessonSlug}'
  */
 show.url = (args: { lessonSlug: string | number } | [lessonSlug: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -44,7 +44,7 @@ show.url = (args: { lessonSlug: string | number } | [lessonSlug: string | number
 
 /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::show
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:98
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:101
  * @route '/student/licoes/{lessonSlug}'
  */
 show.get = (args: { lessonSlug: string | number } | [lessonSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -53,7 +53,7 @@ show.get = (args: { lessonSlug: string | number } | [lessonSlug: string | number
 })
 /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::show
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:98
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:101
  * @route '/student/licoes/{lessonSlug}'
  */
 show.head = (args: { lessonSlug: string | number } | [lessonSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -63,7 +63,7 @@ show.head = (args: { lessonSlug: string | number } | [lessonSlug: string | numbe
 
     /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::show
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:98
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:101
  * @route '/student/licoes/{lessonSlug}'
  */
     const showForm = (args: { lessonSlug: string | number } | [lessonSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -73,7 +73,7 @@ show.head = (args: { lessonSlug: string | number } | [lessonSlug: string | numbe
 
             /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::show
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:98
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:101
  * @route '/student/licoes/{lessonSlug}'
  */
         showForm.get = (args: { lessonSlug: string | number } | [lessonSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -82,7 +82,7 @@ show.head = (args: { lessonSlug: string | number } | [lessonSlug: string | numbe
         })
             /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::show
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:98
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:101
  * @route '/student/licoes/{lessonSlug}'
  */
         showForm.head = (args: { lessonSlug: string | number } | [lessonSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -98,7 +98,7 @@ show.head = (args: { lessonSlug: string | number } | [lessonSlug: string | numbe
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::submit
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:120
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:123
  * @route '/student/licoes/{lessonSlug}/submit'
  */
 export const submit = (args: { lessonSlug: string | number } | [lessonSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -113,7 +113,7 @@ submit.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::submit
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:120
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:123
  * @route '/student/licoes/{lessonSlug}/submit'
  */
 submit.url = (args: { lessonSlug: string | number } | [lessonSlug: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -141,7 +141,7 @@ submit.url = (args: { lessonSlug: string | number } | [lessonSlug: string | numb
 
 /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::submit
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:120
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:123
  * @route '/student/licoes/{lessonSlug}/submit'
  */
 submit.post = (args: { lessonSlug: string | number } | [lessonSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -151,7 +151,7 @@ submit.post = (args: { lessonSlug: string | number } | [lessonSlug: string | num
 
     /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::submit
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:120
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:123
  * @route '/student/licoes/{lessonSlug}/submit'
  */
     const submitForm = (args: { lessonSlug: string | number } | [lessonSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -161,7 +161,7 @@ submit.post = (args: { lessonSlug: string | number } | [lessonSlug: string | num
 
             /**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::submit
- * @see app/Http/Controllers/Web/Student/StudentLearningController.php:120
+ * @see app/Http/Controllers/Web/Student/StudentLearningController.php:123
  * @route '/student/licoes/{lessonSlug}/submit'
  */
         submitForm.post = (args: { lessonSlug: string | number } | [lessonSlug: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

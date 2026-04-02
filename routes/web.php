@@ -69,6 +69,12 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/trilhas/{trailSlug}', [StudentLearningController::class, 'trail'])->name('trail.show');
             Route::get('/licoes/{lessonSlug}', [StudentLearningController::class, 'lesson'])->name('lesson.show');
             Route::post('/licoes/{lessonSlug}/submit', [StudentLearningController::class, 'submitLesson'])->name('lesson.submit');
+            Route::get('/amigos', [StudentLearningController::class, 'friends'])->name('friends');
+            Route::post('/amigos/pedidos', [StudentLearningController::class, 'sendFriendRequest'])->name('friends.request.store');
+            Route::post('/amigos/pedidos/{requestExternalId}/aceitar', [StudentLearningController::class, 'acceptFriendRequest'])->name('friends.request.accept');
+            Route::post('/amigos/pedidos/{requestExternalId}/recusar', [StudentLearningController::class, 'rejectFriendRequest'])->name('friends.request.reject');
+            Route::delete('/amigos/{friendExternalId}', [StudentLearningController::class, 'removeFriend'])->name('friends.remove');
+            Route::get('/ranking', [StudentLearningController::class, 'ranking'])->name('ranking');
         });
 });
 
