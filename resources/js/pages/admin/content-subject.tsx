@@ -1,5 +1,13 @@
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import { ArrowLeft, Layers3, Pencil, Plus, Trash2 } from 'lucide-react';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog';
 
 type Subject = {
     id: number;
@@ -86,14 +94,260 @@ export default function AdminContentSubject({ subject, trails }: Props) {
                         <ArrowLeft className="h-4 w-4" />
                         Voltar para matérias
                     </Link>
-                    <h1 className="mt-3 text-3xl font-black text-[#0F1A3B] dark:text-[#E7EEFF]">
-                        {subject.icon ? `${subject.icon} ` : ''}
-                        {subject.name}
-                    </h1>
-                    <p className="mt-2 text-sm font-medium text-[#5B6B93] dark:text-[#8EA1C7]">
-                        Editar esta matéria também permite gerenciar as trilhas
-                        vinculadas.
-                    </p>
+                    <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+                        <div>
+                            <h1 className="text-3xl font-black text-[#0F1A3B] dark:text-[#E7EEFF]">
+                                {subject.icon ? `${subject.icon} ` : ''}
+                                {subject.name}
+                            </h1>
+                            <p className="mt-2 text-sm font-medium text-[#5B6B93] dark:text-[#8EA1C7]">
+                                Gerencie trilhas desta matéria sem formulários fixos
+                                no topo.
+                            </p>
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-2">
+                            <Dialog>
+                                <DialogTrigger asChild>
+                                    <button className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-[#BFE0FF] bg-white px-4 text-sm font-black text-[#1565FF] dark:border-[#2A3B5A] dark:bg-[#111C33] dark:text-[#9CC0FF]">
+                                        <Pencil className="h-4 w-4" />
+                                        Editar matéria
+                                    </button>
+                                </DialogTrigger>
+                                <DialogContent className="max-w-2xl rounded-2xl border-[#BFE0FF] bg-white dark:border-[#263753] dark:bg-[#111C33]">
+                                    <DialogHeader>
+                                        <DialogTitle className="text-[#0F1A3B] dark:text-[#E7EEFF]">
+                                            Editar matéria
+                                        </DialogTitle>
+                                        <DialogDescription>
+                                            Atualize os dados da matéria selecionada.
+                                        </DialogDescription>
+                                    </DialogHeader>
+
+                                    <form
+                                        className="grid gap-3 md:grid-cols-2"
+                                        onSubmit={(event) => {
+                                            event.preventDefault();
+                                            subjectForm.patch(
+                                                `/admin/content/subjects/${subject.id}`,
+                                                { preserveScroll: true },
+                                            );
+                                        }}
+                                    >
+                                        <Field label="Nome">
+                                            <input
+                                                value={subjectForm.data.name}
+                                                onChange={(event) =>
+                                                    subjectForm.setData(
+                                                        'name',
+                                                        event.target.value,
+                                                    )
+                                                }
+                                                className={inputClass}
+                                            />
+                                            <ErrorText message={subjectForm.errors.name} />
+                                        </Field>
+                                        <Field label="Slug">
+                                            <input
+                                                value={subjectForm.data.slug}
+                                                onChange={(event) =>
+                                                    subjectForm.setData(
+                                                        'slug',
+                                                        event.target.value,
+                                                    )
+                                                }
+                                                className={inputClass}
+                                            />
+                                            <ErrorText message={subjectForm.errors.slug} />
+                                        </Field>
+                                        <Field label="Cor">
+                                            <input
+                                                value={subjectForm.data.color_hex}
+                                                onChange={(event) =>
+                                                    subjectForm.setData(
+                                                        'color_hex',
+                                                        event.target.value,
+                                                    )
+                                                }
+                                                className={inputClass}
+                                            />
+                                            <ErrorText
+                                                message={subjectForm.errors.color_hex}
+                                            />
+                                        </Field>
+                                        <Field label="Ícone">
+                                            <input
+                                                value={subjectForm.data.icon}
+                                                onChange={(event) =>
+                                                    subjectForm.setData(
+                                                        'icon',
+                                                        event.target.value,
+                                                    )
+                                                }
+                                                className={inputClass}
+                                            />
+                                            <ErrorText message={subjectForm.errors.icon} />
+                                        </Field>
+                                        <Field label="Descrição" className="md:col-span-2">
+                                            <textarea
+                                                value={subjectForm.data.description}
+                                                onChange={(event) =>
+                                                    subjectForm.setData(
+                                                        'description',
+                                                        event.target.value,
+                                                    )
+                                                }
+                                                className={textareaClass}
+                                                rows={3}
+                                            />
+                                            <ErrorText
+                                                message={subjectForm.errors.description}
+                                            />
+                                        </Field>
+                                        <div className="md:col-span-2 flex flex-wrap items-center gap-2">
+                                            <button
+                                                type="submit"
+                                                disabled={subjectForm.processing}
+                                                className="inline-flex h-11 items-center justify-center rounded-xl bg-[#1565FF] px-5 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5 disabled:opacity-60"
+                                            >
+                                                Salvar matéria
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={deleteSubject}
+                                                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-[#F2BDCA] bg-[#FFEFF3] px-4 text-sm font-black text-[#AA2343] dark:border-[#7A3041] dark:bg-[#30141D] dark:text-[#FFB6C3]"
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                                Excluir matéria
+                                            </button>
+                                        </div>
+                                    </form>
+                                </DialogContent>
+                            </Dialog>
+
+                            <Dialog>
+                                <DialogTrigger asChild>
+                                    <button className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#1565FF] px-4 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5">
+                                        <Plus className="h-4 w-4" />
+                                        Criar trilha
+                                    </button>
+                                </DialogTrigger>
+                                <DialogContent className="max-w-2xl rounded-2xl border-[#BFE0FF] bg-white dark:border-[#263753] dark:bg-[#111C33]">
+                                    <DialogHeader>
+                                        <DialogTitle className="text-[#0F1A3B] dark:text-[#E7EEFF]">
+                                            Nova trilha
+                                        </DialogTitle>
+                                        <DialogDescription>
+                                            Cadastre uma trilha vinculada a esta matéria.
+                                        </DialogDescription>
+                                    </DialogHeader>
+
+                                    <form
+                                        className="grid gap-3 md:grid-cols-2"
+                                        onSubmit={(event) => {
+                                            event.preventDefault();
+                                            trailForm.post(
+                                                `/admin/content/subjects/${subject.id}/trails`,
+                                                {
+                                                    preserveScroll: true,
+                                                    onSuccess: () =>
+                                                        trailForm.reset(
+                                                            'title',
+                                                            'slug',
+                                                            'description',
+                                                        ),
+                                                },
+                                            );
+                                        }}
+                                    >
+                                        <Field label="Título">
+                                            <input
+                                                value={trailForm.data.title}
+                                                onChange={(event) =>
+                                                    trailForm.setData(
+                                                        'title',
+                                                        event.target.value,
+                                                    )
+                                                }
+                                                className={inputClass}
+                                                placeholder="Ex: Funções quadráticas"
+                                            />
+                                            <ErrorText message={trailForm.errors.title} />
+                                        </Field>
+                                        <Field label="Slug (opcional)">
+                                            <input
+                                                value={trailForm.data.slug}
+                                                onChange={(event) =>
+                                                    trailForm.setData(
+                                                        'slug',
+                                                        event.target.value,
+                                                    )
+                                                }
+                                                className={inputClass}
+                                            />
+                                            <ErrorText message={trailForm.errors.slug} />
+                                        </Field>
+                                        <Field label="Ano">
+                                            <select
+                                                value={trailForm.data.grade_year}
+                                                onChange={(event) =>
+                                                    trailForm.setData(
+                                                        'grade_year',
+                                                        event.target.value,
+                                                    )
+                                                }
+                                                className={inputClass}
+                                            >
+                                                <option value="1">1º ano</option>
+                                                <option value="2">2º ano</option>
+                                                <option value="3">3º ano</option>
+                                            </select>
+                                            <ErrorText message={trailForm.errors.grade_year} />
+                                        </Field>
+                                        <Field label="Posição">
+                                            <input
+                                                value={trailForm.data.position}
+                                                onChange={(event) =>
+                                                    trailForm.setData(
+                                                        'position',
+                                                        event.target.value,
+                                                    )
+                                                }
+                                                className={inputClass}
+                                            />
+                                            <ErrorText message={trailForm.errors.position} />
+                                        </Field>
+                                        <Field label="Descrição" className="md:col-span-2">
+                                            <textarea
+                                                value={trailForm.data.description}
+                                                onChange={(event) =>
+                                                    trailForm.setData(
+                                                        'description',
+                                                        event.target.value,
+                                                    )
+                                                }
+                                                className={textareaClass}
+                                                rows={3}
+                                            />
+                                            <ErrorText
+                                                message={trailForm.errors.description}
+                                            />
+                                        </Field>
+                                        <div className="md:col-span-2">
+                                            <button
+                                                type="submit"
+                                                disabled={trailForm.processing}
+                                                className="inline-flex h-11 items-center justify-center rounded-xl bg-[#1565FF] px-5 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5 disabled:opacity-60"
+                                            >
+                                                Criar trilha
+                                            </button>
+                                        </div>
+                                    </form>
+                                </DialogContent>
+                            </Dialog>
+                        </div>
+                    </div>
+
                     {page.props.flash?.success ? (
                         <p className="mt-4 rounded-xl border border-[#A6E9C8] bg-[#ECFAF3] px-3 py-2 text-sm font-semibold text-[#0A7A4F] dark:border-[#275A43] dark:bg-[#13281F] dark:text-[#9BE8C8]">
                             {page.props.flash.success}
@@ -105,202 +359,6 @@ export default function AdminContentSubject({ subject, trails }: Props) {
                         </p>
                     ) : null}
                 </div>
-
-                <article className="rounded-3xl border border-[#BFE0FF] bg-white p-5 dark:border-[#263753] dark:bg-[#111C33]">
-                    <h2 className="inline-flex items-center gap-2 text-lg font-black text-[#0F1A3B] dark:text-[#E7EEFF]">
-                        <span className="inline-flex rounded-full bg-[#E8F2FF] p-2 text-[#1565FF] dark:bg-[#142645] dark:text-[#9CC0FF]">
-                            <Pencil className="h-4 w-4" />
-                        </span>
-                        Editar matéria
-                    </h2>
-                    <form
-                        className="mt-4 grid gap-3 md:grid-cols-2"
-                        onSubmit={(event) => {
-                            event.preventDefault();
-                            subjectForm.patch(
-                                `/admin/content/subjects/${subject.id}`,
-                                { preserveScroll: true },
-                            );
-                        }}
-                    >
-                        <Field label="Nome">
-                            <input
-                                value={subjectForm.data.name}
-                                onChange={(event) =>
-                                    subjectForm.setData('name', event.target.value)
-                                }
-                                className={inputClass}
-                            />
-                            <ErrorText message={subjectForm.errors.name} />
-                        </Field>
-                        <Field label="Slug">
-                            <input
-                                value={subjectForm.data.slug}
-                                onChange={(event) =>
-                                    subjectForm.setData('slug', event.target.value)
-                                }
-                                className={inputClass}
-                            />
-                            <ErrorText message={subjectForm.errors.slug} />
-                        </Field>
-                        <Field label="Cor">
-                            <input
-                                value={subjectForm.data.color_hex}
-                                onChange={(event) =>
-                                    subjectForm.setData(
-                                        'color_hex',
-                                        event.target.value,
-                                    )
-                                }
-                                className={inputClass}
-                            />
-                            <ErrorText message={subjectForm.errors.color_hex} />
-                        </Field>
-                        <Field label="Ícone">
-                            <input
-                                value={subjectForm.data.icon}
-                                onChange={(event) =>
-                                    subjectForm.setData('icon', event.target.value)
-                                }
-                                className={inputClass}
-                            />
-                            <ErrorText message={subjectForm.errors.icon} />
-                        </Field>
-                        <Field label="Descrição" className="md:col-span-2">
-                            <textarea
-                                value={subjectForm.data.description}
-                                onChange={(event) =>
-                                    subjectForm.setData(
-                                        'description',
-                                        event.target.value,
-                                    )
-                                }
-                                className={textareaClass}
-                                rows={3}
-                            />
-                            <ErrorText message={subjectForm.errors.description} />
-                        </Field>
-                        <div className="md:col-span-2 flex flex-wrap items-center gap-2">
-                            <button
-                                type="submit"
-                                disabled={subjectForm.processing}
-                                className="inline-flex h-11 items-center justify-center rounded-xl bg-[#1565FF] px-5 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5 disabled:opacity-60"
-                            >
-                                Salvar matéria
-                            </button>
-                            <button
-                                type="button"
-                                onClick={deleteSubject}
-                                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-[#F2BDCA] bg-[#FFEFF3] px-4 text-sm font-black text-[#AA2343] dark:border-[#7A3041] dark:bg-[#30141D] dark:text-[#FFB6C3]"
-                            >
-                                <Trash2 className="h-4 w-4" />
-                                Excluir matéria
-                            </button>
-                        </div>
-                    </form>
-                </article>
-
-                <article className="rounded-3xl border border-[#BFE0FF] bg-white p-5 dark:border-[#263753] dark:bg-[#111C33]">
-                    <h2 className="inline-flex items-center gap-2 text-lg font-black text-[#0F1A3B] dark:text-[#E7EEFF]">
-                        <span className="inline-flex rounded-full bg-[#E8F2FF] p-2 text-[#1565FF] dark:bg-[#142645] dark:text-[#9CC0FF]">
-                            <Plus className="h-4 w-4" />
-                        </span>
-                        Criar trilha
-                    </h2>
-                    <form
-                        className="mt-4 grid gap-3 md:grid-cols-2"
-                        onSubmit={(event) => {
-                            event.preventDefault();
-                            trailForm.post(
-                                `/admin/content/subjects/${subject.id}/trails`,
-                                {
-                                    preserveScroll: true,
-                                    onSuccess: () =>
-                                        trailForm.reset(
-                                            'title',
-                                            'slug',
-                                            'description',
-                                        ),
-                                },
-                            );
-                        }}
-                    >
-                        <Field label="Título">
-                            <input
-                                value={trailForm.data.title}
-                                onChange={(event) =>
-                                    trailForm.setData('title', event.target.value)
-                                }
-                                className={inputClass}
-                                placeholder="Ex: Funções quadráticas"
-                            />
-                            <ErrorText message={trailForm.errors.title} />
-                        </Field>
-                        <Field label="Slug (opcional)">
-                            <input
-                                value={trailForm.data.slug}
-                                onChange={(event) =>
-                                    trailForm.setData('slug', event.target.value)
-                                }
-                                className={inputClass}
-                            />
-                            <ErrorText message={trailForm.errors.slug} />
-                        </Field>
-                        <Field label="Ano">
-                            <select
-                                value={trailForm.data.grade_year}
-                                onChange={(event) =>
-                                    trailForm.setData(
-                                        'grade_year',
-                                        event.target.value,
-                                    )
-                                }
-                                className={inputClass}
-                            >
-                                <option value="1">1º ano</option>
-                                <option value="2">2º ano</option>
-                                <option value="3">3º ano</option>
-                            </select>
-                            <ErrorText message={trailForm.errors.grade_year} />
-                        </Field>
-                        <Field label="Posição">
-                            <input
-                                value={trailForm.data.position}
-                                onChange={(event) =>
-                                    trailForm.setData(
-                                        'position',
-                                        event.target.value,
-                                    )
-                                }
-                                className={inputClass}
-                            />
-                            <ErrorText message={trailForm.errors.position} />
-                        </Field>
-                        <Field label="Descrição" className="md:col-span-2">
-                            <textarea
-                                value={trailForm.data.description}
-                                onChange={(event) =>
-                                    trailForm.setData(
-                                        'description',
-                                        event.target.value,
-                                    )
-                                }
-                                className={textareaClass}
-                                rows={3}
-                            />
-                            <ErrorText message={trailForm.errors.description} />
-                        </Field>
-                        <div className="md:col-span-2">
-                            <button
-                                type="submit"
-                                disabled={trailForm.processing}
-                                className="inline-flex h-11 items-center justify-center rounded-xl bg-[#1565FF] px-5 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5 disabled:opacity-60"
-                            >
-                                Criar trilha
-                            </button>
-                        </div>
-                    </form>
-                </article>
 
                 <article className="rounded-3xl border border-[#BFE0FF] bg-white p-5 dark:border-[#263753] dark:bg-[#111C33]">
                     <h2 className="inline-flex items-center gap-2 text-lg font-black text-[#0F1A3B] dark:text-[#E7EEFF]">
@@ -321,7 +379,8 @@ export default function AdminContentSubject({ subject, trails }: Props) {
                                             {trail.title}
                                         </p>
                                         <p className="text-xs font-medium text-[#5B6B93] dark:text-[#8EA1C7]">
-                                            {trail.grade_year}º ano • posição {trail.position} • {trail.lessons_count} lições
+                                            {trail.grade_year}º ano • posição {trail.position}{' '}
+                                            • {trail.lessons_count} lições
                                         </p>
                                     </div>
                                     <div className="flex items-center gap-2">

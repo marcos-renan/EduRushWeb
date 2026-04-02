@@ -1,5 +1,13 @@
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import { BookOpenCheck, Pencil, Plus, Trash2 } from 'lucide-react';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog';
 
 type Subject = {
     id: number;
@@ -50,15 +58,147 @@ export default function AdminContentSubjects({ subjects }: Props) {
 
             <section className="space-y-6">
                 <div className="rounded-3xl border border-[#BFE0FF] bg-white p-6 dark:border-[#263753] dark:bg-[#111C33]">
-                    <p className="text-xs font-black uppercase tracking-[0.16em] text-[#1565FF]">
-                        Conteúdo
-                    </p>
-                    <h1 className="mt-2 text-3xl font-black text-[#0F1A3B] dark:text-[#E7EEFF]">
-                        Matérias
-                    </h1>
-                    <p className="mt-2 text-sm font-medium text-[#5B6B93] dark:text-[#8EA1C7]">
-                        Gerencie suas matérias. O botão editar abre as trilhas da matéria.
-                    </p>
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                        <div>
+                            <p className="text-xs font-black uppercase tracking-[0.16em] text-[#1565FF]">
+                                Conteúdo
+                            </p>
+                            <h1 className="mt-2 text-3xl font-black text-[#0F1A3B] dark:text-[#E7EEFF]">
+                                Matérias
+                            </h1>
+                            <p className="mt-2 text-sm font-medium text-[#5B6B93] dark:text-[#8EA1C7]">
+                                Gerencie suas matérias. O botão editar abre as trilhas da
+                                matéria.
+                            </p>
+                        </div>
+
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <button className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#1565FF] px-4 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5">
+                                    <Plus className="h-4 w-4" />
+                                    Criar nova matéria
+                                </button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-2xl rounded-2xl border-[#BFE0FF] bg-white dark:border-[#263753] dark:bg-[#111C33]">
+                                <DialogHeader>
+                                    <DialogTitle className="text-[#0F1A3B] dark:text-[#E7EEFF]">
+                                        Nova matéria
+                                    </DialogTitle>
+                                    <DialogDescription>
+                                        Preencha os dados da matéria para criar no sistema.
+                                    </DialogDescription>
+                                </DialogHeader>
+
+                                <form
+                                    className="grid gap-3 md:grid-cols-2"
+                                    onSubmit={(event) => {
+                                        event.preventDefault();
+                                        createForm.post('/admin/content/subjects', {
+                                            preserveScroll: true,
+                                            onSuccess: () =>
+                                                createForm.reset(
+                                                    'name',
+                                                    'slug',
+                                                    'description',
+                                                    'icon',
+                                                ),
+                                        });
+                                    }}
+                                >
+                                    <Field label="Nome">
+                                        <input
+                                            value={createForm.data.name}
+                                            onChange={(event) =>
+                                                createForm.setData(
+                                                    'name',
+                                                    event.target.value,
+                                                )
+                                            }
+                                            className={inputClass}
+                                            placeholder="Ex: Matemática"
+                                        />
+                                        <ErrorText message={createForm.errors.name} />
+                                    </Field>
+
+                                    <Field label="Slug (opcional)">
+                                        <input
+                                            value={createForm.data.slug}
+                                            onChange={(event) =>
+                                                createForm.setData(
+                                                    'slug',
+                                                    event.target.value,
+                                                )
+                                            }
+                                            className={inputClass}
+                                            placeholder="matematica"
+                                        />
+                                        <ErrorText message={createForm.errors.slug} />
+                                    </Field>
+
+                                    <Field label="Cor">
+                                        <input
+                                            value={createForm.data.color_hex}
+                                            onChange={(event) =>
+                                                createForm.setData(
+                                                    'color_hex',
+                                                    event.target.value,
+                                                )
+                                            }
+                                            className={inputClass}
+                                            placeholder="#2563EB"
+                                        />
+                                        <ErrorText message={createForm.errors.color_hex} />
+                                    </Field>
+
+                                    <Field label="Ícone (opcional)">
+                                        <input
+                                            value={createForm.data.icon}
+                                            onChange={(event) =>
+                                                createForm.setData(
+                                                    'icon',
+                                                    event.target.value,
+                                                )
+                                            }
+                                            className={inputClass}
+                                            placeholder="📘"
+                                        />
+                                        <ErrorText message={createForm.errors.icon} />
+                                    </Field>
+
+                                    <Field label="Descrição" className="md:col-span-2">
+                                        <textarea
+                                            value={createForm.data.description}
+                                            onChange={(event) =>
+                                                createForm.setData(
+                                                    'description',
+                                                    event.target.value,
+                                                )
+                                            }
+                                            className={textareaClass}
+                                            rows={3}
+                                            placeholder="Descrição curta da matéria..."
+                                        />
+                                        <ErrorText
+                                            message={createForm.errors.description}
+                                        />
+                                    </Field>
+
+                                    <div className="md:col-span-2">
+                                        <button
+                                            type="submit"
+                                            disabled={createForm.processing}
+                                            className="inline-flex h-11 items-center justify-center rounded-xl bg-[#1565FF] px-5 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5 disabled:opacity-60"
+                                        >
+                                            {createForm.processing
+                                                ? 'Criando...'
+                                                : 'Criar matéria'}
+                                        </button>
+                                    </div>
+                                </form>
+                            </DialogContent>
+                        </Dialog>
+                    </div>
+
                     {page.props.flash?.success ? (
                         <p className="mt-4 rounded-xl border border-[#A6E9C8] bg-[#ECFAF3] px-3 py-2 text-sm font-semibold text-[#0A7A4F] dark:border-[#275A43] dark:bg-[#13281F] dark:text-[#9BE8C8]">
                             {page.props.flash.success}
@@ -70,108 +210,6 @@ export default function AdminContentSubjects({ subjects }: Props) {
                         </p>
                     ) : null}
                 </div>
-
-                <article className="rounded-3xl border border-[#BFE0FF] bg-white p-5 dark:border-[#263753] dark:bg-[#111C33]">
-                    <h2 className="inline-flex items-center gap-2 text-lg font-black text-[#0F1A3B] dark:text-[#E7EEFF]">
-                        <span className="inline-flex rounded-full bg-[#E8F2FF] p-2 text-[#1565FF] dark:bg-[#142645] dark:text-[#9CC0FF]">
-                            <Plus className="h-4 w-4" />
-                        </span>
-                        Criar nova matéria
-                    </h2>
-
-                    <form
-                        className="mt-4 grid gap-3 md:grid-cols-2"
-                        onSubmit={(event) => {
-                            event.preventDefault();
-                            createForm.post('/admin/content/subjects', {
-                                preserveScroll: true,
-                                onSuccess: () =>
-                                    createForm.reset(
-                                        'name',
-                                        'slug',
-                                        'description',
-                                        'icon',
-                                    ),
-                            });
-                        }}
-                    >
-                        <Field label="Nome">
-                            <input
-                                value={createForm.data.name}
-                                onChange={(event) =>
-                                    createForm.setData('name', event.target.value)
-                                }
-                                className={inputClass}
-                                placeholder="Ex: Matemática"
-                            />
-                            <ErrorText message={createForm.errors.name} />
-                        </Field>
-
-                        <Field label="Slug (opcional)">
-                            <input
-                                value={createForm.data.slug}
-                                onChange={(event) =>
-                                    createForm.setData('slug', event.target.value)
-                                }
-                                className={inputClass}
-                                placeholder="matematica"
-                            />
-                            <ErrorText message={createForm.errors.slug} />
-                        </Field>
-
-                        <Field label="Cor">
-                            <input
-                                value={createForm.data.color_hex}
-                                onChange={(event) =>
-                                    createForm.setData('color_hex', event.target.value)
-                                }
-                                className={inputClass}
-                                placeholder="#2563EB"
-                            />
-                            <ErrorText message={createForm.errors.color_hex} />
-                        </Field>
-
-                        <Field label="Ícone (opcional)">
-                            <input
-                                value={createForm.data.icon}
-                                onChange={(event) =>
-                                    createForm.setData('icon', event.target.value)
-                                }
-                                className={inputClass}
-                                placeholder="📘"
-                            />
-                            <ErrorText message={createForm.errors.icon} />
-                        </Field>
-
-                        <Field label="Descrição" className="md:col-span-2">
-                            <textarea
-                                value={createForm.data.description}
-                                onChange={(event) =>
-                                    createForm.setData(
-                                        'description',
-                                        event.target.value,
-                                    )
-                                }
-                                className={textareaClass}
-                                rows={3}
-                                placeholder="Descrição curta da matéria..."
-                            />
-                            <ErrorText message={createForm.errors.description} />
-                        </Field>
-
-                        <div className="md:col-span-2">
-                            <button
-                                type="submit"
-                                disabled={createForm.processing}
-                                className="inline-flex h-11 items-center justify-center rounded-xl bg-[#1565FF] px-5 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5 disabled:opacity-60"
-                            >
-                                {createForm.processing
-                                    ? 'Criando...'
-                                    : 'Criar matéria'}
-                            </button>
-                        </div>
-                    </form>
-                </article>
 
                 <article className="rounded-3xl border border-[#BFE0FF] bg-white p-5 dark:border-[#263753] dark:bg-[#111C33]">
                     <h2 className="inline-flex items-center gap-2 text-lg font-black text-[#0F1A3B] dark:text-[#E7EEFF]">
