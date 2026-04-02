@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Web\Admin\AdminPanelController;
+use App\Http\Controllers\Web\Admin\AdminContentController;
+use App\Http\Controllers\Settings\ProfileController as SettingsProfileController;
 use App\Http\Controllers\Web\Student\StudentLearningController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,11 +36,20 @@ Route::middleware(['auth'])->group(function () {
         ->name('admin.')
         ->group(function (): void {
             Route::get('/dashboard', [AdminPanelController::class, 'dashboard'])->name('dashboard');
-            Route::get('/content', [AdminPanelController::class, 'content'])->name('content');
-            Route::post('/subjects', [AdminPanelController::class, 'storeSubject'])->name('subjects.store');
-            Route::post('/trails', [AdminPanelController::class, 'storeTrail'])->name('trails.store');
-            Route::post('/lessons', [AdminPanelController::class, 'storeLesson'])->name('lessons.store');
-            Route::post('/questions', [AdminPanelController::class, 'storeQuestion'])->name('questions.store');
+            Route::get('/profile', [SettingsProfileController::class, 'adminEdit'])->name('profile');
+            Route::get('/content', [AdminContentController::class, 'index'])->name('content');
+            Route::post('/content/subjects', [AdminContentController::class, 'storeSubject'])->name('content.subject.store');
+            Route::get('/content/subjects/{subject}', [AdminContentController::class, 'showSubject'])->name('content.subject.show');
+            Route::patch('/content/subjects/{subject}', [AdminContentController::class, 'updateSubject'])->name('content.subject.update');
+            Route::delete('/content/subjects/{subject}', [AdminContentController::class, 'destroySubject'])->name('content.subject.destroy');
+            Route::post('/content/subjects/{subject}/trails', [AdminContentController::class, 'storeTrail'])->name('content.trail.store');
+            Route::get('/content/trails/{trail}', [AdminContentController::class, 'showTrail'])->name('content.trail.show');
+            Route::patch('/content/trails/{trail}', [AdminContentController::class, 'updateTrail'])->name('content.trail.update');
+            Route::delete('/content/trails/{trail}', [AdminContentController::class, 'destroyTrail'])->name('content.trail.destroy');
+            Route::post('/content/trails/{trail}/lessons', [AdminContentController::class, 'storeLesson'])->name('content.lesson.store');
+            Route::get('/content/lessons/{lesson}', [AdminContentController::class, 'showLesson'])->name('content.lesson.show');
+            Route::patch('/content/lessons/{lesson}', [AdminContentController::class, 'updateLesson'])->name('content.lesson.update');
+            Route::delete('/content/lessons/{lesson}', [AdminContentController::class, 'destroyLesson'])->name('content.lesson.destroy');
             Route::get('/missions', [AdminPanelController::class, 'missions'])->name('missions');
             Route::post('/missions', [AdminPanelController::class, 'storeMission'])->name('missions.store');
             Route::get('/badges', [AdminPanelController::class, 'badges'])->name('badges');
@@ -52,6 +63,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('student.')
         ->group(function (): void {
             Route::get('/dashboard', [StudentLearningController::class, 'dashboard'])->name('dashboard');
+            Route::get('/profile', [SettingsProfileController::class, 'studentEdit'])->name('profile');
             Route::get('/materias', [StudentLearningController::class, 'subjects'])->name('subjects');
             Route::get('/materias/{subjectSlug}', [StudentLearningController::class, 'subject'])->name('subject.show');
             Route::get('/trilhas/{trailSlug}', [StudentLearningController::class, 'trail'])->name('trail.show');

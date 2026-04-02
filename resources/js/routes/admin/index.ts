@@ -1,8 +1,5 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../wayfinder'
-import subjects from './subjects'
-import trails from './trails'
-import lessons from './lessons'
-import questions from './questions'
+import content917e12 from './content'
 import missions43dab7 from './missions'
 import badgesA89659 from './badges'
 import students4fe9ea from './students'
@@ -85,8 +82,86 @@ dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     
     dashboard.form = dashboardForm
 /**
-* @see \App\Http\Controllers\Web\Admin\AdminPanelController::content
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:49
+* @see \App\Http\Controllers\Settings\ProfileController::profile
+ * @see app/Http/Controllers/Settings/ProfileController.php:34
+ * @route '/admin/profile'
+ */
+export const profile = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: profile.url(options),
+    method: 'get',
+})
+
+profile.definition = {
+    methods: ["get","head"],
+    url: '/admin/profile',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Settings\ProfileController::profile
+ * @see app/Http/Controllers/Settings/ProfileController.php:34
+ * @route '/admin/profile'
+ */
+profile.url = (options?: RouteQueryOptions) => {
+    return profile.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Settings\ProfileController::profile
+ * @see app/Http/Controllers/Settings/ProfileController.php:34
+ * @route '/admin/profile'
+ */
+profile.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: profile.url(options),
+    method: 'get',
+})
+/**
+* @see \App\Http\Controllers\Settings\ProfileController::profile
+ * @see app/Http/Controllers/Settings/ProfileController.php:34
+ * @route '/admin/profile'
+ */
+profile.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: profile.url(options),
+    method: 'head',
+})
+
+    /**
+* @see \App\Http\Controllers\Settings\ProfileController::profile
+ * @see app/Http/Controllers/Settings/ProfileController.php:34
+ * @route '/admin/profile'
+ */
+    const profileForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: profile.url(options),
+        method: 'get',
+    })
+
+            /**
+* @see \App\Http\Controllers\Settings\ProfileController::profile
+ * @see app/Http/Controllers/Settings/ProfileController.php:34
+ * @route '/admin/profile'
+ */
+        profileForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: profile.url(options),
+            method: 'get',
+        })
+            /**
+* @see \App\Http\Controllers\Settings\ProfileController::profile
+ * @see app/Http/Controllers/Settings/ProfileController.php:34
+ * @route '/admin/profile'
+ */
+        profileForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: profile.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    profile.form = profileForm
+/**
+* @see \App\Http\Controllers\Web\Admin\AdminContentController::content
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:18
  * @route '/admin/content'
  */
 export const content = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -100,8 +175,8 @@ content.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \App\Http\Controllers\Web\Admin\AdminPanelController::content
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:49
+* @see \App\Http\Controllers\Web\Admin\AdminContentController::content
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:18
  * @route '/admin/content'
  */
 content.url = (options?: RouteQueryOptions) => {
@@ -109,8 +184,8 @@ content.url = (options?: RouteQueryOptions) => {
 }
 
 /**
-* @see \App\Http\Controllers\Web\Admin\AdminPanelController::content
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:49
+* @see \App\Http\Controllers\Web\Admin\AdminContentController::content
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:18
  * @route '/admin/content'
  */
 content.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -118,8 +193,8 @@ content.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     method: 'get',
 })
 /**
-* @see \App\Http\Controllers\Web\Admin\AdminPanelController::content
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:49
+* @see \App\Http\Controllers\Web\Admin\AdminContentController::content
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:18
  * @route '/admin/content'
  */
 content.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -128,8 +203,8 @@ content.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
     /**
-* @see \App\Http\Controllers\Web\Admin\AdminPanelController::content
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:49
+* @see \App\Http\Controllers\Web\Admin\AdminContentController::content
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:18
  * @route '/admin/content'
  */
     const contentForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -138,8 +213,8 @@ content.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     })
 
             /**
-* @see \App\Http\Controllers\Web\Admin\AdminPanelController::content
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:49
+* @see \App\Http\Controllers\Web\Admin\AdminContentController::content
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:18
  * @route '/admin/content'
  */
         contentForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -147,8 +222,8 @@ content.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             method: 'get',
         })
             /**
-* @see \App\Http\Controllers\Web\Admin\AdminPanelController::content
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:49
+* @see \App\Http\Controllers\Web\Admin\AdminContentController::content
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:18
  * @route '/admin/content'
  */
         contentForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -398,11 +473,8 @@ students.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     students.form = studentsForm
 const admin = {
     dashboard: Object.assign(dashboard, dashboard),
-content: Object.assign(content, content),
-subjects: Object.assign(subjects, subjects),
-trails: Object.assign(trails, trails),
-lessons: Object.assign(lessons, lessons),
-questions: Object.assign(questions, questions),
+profile: Object.assign(profile, profile),
+content: Object.assign(content, content917e12),
 missions: Object.assign(missions, missions43dab7),
 badges: Object.assign(badges, badgesA89659),
 students: Object.assign(students, students4fe9ea),

@@ -138,7 +138,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
                                         <div className="mt-2 space-y-1">
                                             <Link
-                                                href="/settings/profile"
+                                                href="/admin/profile"
                                                 className="inline-flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-[#2F3E63] transition hover:bg-[#E8F2FF] dark:text-[#B4C3E3] dark:hover:bg-[#142645]"
                                                 onClick={() => setOpen(false)}
                                             >

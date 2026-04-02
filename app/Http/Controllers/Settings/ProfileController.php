@@ -23,10 +23,25 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+        return $this->renderProfilePage($request, 'settings/profile');
+    }
+
+    public function studentEdit(Request $request): Response
+    {
+        return $this->renderProfilePage($request, 'student/profile');
+    }
+
+    public function adminEdit(Request $request): Response
+    {
+        return $this->renderProfilePage($request, 'admin/profile');
+    }
+
+    private function renderProfilePage(Request $request, string $component): Response
+    {
         $user = $request->user();
         $studentProfile = $user->isStudent() ? StudentProfile::forUser($user) : null;
 
-        return Inertia::render('settings/profile', [
+        return Inertia::render($component, [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
             'studentProfile' => $studentProfile ? [

@@ -81,6 +81,84 @@ dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     
     dashboard.form = dashboardForm
 /**
+* @see \App\Http\Controllers\Settings\ProfileController::profile
+ * @see app/Http/Controllers/Settings/ProfileController.php:29
+ * @route '/student/profile'
+ */
+export const profile = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: profile.url(options),
+    method: 'get',
+})
+
+profile.definition = {
+    methods: ["get","head"],
+    url: '/student/profile',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Settings\ProfileController::profile
+ * @see app/Http/Controllers/Settings/ProfileController.php:29
+ * @route '/student/profile'
+ */
+profile.url = (options?: RouteQueryOptions) => {
+    return profile.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Settings\ProfileController::profile
+ * @see app/Http/Controllers/Settings/ProfileController.php:29
+ * @route '/student/profile'
+ */
+profile.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: profile.url(options),
+    method: 'get',
+})
+/**
+* @see \App\Http\Controllers\Settings\ProfileController::profile
+ * @see app/Http/Controllers/Settings/ProfileController.php:29
+ * @route '/student/profile'
+ */
+profile.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: profile.url(options),
+    method: 'head',
+})
+
+    /**
+* @see \App\Http\Controllers\Settings\ProfileController::profile
+ * @see app/Http/Controllers/Settings/ProfileController.php:29
+ * @route '/student/profile'
+ */
+    const profileForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: profile.url(options),
+        method: 'get',
+    })
+
+            /**
+* @see \App\Http\Controllers\Settings\ProfileController::profile
+ * @see app/Http/Controllers/Settings/ProfileController.php:29
+ * @route '/student/profile'
+ */
+        profileForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: profile.url(options),
+            method: 'get',
+        })
+            /**
+* @see \App\Http\Controllers\Settings\ProfileController::profile
+ * @see app/Http/Controllers/Settings/ProfileController.php:29
+ * @route '/student/profile'
+ */
+        profileForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: profile.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    profile.form = profileForm
+/**
 * @see \App\Http\Controllers\Web\Student\StudentLearningController::subjects
  * @see app/Http/Controllers/Web/Student/StudentLearningController.php:47
  * @route '/student/materias'
@@ -160,6 +238,7 @@ subjects.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     subjects.form = subjectsForm
 const student = {
     dashboard: Object.assign(dashboard, dashboard),
+profile: Object.assign(profile, profile),
 subjects: Object.assign(subjects, subjects),
 subject: Object.assign(subject, subject),
 trail: Object.assign(trail, trail),
