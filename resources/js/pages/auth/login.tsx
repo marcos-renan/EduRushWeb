@@ -28,7 +28,7 @@ export default function Login({
             <div className="min-h-screen bg-[linear-gradient(135deg,#0A2A80_0%,#0D47C0_45%,#1565FF_100%)] p-4 sm:p-8">
                 <div className="mx-auto flex min-h-[calc(100vh-2rem)] w-full max-w-5xl items-center justify-center rounded-3xl border border-white/25 bg-[#E8F2FF] p-4 shadow-[0_25px_80px_rgba(5,16,44,0.35)] dark:border-[#23324D] dark:bg-[#0F172A] sm:p-8">
                     <div className="grid w-full items-center gap-6 lg:grid-cols-[1.1fr_1fr]">
-                        <div className="hidden rounded-3xl bg-[linear-gradient(165deg,#0D47C0_0%,#1565FF_100%)] p-8 text-white lg:block">
+                        <div className="hidden rounded-3xl bg-[linear-gradient(165deg,#0D47C0_0%,#1565FF_100%)] p-8 text-white lg:flex lg:flex-col lg:items-center lg:text-center">
                             <img
                                 src={
                                     resolvedAppearance === 'dark'
@@ -36,19 +36,15 @@ export default function Login({
                                         : '/branding/edurush-light.png'
                                 }
                                 alt="EduRush"
-                                className="h-20 w-auto"
+                                className="h-28 w-auto"
                             />
                             <h1 className="mt-8 text-4xl font-black leading-tight">
                                 Estude no ritmo de jogo.
                             </h1>
-                            <p className="mt-3 text-sm font-medium text-blue-100">
-                                Entre para continuar sua jornada com matérias,
-                                trilhas e lições organizadas por ano.
-                            </p>
                         </div>
 
                         <div className="rounded-3xl border border-[#BFE0FF] bg-white p-5 dark:border-[#263753] dark:bg-[#111C33] sm:p-6">
-                            <div className="mb-4 lg:hidden">
+                            <div className="mb-4 flex justify-center lg:hidden">
                                 <img
                                     src={
                                         resolvedAppearance === 'dark'
@@ -56,7 +52,7 @@ export default function Login({
                                             : '/branding/edurush-light.png'
                                     }
                                     alt="EduRush"
-                                    className="h-14 w-auto"
+                                    className="h-20 w-auto"
                                 />
                             </div>
 
@@ -205,4 +201,3 @@ export default function Login({
         </>
     );
 }
-
