@@ -198,3 +198,28 @@
 .dark *::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(180deg, #73adff 0%, #4d86ff 100%);
 }
+
+/* Scrollbar refinada para modais */
+.edurush-modal-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-gutter: stable;
+    scrollbar-color: #7fb1ff transparent;
+}
+
+.edurush-modal-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.edurush-modal-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.edurush-modal-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #84b5ff 0%, #4f8cff 100%);
+    border: 1px solid transparent;
+    border-radius: 999px;
+}
+
+.edurush-modal-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #9ac2ff 0%, #6699ff 100%);
+}

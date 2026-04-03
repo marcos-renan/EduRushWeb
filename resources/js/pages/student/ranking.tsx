@@ -72,7 +72,7 @@ export default function StudentRanking({ ranking, rankingMeta }: Props) {
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-3">
-                    <div className="rounded-2xl border border-[#BFE0FF] bg-white p-4 dark:border-[#263753] dark:bg-[#111C33]">
+                    <div className="rounded-2xl border border-[#BFE0FF] bg-white p-4 transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#F5FAFF] hover:shadow-md dark:border-[#263753] dark:bg-[#111C33] dark:hover:border-[#375786] dark:hover:bg-[#16233D]">
                         <p className="text-xs font-black uppercase tracking-[0.08em] text-[#5B6B93] dark:text-[#8EA1C7]">
                             Sua colocação
                         </p>
@@ -86,7 +86,7 @@ export default function StudentRanking({ ranking, rankingMeta }: Props) {
                         </p>
                     </div>
 
-                    <div className="rounded-2xl border border-[#BFE0FF] bg-white p-4 dark:border-[#263753] dark:bg-[#111C33]">
+                    <div className="rounded-2xl border border-[#BFE0FF] bg-white p-4 transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#F5FAFF] hover:shadow-md dark:border-[#263753] dark:bg-[#111C33] dark:hover:border-[#375786] dark:hover:bg-[#16233D]">
                         <p className="text-xs font-black uppercase tracking-[0.08em] text-[#5B6B93] dark:text-[#8EA1C7]">
                             Membros
                         </p>
@@ -95,7 +95,7 @@ export default function StudentRanking({ ranking, rankingMeta }: Props) {
                         </p>
                     </div>
 
-                    <div className="rounded-2xl border border-[#BFE0FF] bg-white p-4 dark:border-[#263753] dark:bg-[#111C33]">
+                    <div className="rounded-2xl border border-[#BFE0FF] bg-white p-4 transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#F5FAFF] hover:shadow-md dark:border-[#263753] dark:bg-[#111C33] dark:hover:border-[#375786] dark:hover:bg-[#16233D]">
                         <p className="text-xs font-black uppercase tracking-[0.08em] text-[#5B6B93] dark:text-[#8EA1C7]">
                             Amigos no ranking
                         </p>
@@ -117,7 +117,7 @@ export default function StudentRanking({ ranking, rankingMeta }: Props) {
                             type="button"
                             key={`${member.user.external_id}-ranking`}
                             onClick={() => setSelectedMember(member)}
-                            className="flex w-full items-center gap-3 rounded-2xl border border-[#BFE0FF] bg-white px-3 py-3 text-left transition hover:-translate-y-0.5 hover:shadow-sm dark:border-[#263753] dark:bg-[#111C33]"
+                            className="flex w-full cursor-pointer items-center gap-3 rounded-2xl border border-[#BFE0FF] bg-white px-3 py-3 text-left transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#F5FAFF] hover:shadow-md dark:border-[#263753] dark:bg-[#111C33] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
                         >
                             <span className="inline-flex w-9 justify-center text-sm font-black text-[#1565FF]">
                                 #{member.rank}
@@ -163,15 +163,21 @@ function RankingModal({
     );
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#050C1C]/65 p-4">
-            <div className="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-3xl border border-[#BFE0FF] bg-white p-5 dark:border-[#263753] dark:bg-[#111C33]">
+        <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-[#050C1C]/65 p-4"
+            onClick={onClose}
+        >
+            <div
+                className="edurush-modal-scrollbar max-h-[88vh] w-full max-w-2xl overflow-y-auto rounded-3xl border border-[#BFE0FF] p-5 pr-4 bg-white dark:border-[#263753] dark:bg-[#111C33]"
+                onClick={(event) => event.stopPropagation()}
+            >
                 <div className="flex items-center justify-between">
                     <p className="text-lg font-black text-[#0F1A3B] dark:text-[#E7EEFF]">
                         Perfil no ranking
                     </p>
                     <button
                         type="button"
-                        className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#BFE0FF] text-[#5B6B93] dark:border-[#263753] dark:text-[#B4C3E3]"
+                        className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-[#BFE0FF] text-[#5B6B93] transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#EAF3FF] dark:border-[#263753] dark:text-[#B4C3E3] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
                         onClick={onClose}
                     >
                         <X className="h-4 w-4" />
@@ -268,7 +274,7 @@ function RankingModal({
                             member.stats.badges.map((badge, index) => (
                                 <span
                                     key={`${badge.name}-${index}`}
-                                    className="inline-flex rounded-full border px-3 py-1 text-xs font-black uppercase tracking-[0.08em]"
+                                    className="inline-flex cursor-default rounded-full border px-3 py-1 text-xs font-black uppercase tracking-[0.08em] transition hover:-translate-y-0.5 hover:brightness-110"
                                     style={{
                                         borderColor: badge.color_hex ?? '#1565FF',
                                         color: badge.color_hex ?? '#1565FF',
@@ -411,4 +417,3 @@ function LessonsLineChart({ data }: { data: LessonPerDay[] }) {
         </svg>
     );
 }
-
