@@ -155,3 +155,46 @@
         @apply translate-y-0 scale-[0.99];
     }
 }
+
+/* EduRush scrollbar */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #1565ff #e8f2ff;
+}
+
+.dark * {
+    scrollbar-color: #4f8cff #0b1428;
+}
+
+*::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #e8f2ff;
+    border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #2f7aff 0%, #1565ff 100%);
+    border: 2px solid #e8f2ff;
+    border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #4a90ff 0%, #246ef0 100%);
+}
+
+.dark *::-webkit-scrollbar-track {
+    background: #0b1428;
+}
+
+.dark *::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #5a9bff 0%, #3c7cff 100%);
+    border-color: #0b1428;
+}
+
+.dark *::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #73adff 0%, #4d86ff 100%);
+}
