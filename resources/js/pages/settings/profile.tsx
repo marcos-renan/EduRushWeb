@@ -2,7 +2,6 @@ import Cropper, { type Area } from 'react-easy-crop';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import toast from 'react-hot-toast';
 import {
-    Camera,
     Mail,
     UploadCloud,
     X,
@@ -183,46 +182,35 @@ export default function Profile({
 
             <section className="space-y-6">
                 <div className="rounded-3xl border border-[#BFE0FF] bg-white p-6 shadow-[0_12px_38px_rgba(21,101,255,0.1)] dark:border-[#263753] dark:bg-[#111C33]">
-                    <div className="flex flex-wrap items-center justify-between gap-4">
-                        <div className="flex items-center gap-4">
-                            <div className="relative">
-                                {avatarUrl ? (
-                                    <img
-                                        src={`${avatarUrl}?v=${avatarVersion}`}
-                                        alt={user.name}
-                                        className="h-20 w-20 rounded-full border-4 border-[#DCEBFF] object-cover dark:border-[#263753]"
-                                    />
-                                ) : (
-                                    <div className="inline-flex h-20 w-20 items-center justify-center rounded-full border-4 border-[#DCEBFF] bg-[#E8F2FF] text-2xl font-black text-[#1565FF] dark:border-[#263753] dark:bg-[#142645] dark:text-[#9CC0FF]">
-                                        {initials}
-                                    </div>
-                                )}
-                                <button
-                                    type="button"
-                                    onClick={openPhotoModal}
-                                    className="absolute -bottom-1 -right-1 inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#1565FF] text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110 hover:shadow-xl"
-                                >
-                                    <Camera className="h-4 w-4" />
-                                </button>
-                            </div>
-
-                            <div>
-                                <p className="text-2xl font-black text-[#0F1A3B] dark:text-[#E7EEFF]">
-                                    {user.name}
-                                </p>
-                                <p className="text-sm font-semibold text-[#5B6B93] dark:text-[#8EA1C7]">
-                                    @{user.username ?? 'usuario'} • {user.email}
-                                </p>
-                                <p className="mt-1 inline-flex rounded-full bg-[#E8F2FF] px-3 py-1 text-xs font-black uppercase tracking-[0.08em] text-[#1565FF] dark:bg-[#142645] dark:text-[#9CC0FF]">
-                                    {user.role === 'admin' ? 'Administrador' : 'Aluno'}
-                                </p>
-                            </div>
+                    <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center">
+                        <div className="relative">
+                            {avatarUrl ? (
+                                <img
+                                    src={`${avatarUrl}?v=${avatarVersion}`}
+                                    alt={user.name}
+                                    className="h-36 w-36 rounded-full border-4 border-[#DCEBFF] object-cover shadow-[0_14px_30px_rgba(21,101,255,0.2)] dark:border-[#263753]"
+                                />
+                            ) : (
+                                <div className="inline-flex h-36 w-36 items-center justify-center rounded-full border-4 border-[#DCEBFF] bg-[#E8F2FF] text-5xl font-black text-[#1565FF] shadow-[0_14px_30px_rgba(21,101,255,0.2)] dark:border-[#263753] dark:bg-[#142645] dark:text-[#9CC0FF]">
+                                    {initials}
+                                </div>
+                            )}
                         </div>
+
+                        <p className="mt-4 text-3xl font-black text-[#0F1A3B] dark:text-[#E7EEFF]">
+                            {user.name}
+                        </p>
+                        <p className="mt-1 text-sm font-semibold text-[#5B6B93] dark:text-[#8EA1C7]">
+                            @{user.username ?? 'usuario'} • {user.email}
+                        </p>
+                        <p className="mt-2 inline-flex rounded-full bg-[#E8F2FF] px-3 py-1 text-xs font-black uppercase tracking-[0.08em] text-[#1565FF] dark:bg-[#142645] dark:text-[#9CC0FF]">
+                            {user.role === 'admin' ? 'Administrador' : 'Aluno'}
+                        </p>
 
                         <button
                             type="button"
                             onClick={openPhotoModal}
-                            className="inline-flex items-center gap-2 rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-4 py-2 text-sm font-black text-[#1565FF] transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#EAF3FF] hover:shadow-md dark:border-[#2B3F62] dark:bg-[#0B1428] dark:text-[#9CC0FF] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
+                            className="mt-5 inline-flex h-11 min-w-[220px] items-center justify-center gap-2 rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-5 text-sm font-black text-[#1565FF] transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#EAF3FF] hover:shadow-md dark:border-[#2B3F62] dark:bg-[#0B1428] dark:text-[#9CC0FF] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
                         >
                             <UploadCloud className="h-4 w-4" />
                             Alterar foto
@@ -230,7 +218,7 @@ export default function Profile({
                     </div>
 
                     {studentProfile ? (
-                        <div className="mt-5 grid gap-2 sm:grid-cols-4">
+                        <div className="mx-auto mt-6 grid w-full max-w-3xl gap-3 sm:grid-cols-4">
                             <MiniStat label="Ano" value={`${studentProfile.grade_year}º`} />
                             <MiniStat label="Nível" value={`${studentProfile.level}`} />
                             <MiniStat label="XP" value={`${studentProfile.total_xp}`} />
@@ -243,11 +231,11 @@ export default function Profile({
 
                 </div>
 
-                <div className="rounded-3xl border border-[#BFE0FF] bg-white p-6 dark:border-[#263753] dark:bg-[#111C33]">
-                    <h2 className="text-xl font-black text-[#0F1A3B] dark:text-[#E7EEFF]">
+                <div className="mx-auto w-full max-w-3xl rounded-3xl border border-[#BFE0FF] bg-white p-6 dark:border-[#263753] dark:bg-[#111C33]">
+                    <h2 className="text-center text-xl font-black text-[#0F1A3B] dark:text-[#E7EEFF]">
                         Dados da conta
                     </h2>
-                    <p className="mt-1 text-sm font-medium text-[#5B6B93] dark:text-[#8EA1C7]">
+                    <p className="mx-auto mt-1 max-w-2xl text-center text-sm font-medium text-[#5B6B93] dark:text-[#8EA1C7]">
                         Atualize seus dados principais e mantenha o perfil sempre
                         completo.
                     </p>
@@ -351,13 +339,15 @@ export default function Profile({
                             </p>
                         ) : null}
 
-                        <button
-                            type="submit"
-                            disabled={form.processing}
-                            className="inline-flex h-11 items-center justify-center rounded-xl bg-[#1565FF] px-5 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5 hover:brightness-110 hover:shadow-[0_14px_28px_rgba(21,101,255,0.45)] disabled:opacity-60"
-                        >
-                            {form.processing ? 'Salvando...' : 'Salvar alterações'}
-                        </button>
+                        <div className="flex justify-center pt-2">
+                            <button
+                                type="submit"
+                                disabled={form.processing}
+                                className="inline-flex h-11 min-w-[220px] items-center justify-center rounded-xl bg-[#1565FF] px-5 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5 hover:brightness-110 hover:shadow-[0_14px_28px_rgba(21,101,255,0.45)] disabled:opacity-60"
+                            >
+                                {form.processing ? 'Salvando...' : 'Salvar alterações'}
+                            </button>
+                        </div>
                     </form>
                 </div>
 
@@ -454,11 +444,11 @@ export default function Profile({
                                         className="w-full accent-[#1565FF]"
                                     />
                                 </div>
-                                <div className="flex flex-wrap justify-end gap-2">
+                                <div className="flex flex-wrap justify-center gap-2">
                                     <button
                                         type="button"
                                         onClick={() => setPhotoStep('pick')}
-                                        className="rounded-xl border border-[#C8E0FF] bg-[#F8FBFF] px-4 py-2 text-sm font-bold text-[#2F3E63] transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#EAF3FF] dark:border-[#2A3B5A] dark:bg-[#0B1428] dark:text-[#B4C3E3] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
+                                        className="min-w-[170px] rounded-xl border border-[#C8E0FF] bg-[#F8FBFF] px-4 py-2 text-sm font-bold text-[#2F3E63] transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#EAF3FF] dark:border-[#2A3B5A] dark:bg-[#0B1428] dark:text-[#B4C3E3] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
                                     >
                                         Trocar imagem
                                     </button>
@@ -466,7 +456,7 @@ export default function Profile({
                                         type="button"
                                         onClick={savePhoto}
                                         disabled={uploadingPhoto}
-                                        className="rounded-xl bg-[#1565FF] px-4 py-2 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5 hover:brightness-110 disabled:opacity-60"
+                                        className="min-w-[170px] rounded-xl bg-[#1565FF] px-4 py-2 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5 hover:brightness-110 disabled:opacity-60"
                                     >
                                         {uploadingPhoto
                                             ? 'Enviando...'
