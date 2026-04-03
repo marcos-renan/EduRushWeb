@@ -330,7 +330,7 @@ export default function StudentTrail({ trail }: Props) {
                         <div className="mt-5 flex gap-2">
                             <button
                                 type="button"
-                                className="flex-1 rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-4 py-2.5 text-sm font-bold text-[#2F3E63] transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#EAF3FF] dark:border-[#263753] dark:bg-[#0B1428] dark:text-[#B4C3E3] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
+                                className="flex-1 cursor-pointer rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-4 py-2.5 text-sm font-bold text-[#2F3E63] transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#EAF3FF] hover:shadow-md dark:border-[#263753] dark:bg-[#0B1428] dark:text-[#B4C3E3] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
                                 onClick={() => setSelectedLesson(null)}
                             >
                                 Fechar

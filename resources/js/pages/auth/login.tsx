@@ -167,7 +167,7 @@ export default function Login({
                                         <button
                                             type="submit"
                                             disabled={processing}
-                                            className="inline-flex h-12 w-full items-center justify-center rounded-xl bg-[#1565FF] px-4 text-sm font-black text-white shadow-[0_12px_26px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
+                                            className="inline-flex h-12 w-full items-center justify-center rounded-xl bg-[#1565FF] px-4 text-sm font-black text-white shadow-[0_12px_26px_rgba(21,101,255,0.35)] transition disabled:cursor-not-allowed disabled:opacity-60 enabled:cursor-pointer enabled:hover:-translate-y-1 enabled:hover:scale-[1.01] enabled:hover:bg-[#0F57E6] enabled:hover:brightness-110 enabled:hover:shadow-[0_16px_30px_rgba(21,101,255,0.5)]"
                                             data-test="login-button"
                                         >
                                             {processing

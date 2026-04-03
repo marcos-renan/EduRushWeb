@@ -48,7 +48,7 @@ export function UserMenuContent({ user }: Props) {
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
                 <Link
-                    className="block w-full cursor-pointer"
+                    className="block w-full cursor-pointer rounded-md border border-transparent transition hover:-translate-y-0.5 hover:bg-[#FFEFF3] dark:hover:bg-[#30141D]"
                     href={logout()}
                     as="button"
                     onClick={handleLogout}

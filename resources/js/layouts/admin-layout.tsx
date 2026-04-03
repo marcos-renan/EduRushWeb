@@ -149,7 +149,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                                 href={logout()}
                                                 method="post"
                                                 as="button"
-                                                className="inline-flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm font-semibold text-[#D92D4E] transition hover:bg-[#FFEFF3] dark:hover:bg-[#30141D]"
+                                                className="inline-flex w-full cursor-pointer items-center gap-2 rounded-xl border border-transparent px-3 py-2 text-left text-sm font-semibold text-[#D92D4E] transition hover:-translate-y-0.5 hover:border-[#F2BDCA] hover:bg-[#FFEFF3] dark:hover:border-[#7A3041] dark:hover:bg-[#30141D]"
                                             >
                                                 <LogOut className="h-4 w-4" />
                                                 Sair
