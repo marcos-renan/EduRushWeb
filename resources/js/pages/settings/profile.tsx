@@ -1,8 +1,8 @@
 import Cropper, { type Area } from 'react-easy-crop';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
+import toast from 'react-hot-toast';
 import {
     Camera,
-    CheckCircle2,
     Mail,
     UploadCloud,
     X,
@@ -57,7 +57,6 @@ export default function Profile({
     const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(
         null,
     );
-    const [photoMessage, setPhotoMessage] = useState<string | null>(null);
     const [photoError, setPhotoError] = useState<string | null>(null);
     const [uploadingPhoto, setUploadingPhoto] = useState(false);
     const [avatarVersion, setAvatarVersion] = useState(0);
@@ -88,7 +87,6 @@ export default function Profile({
         setZoom(1);
         setCroppedAreaPixels(null);
         setPhotoError(null);
-        setPhotoMessage(null);
     };
 
     const closePhotoModal = () => {
@@ -100,7 +98,9 @@ export default function Profile({
         if (!file) return;
 
         if (!file.type.startsWith('image/')) {
-            setPhotoError('Escolha um arquivo de imagem válido.');
+            const message = 'Escolha um arquivo de imagem válido.';
+            setPhotoError(message);
+            toast.error(message);
             return;
         }
 
@@ -126,7 +126,6 @@ export default function Profile({
         if (!rawImage || !croppedAreaPixels) return;
         setUploadingPhoto(true);
         setPhotoError(null);
-        setPhotoMessage(null);
 
         try {
             const blob = await getCroppedBlob(rawImage, croppedAreaPixels);
@@ -160,18 +159,19 @@ export default function Profile({
                 );
             }
 
-            setPhotoMessage(payload.message ?? 'Foto atualizada com sucesso.');
+            toast.success(payload.message ?? 'Foto atualizada com sucesso.');
             setAvatarVersion((value) => value + 1);
             setPhotoModalOpen(false);
             router.reload({
                 only: ['auth', 'flash'],
             });
         } catch (error) {
-            setPhotoError(
+            const message =
                 error instanceof Error
                     ? error.message
-                    : 'Erro inesperado ao enviar a foto.',
-            );
+                    : 'Erro inesperado ao enviar a foto.';
+            setPhotoError(message);
+            toast.error(message);
         } finally {
             setUploadingPhoto(false);
         }
@@ -241,12 +241,6 @@ export default function Profile({
                         </div>
                     ) : null}
 
-                    {photoMessage ? (
-                        <p className="mt-4 inline-flex items-center gap-2 rounded-xl border border-[#A6E9C8] bg-[#ECFAF3] px-3 py-2 text-sm font-semibold text-[#0A7A4F] dark:border-[#275A43] dark:bg-[#13281F] dark:text-[#9BE8C8]">
-                            <CheckCircle2 className="h-4 w-4" />
-                            {photoMessage}
-                        </p>
-                    ) : null}
                 </div>
 
                 <div className="rounded-3xl border border-[#BFE0FF] bg-white p-6 dark:border-[#263753] dark:bg-[#111C33]">

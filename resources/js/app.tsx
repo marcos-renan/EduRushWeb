@@ -1,4 +1,5 @@
 import { createInertiaApp } from '@inertiajs/react';
+import { Toaster } from 'react-hot-toast';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { initializeTheme } from '@/hooks/use-appearance';
 import AppLayout from '@/layouts/app-layout';
@@ -31,7 +32,35 @@ createInertiaApp({
     },
     strictMode: true,
     withApp(app) {
-        return <TooltipProvider delayDuration={0}>{app}</TooltipProvider>;
+        return (
+            <TooltipProvider delayDuration={0}>
+                {app}
+                <Toaster
+                    position="top-right"
+                    toastOptions={{
+                        duration: 3000,
+                        style: {
+                            background: '#111C33',
+                            color: '#E7EEFF',
+                            border: '1px solid #263753',
+                            fontWeight: 700,
+                        },
+                        success: {
+                            iconTheme: {
+                                primary: '#1E9E6A',
+                                secondary: '#E7EEFF',
+                            },
+                        },
+                        error: {
+                            iconTheme: {
+                                primary: '#D92D4E',
+                                secondary: '#E7EEFF',
+                            },
+                        },
+                    }}
+                />
+            </TooltipProvider>
+        );
     },
     progress: {
         color: '#4B5563',
