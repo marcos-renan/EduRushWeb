@@ -7,11 +7,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Badge extends Model
 {
+    protected $hidden = [
+        'image_blob',
+        'image_mime',
+    ];
+
     protected $fillable = [
         'slug',
         'name',
         'description',
         'icon',
+        'image_path',
+        'image_blob',
+        'image_mime',
         'color_hex',
         'unlock_metric',
         'unlock_target',

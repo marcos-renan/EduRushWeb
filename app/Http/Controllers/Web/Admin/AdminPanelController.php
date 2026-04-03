@@ -96,7 +96,23 @@ class AdminPanelController extends Controller
         return Inertia::render('admin/badges', [
             'badges' => Badge::query()
                 ->orderBy('name')
-                ->get(),
+                ->get()
+                ->map(fn (Badge $badge) => [
+                    'id' => $badge->id,
+                    'slug' => $badge->slug,
+                    'name' => $badge->name,
+                    'description' => $badge->description,
+                    'icon' => $badge->icon,
+                    'image_path' => $badge->image_path,
+                    'image_url' => $badge->image_blob && $badge->image_mime
+                        ? route('media.badge-image', ['badge' => $badge->id], false)
+                        : ($badge->image_path ? '/storage/'.ltrim((string) $badge->image_path, '/') : null),
+                    'color_hex' => $badge->color_hex,
+                    'unlock_metric' => $badge->unlock_metric,
+                    'unlock_target' => (int) $badge->unlock_target,
+                    'is_active' => (bool) $badge->is_active,
+                ]),
+            'metricOptions' => $this->badgeMetricOptions(),
         ]);
     }
 
@@ -270,20 +286,32 @@ class AdminPanelController extends Controller
             'name' => ['required', 'string', 'max:140'],
             'description' => ['required', 'string', 'max:300'],
             'icon' => ['nullable', 'string', 'max:80'],
+            'image' => ['nullable', 'image', 'mimes:png,webp,jpg,jpeg,avif', 'max:5120'],
             'color_hex' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
-            'unlock_metric' => ['nullable', 'string', 'max:80'],
+            'unlock_metric' => ['nullable', Rule::in($this->badgeMetricValues())],
             'unlock_target' => ['required', 'integer', 'min:1', 'max:9999'],
             'is_active' => ['nullable', 'boolean'],
         ]);
 
         $baseSlug = Str::slug((string) ($validated['slug'] ?? $validated['name']));
         $slug = $this->uniqueSlug(Badge::class, $baseSlug);
+        $imageBlob = null;
+        $imageMime = null;
+        if ($request->hasFile('image')) {
+            $imageFile = $request->file('image');
+            $rawImage = file_get_contents($imageFile->getRealPath());
+            $imageBlob = $rawImage === false ? null : $rawImage;
+            $imageMime = $imageFile->getMimeType() ?: null;
+        }
 
         Badge::query()->create([
             'slug' => $slug,
             'name' => $validated['name'],
             'description' => $validated['description'],
             'icon' => $validated['icon'] ?? null,
+            'image_path' => null,
+            'image_blob' => $imageBlob,
+            'image_mime' => $imageMime,
             'color_hex' => $validated['color_hex'] ?? '#2563eb',
             'unlock_metric' => $validated['unlock_metric'] ?? null,
             'unlock_target' => (int) $validated['unlock_target'],
@@ -291,6 +319,30 @@ class AdminPanelController extends Controller
         ]);
 
         return back()->with('success', 'Badge criado com sucesso.');
+    }
+
+    private function badgeMetricOptions(): array
+    {
+        return [
+            ['value' => 'total_xp', 'label' => 'XP total'],
+            ['value' => 'streak_days', 'label' => 'Dias de sequência'],
+            ['value' => 'weekly_missions_completed', 'label' => 'Missões semanais concluídas'],
+            ['value' => 'daily_missions_completed', 'label' => 'Missões diárias concluídas'],
+            ['value' => 'trails_completed', 'label' => 'Trilhas concluídas'],
+            ['value' => 'subjects_completed', 'label' => 'Matérias concluídas'],
+            ['value' => 'lessons_completed', 'label' => 'Lições concluídas'],
+            ['value' => 'perfect_lessons_count', 'label' => 'Lições com 100% de acerto'],
+            ['value' => 'correct_answers_count', 'label' => 'Respostas corretas'],
+            ['value' => 'friend_count', 'label' => 'Amigos adicionados'],
+        ];
+    }
+
+    private function badgeMetricValues(): array
+    {
+        return array_values(array_map(
+            fn (array $option) => (string) $option['value'],
+            $this->badgeMetricOptions(),
+        ));
     }
 
     public function updateUserRole(Request $request, User $user): RedirectResponse

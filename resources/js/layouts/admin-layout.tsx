@@ -11,6 +11,7 @@ type SharedProps = {
             name?: string;
             email?: string;
             role?: string;
+            profile_photo_url?: string | null;
             profile_photo_path?: string | null;
         } | null;
     };
@@ -28,9 +29,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }, [user?.name]);
 
     const photoUrl = useMemo(() => {
+        if (user?.profile_photo_url) return user.profile_photo_url;
         if (!user?.profile_photo_path) return null;
         return `/storage/${String(user.profile_photo_path).replace(/^\/+/, '')}`;
-    }, [user?.profile_photo_path]);
+    }, [user?.profile_photo_path, user?.profile_photo_url]);
 
     const navItems = [
         { label: 'Dashboard', href: '/admin/dashboard' },

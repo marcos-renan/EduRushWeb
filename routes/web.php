@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Web\Admin\AdminPanelController;
 use App\Http\Controllers\Web\Admin\AdminContentController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\Settings\ProfileController as SettingsProfileController;
 use App\Http\Controllers\Web\Student\StudentLearningController;
 use Illuminate\Http\Request;
@@ -23,6 +24,8 @@ Route::get('/', function (Request $request) {
 
     return redirect()->route('dashboard');
 })->name('home');
+Route::get('/media/users/{user}/photo', [MediaController::class, 'userPhoto'])->name('media.user-photo');
+Route::get('/media/badges/{badge}/image', [MediaController::class, 'badge-image'])->name('media.badge-image');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', function (Request $request) {
