@@ -90,7 +90,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                         resolvedAppearance === 'dark' ? 'light' : 'dark',
                                     )
                                 }
-                                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#C5DEFF] bg-white text-[#1565FF] transition hover:scale-105 dark:border-[#2A3B5A] dark:bg-[#111C33] dark:text-[#B4C3E3]"
+                                className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-[#C5DEFF] bg-white text-[#1565FF] transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#EAF3FF] hover:shadow-md dark:border-[#2A3B5A] dark:bg-[#111C33] dark:text-[#B4C3E3] dark:hover:border-[#3C557C] dark:hover:bg-[#16233D]"
                                 aria-label="Alternar tema"
                             >
                                 {resolvedAppearance === 'dark' ? (
@@ -104,7 +104,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                 <button
                                     type="button"
                                     onClick={() => setOpen((value) => !value)}
-                                    className="inline-flex items-center gap-2 rounded-full border border-[#C5DEFF] bg-white p-1 pr-3 transition hover:shadow-md dark:border-[#2A3B5A] dark:bg-[#111C33]"
+                                    className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-[#C5DEFF] bg-white p-1 pr-3 transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#F3F8FF] hover:shadow-md dark:border-[#2A3B5A] dark:bg-[#111C33] dark:hover:border-[#3C557C] dark:hover:bg-[#16233D]"
                                 >
                                     {photoUrl ? (
                                         <img

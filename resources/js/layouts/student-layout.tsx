@@ -181,7 +181,7 @@ export default function StudentLayout({
                                             : 'dark',
                                     )
                                 }
-                                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#BFE0FF] bg-white text-[#1565FF] transition hover:scale-105 dark:border-[#263753] dark:bg-[#111C33] dark:text-[#B4C3E3]"
+                                className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-[#BFE0FF] bg-white text-[#1565FF] transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#EAF3FF] hover:shadow-md dark:border-[#263753] dark:bg-[#111C33] dark:text-[#B4C3E3] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
                                 aria-label="Alternar tema"
                             >
                                 {resolvedAppearance === 'dark' ? (
@@ -225,7 +225,7 @@ export default function StudentLayout({
                                 <button
                                     type="button"
                                     onClick={() => setOpen((value) => !value)}
-                                    className="inline-flex items-center gap-2 rounded-full border border-[#BFE0FF] bg-white p-1 pr-3 transition hover:shadow-md dark:border-[#263753] dark:bg-[#111C33]"
+                                    className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-[#BFE0FF] bg-white p-1 pr-3 transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#F3F8FF] hover:shadow-md dark:border-[#263753] dark:bg-[#111C33] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
                                 >
                                     {photoUrl ? (
                                         <img

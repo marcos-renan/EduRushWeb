@@ -132,6 +132,8 @@ export default function StudentLesson({ lesson, questions, trails }: Props) {
         : false;
     const isLastQuestion =
         questions.length > 0 && currentIndex === questions.length - 1;
+    const isPrimaryDisabled =
+        selectedOption === undefined || isSubmitting;
 
     const nextProgressTarget = useMemo(() => {
         const flat = trails ?? [];
@@ -323,7 +325,7 @@ export default function StudentLesson({ lesson, questions, trails }: Props) {
                 <div className="rounded-3xl border border-[#BFE0FF] bg-white p-6 dark:border-[#263753] dark:bg-[#111C33]">
                     <Link
                         href="/student/dashboard"
-                        className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.1em] text-[#1565FF]"
+                        className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.1em] text-[#1565FF] transition hover:opacity-80"
                     >
                         <ArrowLeft className="h-4 w-4" />
                         Sair da lição
@@ -414,14 +416,14 @@ export default function StudentLesson({ lesson, questions, trails }: Props) {
                                     <button
                                         type="button"
                                         onClick={resetAttempt}
-                                        className="rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-4 py-2 text-sm font-bold text-[#2F3E63] dark:border-[#263753] dark:bg-[#0B1428] dark:text-[#B4C3E3]"
+                                        className="rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-4 py-2 text-sm font-bold text-[#2F3E63] transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#EAF3FF] dark:border-[#263753] dark:bg-[#0B1428] dark:text-[#B4C3E3] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
                                     >
                                         Refazer
                                     </button>
                                 ) : (
                                     <Link
                                         href="/student/dashboard"
-                                        className="rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-4 py-2 text-sm font-bold text-[#2F3E63] dark:border-[#263753] dark:bg-[#0B1428] dark:text-[#B4C3E3]"
+                                        className="rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-4 py-2 text-sm font-bold text-[#2F3E63] transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#EAF3FF] dark:border-[#263753] dark:bg-[#0B1428] dark:text-[#B4C3E3] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
                                     >
                                         Voltar
                                     </Link>
@@ -430,7 +432,7 @@ export default function StudentLesson({ lesson, questions, trails }: Props) {
                                 {nextProgressTarget ? (
                                     <Link
                                         href={nextProgressTarget.href}
-                                        className="rounded-xl bg-[#1565FF] px-4 py-2 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)]"
+                                        className="rounded-xl bg-[#1565FF] px-4 py-2 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5 hover:brightness-110"
                                     >
                                         {nextProgressTarget.label}
                                     </Link>
@@ -455,13 +457,13 @@ export default function StudentLesson({ lesson, questions, trails }: Props) {
                                 <button
                                     type="button"
                                     onClick={resetAttempt}
-                                    className="rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-4 py-2 text-sm font-bold text-[#2F3E63] dark:border-[#263753] dark:bg-[#0B1428] dark:text-[#B4C3E3]"
+                                    className="rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-4 py-2 text-sm font-bold text-[#2F3E63] transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#EAF3FF] dark:border-[#263753] dark:bg-[#0B1428] dark:text-[#B4C3E3] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
                                 >
                                     Tentar de novo
                                 </button>
                                 <Link
                                     href="/student/dashboard"
-                                    className="rounded-xl bg-[#1565FF] px-4 py-2 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)]"
+                                    className="rounded-xl bg-[#1565FF] px-4 py-2 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5 hover:brightness-110"
                                 >
                                     Voltar
                                 </Link>
@@ -502,15 +504,25 @@ export default function StudentLesson({ lesson, questions, trails }: Props) {
                                                 <button
                                                     key={`${currentQuestion.external_id}-${index}`}
                                                     type="button"
-                                                    className={`w-full rounded-xl border px-4 py-3 text-left text-sm font-semibold transition ${
+                                                    className={cn(
+                                                        'w-full rounded-xl border px-4 py-3 text-left text-sm font-semibold transition',
+                                                        !isCurrentChecked &&
+                                                            'cursor-pointer hover:-translate-y-0.5 hover:shadow-sm',
                                                         isCorrectOption
                                                             ? 'border-[#1E9E6A] bg-[#E9FBF3] text-[#0A7A4F] dark:bg-[#143426] dark:text-[#9BE8C8]'
                                                             : isWrongSelected
                                                               ? 'border-[#F06A85] bg-[#FFF0F3] text-[#AA2343] dark:bg-[#331720] dark:text-[#FFB6C3]'
-                                                              : selected
-                                                                ? 'border-[#1565FF] bg-[#E8F2FF] text-[#1565FF] dark:bg-[#142645] dark:text-[#9CC0FF]'
-                                                                : 'border-[#D9E9FF] bg-[#F8FBFF] text-[#2F3E63] dark:border-[#263753] dark:bg-[#0B1428] dark:text-[#B4C3E3]'
-                                                    }`}
+                                                            : selected
+                                                                ? cn(
+                                                                      'border-[#1565FF] bg-[#E8F2FF] text-[#1565FF] dark:bg-[#142645] dark:text-[#9CC0FF]',
+                                                                      !isCurrentChecked &&
+                                                                          'hover:border-[#0F57E6] hover:bg-[#DDEEFF] dark:hover:border-[#4E78C2] dark:hover:bg-[#1A2D4E]',
+                                                                  )
+                                                                : 'border-[#D9E9FF] bg-[#F8FBFF] text-[#2F3E63] dark:border-[#263753] dark:bg-[#0B1428] dark:text-[#B4C3E3]',
+                                                        !isCurrentChecked &&
+                                                            !selected &&
+                                                            'hover:border-[#93C5FF] hover:bg-[#EAF3FF] dark:hover:border-[#375786] dark:hover:bg-[#16233D]',
+                                                    )}
                                                     onClick={() => {
                                                         if (
                                                             isCurrentChecked ||
@@ -563,18 +575,30 @@ export default function StudentLesson({ lesson, questions, trails }: Props) {
 
                                 <button
                                     type="button"
-                                    disabled={
-                                        selectedOption === undefined ||
-                                        isSubmitting
-                                    }
+                                    disabled={isPrimaryDisabled}
                                     onClick={handlePrimaryAction}
                                     className={cn(
-                                        'mt-5 inline-flex h-12 w-full items-center justify-center rounded-xl px-4 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] disabled:cursor-not-allowed disabled:opacity-55',
+                                        'mt-5 inline-flex h-12 w-full items-center justify-center rounded-xl px-4 text-sm font-black text-white transition active:translate-y-0 active:scale-[0.99]',
+                                        isPrimaryDisabled
+                                            ? 'cursor-not-allowed opacity-55'
+                                            : 'cursor-pointer hover:-translate-y-1 hover:scale-[1.01] hover:ring-2 hover:ring-white/40',
                                         isCurrentChecked
                                             ? isCurrentCorrect
-                                                ? 'bg-[#2F855A]'
-                                                : 'bg-[#DE5A5A]'
-                                            : 'bg-[#1565FF]',
+                                                ? cn(
+                                                      'bg-[#2F855A] shadow-[0_10px_22px_rgba(47,133,90,0.35)]',
+                                                      !isPrimaryDisabled &&
+                                                          'hover:bg-[#27764F] hover:brightness-110 hover:shadow-[0_16px_30px_rgba(47,133,90,0.5)]',
+                                                  )
+                                                : cn(
+                                                      'bg-[#DE5A5A] shadow-[0_10px_22px_rgba(222,90,90,0.35)]',
+                                                      !isPrimaryDisabled &&
+                                                          'hover:bg-[#CE4E4E] hover:brightness-110 hover:shadow-[0_16px_30px_rgba(222,90,90,0.5)]',
+                                                  )
+                                            : cn(
+                                                  'bg-[#1565FF] shadow-[0_10px_22px_rgba(21,101,255,0.35)]',
+                                                  !isPrimaryDisabled &&
+                                                      'hover:bg-[#0F57E6] hover:brightness-110 hover:shadow-[0_16px_30px_rgba(21,101,255,0.5)]',
+                                              ),
                                     )}
                                 >
                                     {isSubmitting ? (

@@ -151,7 +151,7 @@ export default function StudentTrail({ trail }: Props) {
                 <div className="rounded-3xl border border-[#BFE0FF] bg-white p-6 dark:border-[#263753] dark:bg-[#111C33]">
                     <Link
                         href={`/student/materias/${trail.subject.slug}`}
-                        className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.1em] text-[#1565FF]"
+                        className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.1em] text-[#1565FF] transition hover:opacity-80"
                     >
                         Voltar para {trail.subject.name}
                     </Link>
@@ -243,14 +243,14 @@ export default function StudentTrail({ trail }: Props) {
                                         type="button"
                                         onClick={() => setSelectedLesson(lesson)}
                                         className={cn(
-                                            'relative inline-flex h-[62px] w-[62px] items-center justify-center rounded-full border-2 transition hover:scale-105 active:translate-y-[4px] active:scale-95',
-                                            'shadow-[0_4px_10px_rgba(0,0,0,0.2)]',
+                                            'relative inline-flex h-[62px] w-[62px] cursor-pointer items-center justify-center rounded-full border-2 transition hover:-translate-y-0.5 hover:scale-105 active:translate-y-[4px] active:scale-95',
+                                            'shadow-[0_4px_10px_rgba(0,0,0,0.2)] hover:shadow-[0_10px_18px_rgba(0,0,0,0.28)]',
                                             status === 'completed' &&
-                                                'border-[#1DBC80] bg-[#1DBC80] dark:border-[#1E9E6A] dark:bg-[#1E9E6A]',
+                                                'border-[#1DBC80] bg-[#1DBC80] hover:brightness-110 dark:border-[#1E9E6A] dark:bg-[#1E9E6A]',
                                             status === 'locked' &&
-                                                'border-[#AAB6D3] bg-[#AAB6D3] dark:border-[#536280] dark:bg-[#536280]',
+                                                'border-[#AAB6D3] bg-[#AAB6D3] hover:brightness-105 dark:border-[#536280] dark:bg-[#536280]',
                                             status === 'available' &&
-                                                'border-[#1565FF] bg-[#1565FF] dark:border-[#2E66CC] dark:bg-[#2E66CC]',
+                                                'border-[#1565FF] bg-[#1565FF] hover:brightness-110 dark:border-[#2E66CC] dark:bg-[#2E66CC]',
                                         )}
                                     >
                                         {status === 'completed' ? (
@@ -277,7 +277,7 @@ export default function StudentTrail({ trail }: Props) {
                             </p>
                             <button
                                 type="button"
-                                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#BFE0FF] text-[#5B6B93] dark:border-[#263753] dark:text-[#B4C3E3]"
+                                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#BFE0FF] text-[#5B6B93] transition hover:border-[#93C5FF] hover:bg-[#EAF3FF] dark:border-[#263753] dark:text-[#B4C3E3] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
                                 onClick={() => setSelectedLesson(null)}
                             >
                                 <X className="h-4 w-4" />
@@ -330,7 +330,7 @@ export default function StudentTrail({ trail }: Props) {
                         <div className="mt-5 flex gap-2">
                             <button
                                 type="button"
-                                className="flex-1 rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-4 py-2.5 text-sm font-bold text-[#2F3E63] dark:border-[#263753] dark:bg-[#0B1428] dark:text-[#B4C3E3]"
+                                className="flex-1 rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-4 py-2.5 text-sm font-bold text-[#2F3E63] transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#EAF3FF] dark:border-[#263753] dark:bg-[#0B1428] dark:text-[#B4C3E3] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
                                 onClick={() => setSelectedLesson(null)}
                             >
                                 Fechar
@@ -344,7 +344,7 @@ export default function StudentTrail({ trail }: Props) {
                             ) : (
                                 <Link
                                     href={`/student/licoes/${selectedLesson.slug}`}
-                                    className="flex-1 rounded-xl bg-[#1565FF] px-4 py-2.5 text-center text-sm font-black text-white shadow-[0_10px_20px_rgba(21,101,255,0.35)]"
+                                    className="flex-1 rounded-xl bg-[#1565FF] px-4 py-2.5 text-center text-sm font-black text-white shadow-[0_10px_20px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5 hover:brightness-110"
                                 >
                                     Começar
                                 </Link>

@@ -141,3 +141,17 @@
         @apply bg-background text-foreground;
     }
 }
+
+@layer components {
+    :where(button, input[type='button'], input[type='submit'], [role='button']) {
+        @apply transition-all duration-200 ease-out;
+    }
+
+    :where(button, input[type='button'], input[type='submit'], [role='button']):not(:disabled):hover {
+        @apply -translate-y-0.5 brightness-105;
+    }
+
+    :where(button, input[type='button'], input[type='submit'], [role='button']):not(:disabled):active {
+        @apply translate-y-0 scale-[0.99];
+    }
+}

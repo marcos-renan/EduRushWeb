@@ -200,7 +200,7 @@ export default function Profile({
                                 <button
                                     type="button"
                                     onClick={openPhotoModal}
-                                    className="absolute -bottom-1 -right-1 inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#1565FF] text-white shadow-lg transition hover:scale-105"
+                                    className="absolute -bottom-1 -right-1 inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#1565FF] text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110 hover:shadow-xl"
                                 >
                                     <Camera className="h-4 w-4" />
                                 </button>
@@ -222,7 +222,7 @@ export default function Profile({
                         <button
                             type="button"
                             onClick={openPhotoModal}
-                            className="inline-flex items-center gap-2 rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-4 py-2 text-sm font-black text-[#1565FF] transition hover:-translate-y-0.5 dark:border-[#2B3F62] dark:bg-[#0B1428] dark:text-[#9CC0FF]"
+                            className="inline-flex items-center gap-2 rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-4 py-2 text-sm font-black text-[#1565FF] transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#EAF3FF] hover:shadow-md dark:border-[#2B3F62] dark:bg-[#0B1428] dark:text-[#9CC0FF] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
                         >
                             <UploadCloud className="h-4 w-4" />
                             Alterar foto
@@ -360,7 +360,7 @@ export default function Profile({
                         <button
                             type="submit"
                             disabled={form.processing}
-                            className="inline-flex h-11 items-center justify-center rounded-xl bg-[#1565FF] px-5 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5 disabled:opacity-60"
+                            className="inline-flex h-11 items-center justify-center rounded-xl bg-[#1565FF] px-5 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5 hover:brightness-110 hover:shadow-[0_14px_28px_rgba(21,101,255,0.45)] disabled:opacity-60"
                         >
                             {form.processing ? 'Salvando...' : 'Salvar alterações'}
                         </button>
@@ -380,7 +380,7 @@ export default function Profile({
                             <button
                                 type="button"
                                 onClick={closePhotoModal}
-                                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#C8E0FF] text-[#5B6B93] dark:border-[#2A3B5A] dark:text-[#8EA1C7]"
+                                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#C8E0FF] text-[#5B6B93] transition hover:border-[#93C5FF] hover:bg-[#EAF3FF] dark:border-[#2A3B5A] dark:text-[#8EA1C7] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
                             >
                                 <X className="h-4 w-4" />
                             </button>
@@ -411,7 +411,7 @@ export default function Profile({
                                 <button
                                     type="button"
                                     onClick={() => fileInputRef.current?.click()}
-                                    className="mt-4 inline-flex h-10 items-center justify-center rounded-xl bg-[#1565FF] px-4 text-sm font-black text-white"
+                                    className="mt-4 inline-flex h-10 items-center justify-center rounded-xl bg-[#1565FF] px-4 text-sm font-black text-white transition hover:-translate-y-0.5 hover:brightness-110"
                                 >
                                     Escolher foto
                                 </button>
@@ -464,7 +464,7 @@ export default function Profile({
                                     <button
                                         type="button"
                                         onClick={() => setPhotoStep('pick')}
-                                        className="rounded-xl border border-[#C8E0FF] bg-[#F8FBFF] px-4 py-2 text-sm font-bold text-[#2F3E63] dark:border-[#2A3B5A] dark:bg-[#0B1428] dark:text-[#B4C3E3]"
+                                        className="rounded-xl border border-[#C8E0FF] bg-[#F8FBFF] px-4 py-2 text-sm font-bold text-[#2F3E63] transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#EAF3FF] dark:border-[#2A3B5A] dark:bg-[#0B1428] dark:text-[#B4C3E3] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
                                     >
                                         Trocar imagem
                                     </button>
@@ -472,7 +472,7 @@ export default function Profile({
                                         type="button"
                                         onClick={savePhoto}
                                         disabled={uploadingPhoto}
-                                        className="rounded-xl bg-[#1565FF] px-4 py-2 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] disabled:opacity-60"
+                                        className="rounded-xl bg-[#1565FF] px-4 py-2 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5 hover:brightness-110 disabled:opacity-60"
                                     >
                                         {uploadingPhoto
                                             ? 'Enviando...'

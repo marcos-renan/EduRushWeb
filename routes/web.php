@@ -9,13 +9,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function (Request $request) {
-    if (Auth::check()) {
-        Auth::guard('web')->logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+    if (! Auth::check()) {
+        return redirect()->route('login');
     }
 
-    return redirect()->route('login');
+    if ($request->user()?->isStudent()) {
+        return redirect()->route('student.dashboard');
+    }
+
+    if ($request->user()?->isAdmin()) {
+        return redirect()->route('admin.dashboard');
+    }
+
+    return redirect()->route('dashboard');
 })->name('home');
 
 Route::middleware(['auth'])->group(function () {
