@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::store
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:131
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:139
  * @route '/admin/content/subjects'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -16,7 +16,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::store
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:131
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:139
  * @route '/admin/content/subjects'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::store
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:131
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:139
  * @route '/admin/content/subjects'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -35,7 +35,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::store
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:131
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:139
  * @route '/admin/content/subjects'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -45,7 +45,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::store
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:131
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:139
  * @route '/admin/content/subjects'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -56,7 +56,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::show
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:36
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:38
  * @route '/admin/content/subjects/{subject}'
  */
 export const show = (args: { subject: number | { id: number } } | [subject: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -71,7 +71,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::show
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:36
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:38
  * @route '/admin/content/subjects/{subject}'
  */
 show.url = (args: { subject: number | { id: number } } | [subject: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -104,7 +104,7 @@ show.url = (args: { subject: number | { id: number } } | [subject: number | { id
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::show
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:36
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:38
  * @route '/admin/content/subjects/{subject}'
  */
 show.get = (args: { subject: number | { id: number } } | [subject: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -113,7 +113,7 @@ show.get = (args: { subject: number | { id: number } } | [subject: number | { id
 })
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::show
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:36
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:38
  * @route '/admin/content/subjects/{subject}'
  */
 show.head = (args: { subject: number | { id: number } } | [subject: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -123,7 +123,7 @@ show.head = (args: { subject: number | { id: number } } | [subject: number | { i
 
     /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::show
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:36
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:38
  * @route '/admin/content/subjects/{subject}'
  */
     const showForm = (args: { subject: number | { id: number } } | [subject: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -133,7 +133,7 @@ show.head = (args: { subject: number | { id: number } } | [subject: number | { i
 
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::show
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:36
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:38
  * @route '/admin/content/subjects/{subject}'
  */
         showForm.get = (args: { subject: number | { id: number } } | [subject: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -142,7 +142,7 @@ show.head = (args: { subject: number | { id: number } } | [subject: number | { i
         })
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::show
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:36
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:38
  * @route '/admin/content/subjects/{subject}'
  */
         showForm.head = (args: { subject: number | { id: number } } | [subject: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -158,7 +158,7 @@ show.head = (args: { subject: number | { id: number } } | [subject: number | { i
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::update
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:159
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:169
  * @route '/admin/content/subjects/{subject}'
  */
 export const update = (args: { subject: number | { id: number } } | [subject: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -173,7 +173,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::update
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:159
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:169
  * @route '/admin/content/subjects/{subject}'
  */
 update.url = (args: { subject: number | { id: number } } | [subject: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -206,7 +206,7 @@ update.url = (args: { subject: number | { id: number } } | [subject: number | { 
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::update
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:159
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:169
  * @route '/admin/content/subjects/{subject}'
  */
 update.patch = (args: { subject: number | { id: number } } | [subject: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -216,7 +216,7 @@ update.patch = (args: { subject: number | { id: number } } | [subject: number | 
 
     /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::update
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:159
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:169
  * @route '/admin/content/subjects/{subject}'
  */
     const updateForm = (args: { subject: number | { id: number } } | [subject: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -231,7 +231,7 @@ update.patch = (args: { subject: number | { id: number } } | [subject: number | 
 
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::update
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:159
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:169
  * @route '/admin/content/subjects/{subject}'
  */
         updateForm.patch = (args: { subject: number | { id: number } } | [subject: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -247,7 +247,7 @@ update.patch = (args: { subject: number | { id: number } } | [subject: number | 
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::destroy
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:184
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:196
  * @route '/admin/content/subjects/{subject}'
  */
 export const destroy = (args: { subject: number | { id: number } } | [subject: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -262,7 +262,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::destroy
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:184
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:196
  * @route '/admin/content/subjects/{subject}'
  */
 destroy.url = (args: { subject: number | { id: number } } | [subject: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -295,7 +295,7 @@ destroy.url = (args: { subject: number | { id: number } } | [subject: number | {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::destroy
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:184
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:196
  * @route '/admin/content/subjects/{subject}'
  */
 destroy.delete = (args: { subject: number | { id: number } } | [subject: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -305,7 +305,7 @@ destroy.delete = (args: { subject: number | { id: number } } | [subject: number 
 
     /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::destroy
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:184
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:196
  * @route '/admin/content/subjects/{subject}'
  */
     const destroyForm = (args: { subject: number | { id: number } } | [subject: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -320,7 +320,7 @@ destroy.delete = (args: { subject: number | { id: number } } | [subject: number 
 
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::destroy
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:184
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:196
  * @route '/admin/content/subjects/{subject}'
  */
         destroyForm.delete = (args: { subject: number | { id: number } } | [subject: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

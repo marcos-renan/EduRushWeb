@@ -58,6 +58,8 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
+        $this->authorize('updateProfile', $request->user());
+
         $validated = $request->validated();
         $user = $request->user();
 
@@ -85,6 +87,8 @@ class ProfileController extends Controller
 
     public function updatePhoto(Request $request): RedirectResponse|JsonResponse
     {
+        $this->authorize('updatePhoto', $request->user());
+
         $validated = $request->validate([
             'photo' => ['required', 'image', 'max:5120'],
         ]);
@@ -118,6 +122,7 @@ class ProfileController extends Controller
     public function destroy(ProfileDeleteRequest $request): RedirectResponse
     {
         $user = $request->user();
+        $this->authorize('delete', $user);
 
         Auth::logout();
 

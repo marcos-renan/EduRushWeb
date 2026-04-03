@@ -23,6 +23,8 @@ class AdminPanelController extends Controller
 {
     public function dashboard(): Response
     {
+        $this->authorize('accessAdmin', User::class);
+
         return Inertia::render('admin/dashboard', [
             'stats' => [
                 'subjects' => Subject::query()->count(),
@@ -48,6 +50,8 @@ class AdminPanelController extends Controller
 
     public function content(): Response
     {
+        $this->authorize('viewAny', Subject::class);
+
         return Inertia::render('admin/content', [
             'subjects' => Subject::query()
                 ->withCount('trails')
@@ -83,6 +87,8 @@ class AdminPanelController extends Controller
 
     public function missions(): Response
     {
+        $this->authorize('viewAny', MissionTemplate::class);
+
         return Inertia::render('admin/missions', [
             'missions' => MissionTemplate::query()
                 ->orderBy('mission_type')
@@ -93,6 +99,8 @@ class AdminPanelController extends Controller
 
     public function badges(): Response
     {
+        $this->authorize('viewAny', Badge::class);
+
         return Inertia::render('admin/badges', [
             'badges' => Badge::query()
                 ->orderBy('name')
@@ -118,6 +126,8 @@ class AdminPanelController extends Controller
 
     public function students(): Response
     {
+        $this->authorize('manageUsers', User::class);
+
         return Inertia::render('admin/students', [
             'students' => User::query()
                 ->with('studentProfile')
@@ -251,6 +261,8 @@ class AdminPanelController extends Controller
 
     public function storeMission(Request $request): RedirectResponse
     {
+        $this->authorize('create', MissionTemplate::class);
+
         $validated = $request->validate([
             'mission_key' => ['nullable', 'string', 'max:120', Rule::unique(MissionTemplate::class, 'mission_key')],
             'mission_type' => ['required', Rule::in(['daily', 'weekly'])],
@@ -281,6 +293,8 @@ class AdminPanelController extends Controller
 
     public function storeBadge(Request $request): RedirectResponse
     {
+        $this->authorize('create', Badge::class);
+
         $validated = $request->validate([
             'slug' => ['nullable', 'string', 'max:120', Rule::unique(Badge::class, 'slug')],
             'name' => ['required', 'string', 'max:140'],
@@ -347,6 +361,8 @@ class AdminPanelController extends Controller
 
     public function updateUserRole(Request $request, User $user): RedirectResponse
     {
+        $this->authorize('manageUsers', User::class);
+
         $validated = $request->validate([
             'role' => ['required', Rule::in(['admin', 'user'])],
         ]);

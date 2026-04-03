@@ -17,6 +17,8 @@ class AdminContentController extends Controller
 {
     public function index(): Response
     {
+        $this->authorize('viewAny', Subject::class);
+
         return Inertia::render('admin/content', [
             'subjects' => Subject::query()
                 ->withCount('trails')
@@ -35,6 +37,8 @@ class AdminContentController extends Controller
 
     public function showSubject(Subject $subject): Response
     {
+        $this->authorize('view', $subject);
+
         $subject->loadCount('trails');
 
         return Inertia::render('admin/content-subject', [
@@ -66,6 +70,8 @@ class AdminContentController extends Controller
 
     public function showTrail(Trail $trail): Response
     {
+        $this->authorize('view', $trail);
+
         $trail->load('subject:id,name,slug');
 
         return Inertia::render('admin/content-trail', [
@@ -103,6 +109,8 @@ class AdminContentController extends Controller
 
     public function showLesson(Lesson $lesson): Response
     {
+        $this->authorize('view', $lesson);
+
         $lesson->load('trail:id,title,subject_id', 'trail.subject:id,name');
 
         return Inertia::render('admin/content-lesson', [
@@ -130,6 +138,8 @@ class AdminContentController extends Controller
 
     public function storeSubject(Request $request): RedirectResponse
     {
+        $this->authorize('create', Subject::class);
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:120'],
             'slug' => ['nullable', 'string', 'max:120', Rule::unique(Subject::class, 'slug')],
@@ -158,6 +168,8 @@ class AdminContentController extends Controller
 
     public function updateSubject(Request $request, Subject $subject): RedirectResponse
     {
+        $this->authorize('update', $subject);
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:120'],
             'slug' => ['nullable', 'string', 'max:120', Rule::unique(Subject::class, 'slug')->ignore($subject->id)],
@@ -183,6 +195,8 @@ class AdminContentController extends Controller
 
     public function destroySubject(Subject $subject): RedirectResponse
     {
+        $this->authorize('delete', $subject);
+
         $subject->delete();
 
         return redirect()
@@ -192,6 +206,9 @@ class AdminContentController extends Controller
 
     public function storeTrail(Request $request, Subject $subject): RedirectResponse
     {
+        $this->authorize('create', Trail::class);
+        $this->authorize('view', $subject);
+
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:160'],
             'slug' => ['nullable', 'string', 'max:160', Rule::unique(Trail::class, 'slug')],
@@ -219,6 +236,8 @@ class AdminContentController extends Controller
 
     public function updateTrail(Request $request, Trail $trail): RedirectResponse
     {
+        $this->authorize('update', $trail);
+
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:160'],
             'slug' => ['nullable', 'string', 'max:160', Rule::unique(Trail::class, 'slug')->ignore($trail->id)],
@@ -244,6 +263,8 @@ class AdminContentController extends Controller
 
     public function destroyTrail(Trail $trail): RedirectResponse
     {
+        $this->authorize('delete', $trail);
+
         $subjectId = $trail->subject_id;
         $trail->delete();
 
@@ -254,6 +275,9 @@ class AdminContentController extends Controller
 
     public function storeLesson(Request $request, Trail $trail): RedirectResponse
     {
+        $this->authorize('create', Lesson::class);
+        $this->authorize('view', $trail);
+
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:160'],
             'slug' => ['nullable', 'string', 'max:160', Rule::unique(Lesson::class, 'slug')],
@@ -287,6 +311,8 @@ class AdminContentController extends Controller
 
     public function updateLesson(Request $request, Lesson $lesson): RedirectResponse
     {
+        $this->authorize('update', $lesson);
+
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:160'],
             'slug' => ['nullable', 'string', 'max:160', Rule::unique(Lesson::class, 'slug')->ignore($lesson->id)],
@@ -318,6 +344,8 @@ class AdminContentController extends Controller
 
     public function destroyLesson(Lesson $lesson): RedirectResponse
     {
+        $this->authorize('delete', $lesson);
+
         $trailId = $lesson->trail_id;
         $lesson->delete();
 

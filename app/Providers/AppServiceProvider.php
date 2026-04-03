@@ -3,6 +3,17 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Models\Badge;
+use App\Models\Lesson;
+use App\Models\MissionTemplate;
+use App\Models\Subject;
+use App\Models\Trail;
+use App\Policies\BadgePolicy;
+use App\Policies\LessonPolicy;
+use App\Policies\MissionTemplatePolicy;
+use App\Policies\SubjectPolicy;
+use App\Policies\TrailPolicy;
+use App\Policies\UserPolicy;
 use App\Repositories\Contracts\LessonProgressRepositoryInterface;
 use App\Repositories\Contracts\FriendRequestRepositoryInterface;
 use App\Repositories\Contracts\FriendshipRepositoryInterface;
@@ -44,16 +55,23 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::policy(User::class, UserPolicy::class);
+        Gate::policy(Subject::class, SubjectPolicy::class);
+        Gate::policy(Trail::class, TrailPolicy::class);
+        Gate::policy(Lesson::class, LessonPolicy::class);
+        Gate::policy(Badge::class, BadgePolicy::class);
+        Gate::policy(MissionTemplate::class, MissionTemplatePolicy::class);
+
         RateLimiter::for('api', function (Request $request): Limit {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
         Gate::define('access-admin', function (User $user): bool {
-            return $user->isAdmin();
+            return (new UserPolicy)->accessAdmin($user);
         });
 
         Gate::define('access-student', function (User $user): bool {
-            return $user->isStudent();
+            return (new UserPolicy)->accessStudent($user);
         });
     }
 }

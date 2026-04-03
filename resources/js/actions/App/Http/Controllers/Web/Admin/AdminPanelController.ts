@@ -79,7 +79,7 @@ dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     dashboard.form = dashboardForm
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::missions
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:84
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:88
  * @route '/admin/missions'
  */
 export const missions = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -94,7 +94,7 @@ missions.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::missions
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:84
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:88
  * @route '/admin/missions'
  */
 missions.url = (options?: RouteQueryOptions) => {
@@ -103,7 +103,7 @@ missions.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::missions
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:84
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:88
  * @route '/admin/missions'
  */
 missions.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -112,7 +112,7 @@ missions.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::missions
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:84
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:88
  * @route '/admin/missions'
  */
 missions.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -122,7 +122,7 @@ missions.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::missions
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:84
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:88
  * @route '/admin/missions'
  */
     const missionsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -132,7 +132,7 @@ missions.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::missions
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:84
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:88
  * @route '/admin/missions'
  */
         missionsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -141,7 +141,7 @@ missions.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::missions
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:84
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:88
  * @route '/admin/missions'
  */
         missionsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -157,7 +157,7 @@ missions.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     missions.form = missionsForm
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::storeMission
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:252
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:262
  * @route '/admin/missions'
  */
 export const storeMission = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -172,7 +172,7 @@ storeMission.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::storeMission
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:252
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:262
  * @route '/admin/missions'
  */
 storeMission.url = (options?: RouteQueryOptions) => {
@@ -181,7 +181,7 @@ storeMission.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::storeMission
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:252
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:262
  * @route '/admin/missions'
  */
 storeMission.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -191,7 +191,7 @@ storeMission.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::storeMission
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:252
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:262
  * @route '/admin/missions'
  */
     const storeMissionForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -201,7 +201,7 @@ storeMission.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::storeMission
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:252
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:262
  * @route '/admin/missions'
  */
         storeMissionForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -212,7 +212,7 @@ storeMission.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     storeMission.form = storeMissionForm
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::badges
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:94
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:100
  * @route '/admin/badges'
  */
 export const badges = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -227,7 +227,7 @@ badges.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::badges
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:94
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:100
  * @route '/admin/badges'
  */
 badges.url = (options?: RouteQueryOptions) => {
@@ -236,7 +236,7 @@ badges.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::badges
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:94
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:100
  * @route '/admin/badges'
  */
 badges.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -245,7 +245,7 @@ badges.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::badges
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:94
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:100
  * @route '/admin/badges'
  */
 badges.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -255,7 +255,7 @@ badges.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::badges
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:94
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:100
  * @route '/admin/badges'
  */
     const badgesForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -265,7 +265,7 @@ badges.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::badges
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:94
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:100
  * @route '/admin/badges'
  */
         badgesForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -274,7 +274,7 @@ badges.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::badges
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:94
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:100
  * @route '/admin/badges'
  */
         badgesForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -290,7 +290,7 @@ badges.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     badges.form = badgesForm
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::storeBadge
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:282
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:294
  * @route '/admin/badges'
  */
 export const storeBadge = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -305,7 +305,7 @@ storeBadge.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::storeBadge
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:282
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:294
  * @route '/admin/badges'
  */
 storeBadge.url = (options?: RouteQueryOptions) => {
@@ -314,7 +314,7 @@ storeBadge.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::storeBadge
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:282
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:294
  * @route '/admin/badges'
  */
 storeBadge.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -324,7 +324,7 @@ storeBadge.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::storeBadge
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:282
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:294
  * @route '/admin/badges'
  */
     const storeBadgeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -334,7 +334,7 @@ storeBadge.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::storeBadge
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:282
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:294
  * @route '/admin/badges'
  */
         storeBadgeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -345,7 +345,7 @@ storeBadge.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     storeBadge.form = storeBadgeForm
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:119
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:127
  * @route '/admin/students'
  */
 export const students = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -360,7 +360,7 @@ students.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:119
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:127
  * @route '/admin/students'
  */
 students.url = (options?: RouteQueryOptions) => {
@@ -369,7 +369,7 @@ students.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:119
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:127
  * @route '/admin/students'
  */
 students.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -378,7 +378,7 @@ students.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:119
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:127
  * @route '/admin/students'
  */
 students.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -388,7 +388,7 @@ students.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:119
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:127
  * @route '/admin/students'
  */
     const studentsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -398,7 +398,7 @@ students.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:119
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:127
  * @route '/admin/students'
  */
         studentsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -407,7 +407,7 @@ students.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:119
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:127
  * @route '/admin/students'
  */
         studentsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -423,7 +423,7 @@ students.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     students.form = studentsForm
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::updateUserRole
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:348
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:362
  * @route '/admin/students/{user}/role'
  */
 export const updateUserRole = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -438,7 +438,7 @@ updateUserRole.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::updateUserRole
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:348
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:362
  * @route '/admin/students/{user}/role'
  */
 updateUserRole.url = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -471,7 +471,7 @@ updateUserRole.url = (args: { user: number | { id: number } } | [user: number | 
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::updateUserRole
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:348
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:362
  * @route '/admin/students/{user}/role'
  */
 updateUserRole.patch = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -481,7 +481,7 @@ updateUserRole.patch = (args: { user: number | { id: number } } | [user: number 
 
     /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::updateUserRole
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:348
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:362
  * @route '/admin/students/{user}/role'
  */
     const updateUserRoleForm = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -496,7 +496,7 @@ updateUserRole.patch = (args: { user: number | { id: number } } | [user: number 
 
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::updateUserRole
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:348
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:362
  * @route '/admin/students/{user}/role'
  */
         updateUserRoleForm.patch = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
