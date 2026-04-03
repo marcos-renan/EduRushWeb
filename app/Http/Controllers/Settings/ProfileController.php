@@ -49,6 +49,19 @@ class ProfileController extends Controller
                 'total_xp' => (int) $studentProfile->total_xp,
                 'current_streak' => (int) $studentProfile->current_streak,
                 'energy' => (int) $studentProfile->energy,
+                'badges' => $studentProfile
+                    ->loadMissing('badges:id,name,description,image_path,image_blob,image_mime')
+                    ->badges
+                    ->map(fn ($badge): array => [
+                        'id' => (int) $badge->id,
+                        'name' => (string) $badge->name,
+                        'description' => (string) ($badge->description ?? ''),
+                        'image_url' => (! empty($badge->image_blob) && ! empty($badge->image_mime))
+                            ? route('media.badge-image', ['badge' => $badge->id], false)
+                            : (! empty($badge->image_path) ? '/storage/'.ltrim((string) $badge->image_path, '/') : null),
+                    ])
+                    ->values()
+                    ->all(),
             ] : null,
         ]);
     }

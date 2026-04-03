@@ -266,9 +266,9 @@ class StudentFriendApiService
      */
     public function ranking(User $user): array
     {
-        $self = $user->fresh(['studentProfile.badges:id,name,icon,color_hex']) ?? $user;
+        $self = $user->fresh(['studentProfile.badges:id,name,description,icon,color_hex,image_path,image_blob,image_mime']) ?? $user;
         $selfProfile = $self->studentProfile ?? $this->profiles->forUser($self);
-        $self->setRelation('studentProfile', $selfProfile->loadMissing('badges:id,name,icon,color_hex'));
+        $self->setRelation('studentProfile', $selfProfile->loadMissing('badges:id,name,description,icon,color_hex,image_path,image_blob,image_mime'));
 
         $members = collect([$self])
             ->concat($this->friendships->listFriendsForUser((int) $user->id))
@@ -327,7 +327,7 @@ class StudentFriendApiService
     private function memberPayload(User $user): array
     {
         $profile = $user->studentProfile ?? $this->profiles->forUser($user);
-        $profile->loadMissing('badges:id,name,icon,color_hex');
+        $profile->loadMissing('badges:id,name,description,icon,color_hex,image_path,image_blob,image_mime');
 
         return [
             'user' => [
@@ -346,9 +346,12 @@ class StudentFriendApiService
                 'badges' => $profile?->badges
                     ? $profile->badges
                         ->map(fn ($badge): array => [
+                            'id' => (int) $badge->id,
                             'name' => (string) $badge->name,
+                            'description' => (string) ($badge->description ?? ''),
                             'icon' => (string) ($badge->icon ?? 'award'),
                             'color_hex' => (string) ($badge->color_hex ?? '#2563EB'),
+                            'image_url' => $this->badgeImageUrl($badge),
                         ])
                         ->values()
                         ->all()
@@ -402,6 +405,19 @@ class StudentFriendApiService
     private function profilePhotoUrl(User $user): ?string
     {
         return $user->profile_photo_url;
+    }
+
+    private function badgeImageUrl(object $badge): ?string
+    {
+        if (! empty($badge->image_blob) && ! empty($badge->image_mime)) {
+            return route('media.badge-image', ['badge' => $badge->id], false);
+        }
+
+        if (! empty($badge->image_path)) {
+            return '/storage/'.ltrim((string) $badge->image_path, '/');
+        }
+
+        return null;
     }
 
     private function normalizeUsername(string $username, bool $strict = true): string

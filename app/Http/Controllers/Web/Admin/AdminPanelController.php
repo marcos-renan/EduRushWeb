@@ -124,6 +124,27 @@ class AdminPanelController extends Controller
         ]);
     }
 
+    public function editBadge(Badge $badge): Response
+    {
+        $this->authorize('update', $badge);
+
+        return Inertia::render('admin/badge-edit', [
+            'badge' => [
+                'id' => $badge->id,
+                'slug' => $badge->slug,
+                'name' => $badge->name,
+                'description' => $badge->description,
+                'image_url' => $badge->image_blob && $badge->image_mime
+                    ? route('media.badge-image', ['badge' => $badge->id], false)
+                    : ($badge->image_path ? '/storage/'.ltrim((string) $badge->image_path, '/') : null),
+                'unlock_metric' => $badge->unlock_metric,
+                'unlock_target' => (int) $badge->unlock_target,
+                'is_active' => (bool) $badge->is_active,
+            ],
+            'metricOptions' => $this->badgeMetricOptions(),
+        ]);
+    }
+
     public function students(): Response
     {
         $this->authorize('manageUsers', User::class);
@@ -335,6 +356,57 @@ class AdminPanelController extends Controller
         return back()->with('success', 'Badge criado com sucesso.');
     }
 
+    public function updateBadge(Request $request, Badge $badge): RedirectResponse
+    {
+        $this->authorize('update', $badge);
+
+        $validated = $request->validate([
+            'slug' => ['nullable', 'string', 'max:120', Rule::unique(Badge::class, 'slug')->ignore($badge->id)],
+            'name' => ['required', 'string', 'max:140'],
+            'description' => ['required', 'string', 'max:300'],
+            'image' => ['nullable', 'image', 'mimes:png,webp,jpg,jpeg,avif', 'max:5120'],
+            'remove_image' => ['nullable', 'boolean'],
+            'unlock_metric' => ['nullable', Rule::in($this->badgeMetricValues())],
+            'unlock_target' => ['required', 'integer', 'min:1', 'max:9999'],
+            'is_active' => ['nullable', 'boolean'],
+        ]);
+
+        $baseSlug = Str::slug((string) ($validated['slug'] ?? $validated['name']));
+        $slug = $this->uniqueSlug(Badge::class, $baseSlug, 'slug', $badge->id);
+
+        $imageBlob = $badge->image_blob;
+        $imageMime = $badge->image_mime;
+        $imagePath = $badge->image_path;
+
+        if ($request->hasFile('image')) {
+            $imageFile = $request->file('image');
+            $rawImage = file_get_contents($imageFile->getRealPath());
+            $imageBlob = $rawImage === false ? null : $rawImage;
+            $imageMime = $imageFile->getMimeType() ?: null;
+            $imagePath = null;
+        } elseif (filter_var($validated['remove_image'] ?? false, FILTER_VALIDATE_BOOL)) {
+            $imageBlob = null;
+            $imageMime = null;
+            $imagePath = null;
+        }
+
+        $badge->update([
+            'slug' => $slug,
+            'name' => $validated['name'],
+            'description' => $validated['description'],
+            'image_path' => $imagePath,
+            'image_blob' => $imageBlob,
+            'image_mime' => $imageMime,
+            'unlock_metric' => $validated['unlock_metric'] ?? null,
+            'unlock_target' => (int) $validated['unlock_target'],
+            'is_active' => (bool) ($validated['is_active'] ?? true),
+        ]);
+
+        return redirect()
+            ->route('admin.badges')
+            ->with('success', 'Badge atualizado com sucesso.');
+    }
+
     private function badgeMetricOptions(): array
     {
         return [
@@ -390,13 +462,18 @@ class AdminPanelController extends Controller
         return back()->with('success', 'Perfil de acesso atualizado com sucesso.');
     }
 
-    private function uniqueSlug(string $modelClass, string $base, string $column = 'slug'): string
+    private function uniqueSlug(string $modelClass, string $base, string $column = 'slug', ?int $ignoreId = null): string
     {
         $base = trim($base) !== '' ? $base : Str::random(8);
         $candidate = $base;
         $i = 2;
 
-        while ($modelClass::query()->where($column, $candidate)->exists()) {
+        while (
+            $modelClass::query()
+                ->when($ignoreId !== null, fn ($query) => $query->where('id', '!=', $ignoreId))
+                ->where($column, $candidate)
+                ->exists()
+        ) {
             $candidate = $base.'-'.$i;
             $i++;
         }

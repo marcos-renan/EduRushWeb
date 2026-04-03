@@ -3,9 +3,12 @@ import { X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 type BadgeItem = {
+    id?: number;
     name: string;
+    description?: string;
     icon?: string;
     color_hex?: string;
+    image_url?: string | null;
 };
 
 type LessonPerDay = {
@@ -161,6 +164,7 @@ function RankingModal({
     const dayInitials = member.stats.lessons_per_day.map((item) =>
         dayInitial(item.date),
     );
+    const [selectedBadge, setSelectedBadge] = useState<BadgeItem | null>(null);
 
     return (
         <div
@@ -272,16 +276,21 @@ function RankingModal({
                     <div className="mt-2 flex flex-wrap gap-2">
                         {member.stats.badges.length > 0 ? (
                             member.stats.badges.map((badge, index) => (
-                                <span
-                                    key={`${badge.name}-${index}`}
-                                    className="inline-flex cursor-default rounded-full border px-3 py-1 text-xs font-black uppercase tracking-[0.08em] transition hover:-translate-y-0.5 hover:brightness-110"
-                                    style={{
-                                        borderColor: badge.color_hex ?? '#1565FF',
-                                        color: badge.color_hex ?? '#1565FF',
-                                    }}
+                                <button
+                                    type="button"
+                                    key={`${badge.id ?? badge.name}-${index}`}
+                                    onClick={() => setSelectedBadge(badge)}
+                                    className="inline-flex items-center gap-2 rounded-full border border-[#BFE0FF] bg-[#F8FBFF] px-2 py-1.5 transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#EAF3FF] dark:border-[#263753] dark:bg-[#0B1428] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
                                 >
-                                    {badge.name}
-                                </span>
+                                    <BadgeAvatar
+                                        name={badge.name}
+                                        imageUrl={badge.image_url}
+                                        colorHex={badge.color_hex}
+                                    />
+                                    <span className="text-xs font-black text-[#0F1A3B] dark:text-[#E7EEFF]">
+                                        {badge.name}
+                                    </span>
+                                </button>
                             ))
                         ) : (
                             <p className="text-xs font-semibold text-[#5B6B93] dark:text-[#8EA1C7]">
@@ -291,10 +300,101 @@ function RankingModal({
                     </div>
                 </div>
             </div>
+            {selectedBadge ? (
+                <BadgeDetailsModal
+                    badge={selectedBadge}
+                    onClose={() => setSelectedBadge(null)}
+                />
+            ) : null}
         </div>
     );
 }
 
+function BadgeDetailsModal({
+    badge,
+    onClose,
+}: {
+    badge: BadgeItem;
+    onClose: () => void;
+}) {
+    return (
+        <div
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-[#050C1C]/70 p-4"
+            onClick={(event) => {
+                event.stopPropagation();
+                onClose();
+            }}
+        >
+            <div
+                className="w-full max-w-xs rounded-2xl border border-[#BFE0FF] bg-white p-4 text-center dark:border-[#263753] dark:bg-[#111C33]"
+                onClick={(event) => event.stopPropagation()}
+            >
+                <div className="flex justify-end">
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-[#C8E0FF] text-[#5B6B93] transition hover:bg-[#EAF3FF] dark:border-[#2A3B5A] dark:text-[#8EA1C7] dark:hover:bg-[#16233D]"
+                    >
+                        <X className="h-4 w-4" />
+                    </button>
+                </div>
+                <div className="mt-1 flex justify-center">
+                    <BadgeAvatar
+                        name={badge.name}
+                        imageUrl={badge.image_url}
+                        colorHex={badge.color_hex}
+                        size="lg"
+                    />
+                </div>
+                <p className="mt-3 text-sm font-black text-[#0F1A3B] dark:text-[#E7EEFF]">
+                    {badge.name}
+                </p>
+                <p className="mt-1 text-xs font-semibold text-[#5B6B93] dark:text-[#8EA1C7]">
+                    {badge.description?.trim() || 'Sem descrição para esta badge.'}
+                </p>
+            </div>
+        </div>
+    );
+}
+
+function BadgeAvatar({
+    name,
+    imageUrl,
+    colorHex,
+    size = 'sm',
+}: {
+    name: string;
+    imageUrl?: string | null;
+    colorHex?: string;
+    size?: 'sm' | 'lg';
+}) {
+    const [failed, setFailed] = useState(false);
+    const sizeClass = size === 'lg' ? 'h-20 w-20' : 'h-8 w-8';
+    const textClass = size === 'lg' ? 'text-xl' : 'text-[10px]';
+
+    if (imageUrl && !failed) {
+        return (
+            <img
+                src={imageUrl}
+                alt={name}
+                onError={() => setFailed(true)}
+                className={`${sizeClass} rounded-full border border-[#D9E9FF] bg-white object-cover dark:border-[#2B3F62] dark:bg-[#111C33]`}
+            />
+        );
+    }
+
+    return (
+        <span
+            className={`inline-flex ${sizeClass} items-center justify-center rounded-full ${textClass} font-black`}
+            style={{
+                backgroundColor: `${colorHex ?? '#1565FF'}22`,
+                color: colorHex ?? '#1565FF',
+            }}
+        >
+            {name.charAt(0).toUpperCase()}
+        </span>
+    );
+}
 function RankingAvatar({ member }: { member: RankedMember }) {
     const photo = member.user.profile_photo_url ?? null;
     const initials = String(member.user.name ?? 'U').trim().charAt(0).toUpperCase();
@@ -417,3 +517,4 @@ function LessonsLineChart({ data }: { data: LessonPerDay[] }) {
         </svg>
     );
 }
+

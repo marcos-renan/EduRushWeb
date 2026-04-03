@@ -17,6 +17,12 @@ type StudentProfile = {
     total_xp: number;
     current_streak: number;
     energy: number;
+    badges?: Array<{
+        id: number;
+        name: string;
+        description?: string;
+        image_url?: string | null;
+    }>;
 };
 
 type SharedProps = {
@@ -60,6 +66,12 @@ export default function Profile({
     const [photoError, setPhotoError] = useState<string | null>(null);
     const [uploadingPhoto, setUploadingPhoto] = useState(false);
     const [avatarVersion, setAvatarVersion] = useState(0);
+    const [selectedBadge, setSelectedBadge] = useState<{
+        id: number;
+        name: string;
+        description?: string;
+        image_url?: string | null;
+    } | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const avatarUrl = useMemo(() => {
@@ -231,6 +243,45 @@ export default function Profile({
                         </div>
                     ) : null}
 
+                    {studentProfile ? (
+                        <div className="mx-auto mt-6 w-full max-w-3xl">
+                            <p className="text-center text-xs font-black uppercase tracking-[0.08em] text-[#5B6B93] dark:text-[#8EA1C7]">
+                                Badges desbloqueadas
+                            </p>
+                            <div className="mt-3 flex flex-wrap justify-center gap-2">
+                                {(studentProfile.badges ?? []).length > 0 ? (
+                                    (studentProfile.badges ?? []).map((badge) => (
+                                        <button
+                                            type="button"
+                                            key={`profile-badge-${badge.id}`}
+                                            onClick={() => setSelectedBadge(badge)}
+                                            className="inline-flex items-center gap-2 rounded-full border border-[#BFE0FF] bg-[#F8FBFF] px-2 py-1.5 dark:border-[#263753] dark:bg-[#0B1428]"
+                                        >
+                                            {badge.image_url ? (
+                                                <img
+                                                    src={badge.image_url}
+                                                    alt={badge.name}
+                                                    className="h-8 w-8 rounded-full border border-[#D9E9FF] bg-white object-cover dark:border-[#2B3F62] dark:bg-[#111C33]"
+                                                />
+                                            ) : (
+                                                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#BFE0FF] bg-[#E8F2FF] text-xs font-black text-[#1565FF] dark:border-[#2B3F62] dark:bg-[#142645] dark:text-[#9CC0FF]">
+                                                    {badge.name.charAt(0).toUpperCase()}
+                                                </span>
+                                            )}
+                                            <span className="text-xs font-black text-[#0F1A3B] dark:text-[#E7EEFF]">
+                                                {badge.name}
+                                            </span>
+                                        </button>
+                                    ))
+                                ) : (
+                                    <p className="text-xs font-semibold text-[#5B6B93] dark:text-[#8EA1C7]">
+                                        Você ainda não desbloqueou badges.
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                    ) : null}
+
                 </div>
 
                 <div className="mx-auto w-full max-w-3xl rounded-3xl border border-[#BFE0FF] bg-white p-6 dark:border-[#263753] dark:bg-[#111C33]">
@@ -355,6 +406,47 @@ export default function Profile({
 
                 <DeleteUser />
             </section>
+
+            {selectedBadge ? (
+                <div
+                    className="fixed inset-0 z-[60] flex items-center justify-center bg-[#050C1C]/70 p-4"
+                    onClick={() => setSelectedBadge(null)}
+                >
+                    <div
+                        className="w-full max-w-xs rounded-2xl border border-[#BFE0FF] bg-white p-4 text-center dark:border-[#263753] dark:bg-[#111C33]"
+                        onClick={(event) => event.stopPropagation()}
+                    >
+                        <div className="flex justify-end">
+                            <button
+                                type="button"
+                                onClick={() => setSelectedBadge(null)}
+                                className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-[#C8E0FF] text-[#5B6B93] transition hover:bg-[#EAF3FF] dark:border-[#2A3B5A] dark:text-[#8EA1C7] dark:hover:bg-[#16233D]"
+                            >
+                                <X className="h-4 w-4" />
+                            </button>
+                        </div>
+                        <div className="mt-1 flex justify-center">
+                            {selectedBadge.image_url ? (
+                                <img
+                                    src={selectedBadge.image_url}
+                                    alt={selectedBadge.name}
+                                    className="h-20 w-20 rounded-full border border-[#D9E9FF] bg-white object-cover dark:border-[#2B3F62] dark:bg-[#111C33]"
+                                />
+                            ) : (
+                                <span className="inline-flex h-20 w-20 items-center justify-center rounded-full border border-[#BFE0FF] bg-[#E8F2FF] text-xl font-black text-[#1565FF] dark:border-[#2B3F62] dark:bg-[#142645] dark:text-[#9CC0FF]">
+                                    {selectedBadge.name.charAt(0).toUpperCase()}
+                                </span>
+                            )}
+                        </div>
+                        <p className="mt-3 text-sm font-black text-[#0F1A3B] dark:text-[#E7EEFF]">
+                            {selectedBadge.name}
+                        </p>
+                        <p className="mt-1 text-xs font-semibold text-[#5B6B93] dark:text-[#8EA1C7]">
+                            {selectedBadge.description?.trim() || 'Sem descrição para esta badge.'}
+                        </p>
+                    </div>
+                </div>
+            ) : null}
 
             {photoModalOpen ? (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#050C1C]/70 p-4">

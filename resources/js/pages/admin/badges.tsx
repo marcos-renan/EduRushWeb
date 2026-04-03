@@ -1,6 +1,7 @@
-import { Head, useForm, usePage } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { BadgeCheck, ImagePlus } from 'lucide-react';
-import { type FormEvent, type ReactNode, useMemo } from 'react';
+import toast from 'react-hot-toast';
+import { type FormEvent, type ReactNode, useEffect, useMemo } from 'react';
 
 type Badge = {
     id: number;
@@ -50,6 +51,12 @@ export default function AdminBadges({ badges, metricOptions }: Props) {
         [form.data.unlock_metric, metricOptions],
     );
 
+    useEffect(() => {
+        if (flash?.success) {
+            toast.success(flash.success);
+        }
+    }, [flash?.success]);
+
     const submit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         form.post('/admin/badges', {
@@ -73,11 +80,6 @@ export default function AdminBadges({ badges, metricOptions }: Props) {
                     <p className="mt-2 text-sm font-medium text-[#5B6B93] dark:text-[#8EA1C7]">
                         Personalize badges com ícone, cor, imagem (inclusive PNG transparente), métrica e meta de desbloqueio.
                     </p>
-                    {flash?.success ? (
-                        <p className="mt-4 rounded-xl border border-[#A6E9C8] bg-[#ECFAF3] px-3 py-2 text-sm font-semibold text-[#0A7A4F] dark:border-[#275A43] dark:bg-[#13281F] dark:text-[#9BE8C8]">
-                            {flash.success}
-                        </p>
-                    ) : null}
                 </div>
 
                 <div className="grid gap-5 xl:grid-cols-[1.1fr_1fr]">
@@ -208,6 +210,14 @@ export default function AdminBadges({ badges, metricOptions }: Props) {
                                     <p className="mt-1 text-xs font-semibold text-[#5B6B93] dark:text-[#8EA1C7]">
                                         {badge.description}
                                     </p>
+                                    <div className="mt-3">
+                                        <Link
+                                            href={`/admin/badges/${badge.id}/edit`}
+                                            className="inline-flex h-9 items-center rounded-lg border border-[#BFE0FF] bg-[#F4F8FF] px-3 text-xs font-black uppercase tracking-[0.08em] text-[#1565FF] transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#EAF3FF] dark:border-[#2A3B5A] dark:bg-[#0B1428] dark:text-[#9CC0FF] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
+                                        >
+                                            Editar
+                                        </Link>
+                                    </div>
                                 </div>
                             ))}
                             {badges.length === 0 ? (

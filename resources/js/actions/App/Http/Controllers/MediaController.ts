@@ -103,10 +103,10 @@ userPhoto.head = (args: { user: number | { id: number } } | [user: number | { id
     userPhoto.form = userPhotoForm
 /**
 * @see \App\Http\Controllers\MediaController::badgeImage
- * @see app/Http/Controllers/MediaController.php:0
+ * @see app/Http/Controllers/MediaController.php:23
  * @route '/media/badges/{badge}/image'
  */
-export const badgeImage = (args: { badge: string | number } | [badge: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const badgeImage = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: badgeImage.url(args, options),
     method: 'get',
 })
@@ -118,14 +118,17 @@ badgeImage.definition = {
 
 /**
 * @see \App\Http\Controllers\MediaController::badgeImage
- * @see app/Http/Controllers/MediaController.php:0
+ * @see app/Http/Controllers/MediaController.php:23
  * @route '/media/badges/{badge}/image'
  */
-badgeImage.url = (args: { badge: string | number } | [badge: string | number ] | string | number, options?: RouteQueryOptions) => {
+badgeImage.url = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { badge: args }
     }
 
+            if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+            args = { badge: args.id }
+        }
     
     if (Array.isArray(args)) {
         args = {
@@ -136,7 +139,9 @@ badgeImage.url = (args: { badge: string | number } | [badge: string | number ] |
     args = applyUrlDefaults(args)
 
     const parsedArgs = {
-                        badge: args.badge,
+                        badge: typeof args.badge === 'object'
+                ? args.badge.id
+                : args.badge,
                 }
 
     return badgeImage.definition.url
@@ -146,48 +151,48 @@ badgeImage.url = (args: { badge: string | number } | [badge: string | number ] |
 
 /**
 * @see \App\Http\Controllers\MediaController::badgeImage
- * @see app/Http/Controllers/MediaController.php:0
+ * @see app/Http/Controllers/MediaController.php:23
  * @route '/media/badges/{badge}/image'
  */
-badgeImage.get = (args: { badge: string | number } | [badge: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+badgeImage.get = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: badgeImage.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\MediaController::badgeImage
- * @see app/Http/Controllers/MediaController.php:0
+ * @see app/Http/Controllers/MediaController.php:23
  * @route '/media/badges/{badge}/image'
  */
-badgeImage.head = (args: { badge: string | number } | [badge: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+badgeImage.head = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: badgeImage.url(args, options),
     method: 'head',
 })
 
     /**
 * @see \App\Http\Controllers\MediaController::badgeImage
- * @see app/Http/Controllers/MediaController.php:0
+ * @see app/Http/Controllers/MediaController.php:23
  * @route '/media/badges/{badge}/image'
  */
-    const badgeImageForm = (args: { badge: string | number } | [badge: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const badgeImageForm = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: badgeImage.url(args, options),
         method: 'get',
     })
 
             /**
 * @see \App\Http\Controllers\MediaController::badgeImage
- * @see app/Http/Controllers/MediaController.php:0
+ * @see app/Http/Controllers/MediaController.php:23
  * @route '/media/badges/{badge}/image'
  */
-        badgeImageForm.get = (args: { badge: string | number } | [badge: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        badgeImageForm.get = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: badgeImage.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\MediaController::badgeImage
- * @see app/Http/Controllers/MediaController.php:0
+ * @see app/Http/Controllers/MediaController.php:23
  * @route '/media/badges/{badge}/image'
  */
-        badgeImageForm.head = (args: { badge: string | number } | [badge: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        badgeImageForm.head = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: badgeImage.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -198,6 +203,6 @@ badgeImage.head = (args: { badge: string | number } | [badge: string | number ] 
         })
     
     badgeImage.form = badgeImageForm
-const MediaController = { userPhoto, badgeImage, badge-image: badgeImage }
+const MediaController = { userPhoto, badgeImage }
 
 export default MediaController

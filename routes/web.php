@@ -25,7 +25,7 @@ Route::get('/', function (Request $request) {
     return redirect()->route('dashboard');
 })->name('home');
 Route::get('/media/users/{user}/photo', [MediaController::class, 'userPhoto'])->name('media.user-photo');
-Route::get('/media/badges/{badge}/image', [MediaController::class, 'badge-image'])->name('media.badge-image');
+Route::get('/media/badges/{badge}/image', [MediaController::class, 'badgeImage'])->name('media.badge-image');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', function (Request $request) {
@@ -63,6 +63,9 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/missions', [AdminPanelController::class, 'storeMission'])->name('missions.store');
             Route::get('/badges', [AdminPanelController::class, 'badges'])->name('badges');
             Route::post('/badges', [AdminPanelController::class, 'storeBadge'])->name('badges.store');
+            Route::get('/badges/{badge}/edit', [AdminPanelController::class, 'editBadge'])->name('badges.edit');
+            Route::patch('/badges/{badge}', [AdminPanelController::class, 'updateBadge'])->name('badges.update');
+            Route::post('/badges/{badge}', [AdminPanelController::class, 'updateBadge']);
             Route::get('/students', [AdminPanelController::class, 'students'])->name('students');
             Route::patch('/students/{user}/role', [AdminPanelController::class, 'updateUserRole'])->name('students.role');
         });

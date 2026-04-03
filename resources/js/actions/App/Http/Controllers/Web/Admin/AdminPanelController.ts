@@ -157,7 +157,7 @@ missions.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     missions.form = missionsForm
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::storeMission
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:262
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:283
  * @route '/admin/missions'
  */
 export const storeMission = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -172,7 +172,7 @@ storeMission.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::storeMission
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:262
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:283
  * @route '/admin/missions'
  */
 storeMission.url = (options?: RouteQueryOptions) => {
@@ -181,7 +181,7 @@ storeMission.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::storeMission
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:262
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:283
  * @route '/admin/missions'
  */
 storeMission.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -191,7 +191,7 @@ storeMission.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::storeMission
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:262
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:283
  * @route '/admin/missions'
  */
     const storeMissionForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -201,7 +201,7 @@ storeMission.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::storeMission
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:262
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:283
  * @route '/admin/missions'
  */
         storeMissionForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -290,7 +290,7 @@ badges.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     badges.form = badgesForm
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::storeBadge
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:294
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:315
  * @route '/admin/badges'
  */
 export const storeBadge = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -305,7 +305,7 @@ storeBadge.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::storeBadge
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:294
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:315
  * @route '/admin/badges'
  */
 storeBadge.url = (options?: RouteQueryOptions) => {
@@ -314,7 +314,7 @@ storeBadge.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::storeBadge
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:294
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:315
  * @route '/admin/badges'
  */
 storeBadge.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -324,7 +324,7 @@ storeBadge.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::storeBadge
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:294
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:315
  * @route '/admin/badges'
  */
     const storeBadgeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -334,7 +334,7 @@ storeBadge.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::storeBadge
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:294
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:315
  * @route '/admin/badges'
  */
         storeBadgeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -344,8 +344,284 @@ storeBadge.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     
     storeBadge.form = storeBadgeForm
 /**
-* @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
+* @see \App\Http\Controllers\Web\Admin\AdminPanelController::editBadge
  * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:127
+ * @route '/admin/badges/{badge}/edit'
+ */
+export const editBadge = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: editBadge.url(args, options),
+    method: 'get',
+})
+
+editBadge.definition = {
+    methods: ["get","head"],
+    url: '/admin/badges/{badge}/edit',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Web\Admin\AdminPanelController::editBadge
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:127
+ * @route '/admin/badges/{badge}/edit'
+ */
+editBadge.url = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { badge: args }
+    }
+
+            if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+            args = { badge: args.id }
+        }
+    
+    if (Array.isArray(args)) {
+        args = {
+                    badge: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+                        badge: typeof args.badge === 'object'
+                ? args.badge.id
+                : args.badge,
+                }
+
+    return editBadge.definition.url
+            .replace('{badge}', parsedArgs.badge.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Web\Admin\AdminPanelController::editBadge
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:127
+ * @route '/admin/badges/{badge}/edit'
+ */
+editBadge.get = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: editBadge.url(args, options),
+    method: 'get',
+})
+/**
+* @see \App\Http\Controllers\Web\Admin\AdminPanelController::editBadge
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:127
+ * @route '/admin/badges/{badge}/edit'
+ */
+editBadge.head = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: editBadge.url(args, options),
+    method: 'head',
+})
+
+    /**
+* @see \App\Http\Controllers\Web\Admin\AdminPanelController::editBadge
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:127
+ * @route '/admin/badges/{badge}/edit'
+ */
+    const editBadgeForm = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: editBadge.url(args, options),
+        method: 'get',
+    })
+
+            /**
+* @see \App\Http\Controllers\Web\Admin\AdminPanelController::editBadge
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:127
+ * @route '/admin/badges/{badge}/edit'
+ */
+        editBadgeForm.get = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: editBadge.url(args, options),
+            method: 'get',
+        })
+            /**
+* @see \App\Http\Controllers\Web\Admin\AdminPanelController::editBadge
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:127
+ * @route '/admin/badges/{badge}/edit'
+ */
+        editBadgeForm.head = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: editBadge.url(args, {
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    editBadge.form = editBadgeForm
+/**
+* @see \App\Http\Controllers\Web\Admin\AdminPanelController::updateBadge
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:359
+ * @route '/admin/badges/{badge}'
+ */
+const updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1 = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+    url: updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1.url(args, options),
+    method: 'patch',
+})
+
+updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1.definition = {
+    methods: ["patch"],
+    url: '/admin/badges/{badge}',
+} satisfies RouteDefinition<["patch"]>
+
+/**
+* @see \App\Http\Controllers\Web\Admin\AdminPanelController::updateBadge
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:359
+ * @route '/admin/badges/{badge}'
+ */
+updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1.url = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { badge: args }
+    }
+
+            if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+            args = { badge: args.id }
+        }
+    
+    if (Array.isArray(args)) {
+        args = {
+                    badge: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+                        badge: typeof args.badge === 'object'
+                ? args.badge.id
+                : args.badge,
+                }
+
+    return updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1.definition.url
+            .replace('{badge}', parsedArgs.badge.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Web\Admin\AdminPanelController::updateBadge
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:359
+ * @route '/admin/badges/{badge}'
+ */
+updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1.patch = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+    url: updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1.url(args, options),
+    method: 'patch',
+})
+
+    /**
+* @see \App\Http\Controllers\Web\Admin\AdminPanelController::updateBadge
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:359
+ * @route '/admin/badges/{badge}'
+ */
+    const updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1Form = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1.url(args, {
+                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                        _method: 'PATCH',
+                        ...(options?.query ?? options?.mergeQuery ?? {}),
+                    }
+                }),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\Web\Admin\AdminPanelController::updateBadge
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:359
+ * @route '/admin/badges/{badge}'
+ */
+        updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1Form.patch = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1.url(args, {
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'PATCH',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'post',
+        })
+    
+    updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1.form = updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1Form
+    /**
+* @see \App\Http\Controllers\Web\Admin\AdminPanelController::updateBadge
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:359
+ * @route '/admin/badges/{badge}'
+ */
+const updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1 = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1.url(args, options),
+    method: 'post',
+})
+
+updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1.definition = {
+    methods: ["post"],
+    url: '/admin/badges/{badge}',
+} satisfies RouteDefinition<["post"]>
+
+/**
+* @see \App\Http\Controllers\Web\Admin\AdminPanelController::updateBadge
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:359
+ * @route '/admin/badges/{badge}'
+ */
+updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1.url = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { badge: args }
+    }
+
+            if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+            args = { badge: args.id }
+        }
+    
+    if (Array.isArray(args)) {
+        args = {
+                    badge: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+                        badge: typeof args.badge === 'object'
+                ? args.badge.id
+                : args.badge,
+                }
+
+    return updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1.definition.url
+            .replace('{badge}', parsedArgs.badge.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Web\Admin\AdminPanelController::updateBadge
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:359
+ * @route '/admin/badges/{badge}'
+ */
+updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1.post = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1.url(args, options),
+    method: 'post',
+})
+
+    /**
+* @see \App\Http\Controllers\Web\Admin\AdminPanelController::updateBadge
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:359
+ * @route '/admin/badges/{badge}'
+ */
+    const updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1Form = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1.url(args, options),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\Web\Admin\AdminPanelController::updateBadge
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:359
+ * @route '/admin/badges/{badge}'
+ */
+        updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1Form.post = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1.url(args, options),
+            method: 'post',
+        })
+    
+    updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1.form = updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1Form
+
+export const updateBadge = {
+    '/admin/badges/{badge}': updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1,
+    '/admin/badges/{badge}': updateBadgeb07024f6f594d94e4ea5d3f248e4b2f1,
+}
+
+/**
+* @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:148
  * @route '/admin/students'
  */
 export const students = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -360,7 +636,7 @@ students.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:127
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:148
  * @route '/admin/students'
  */
 students.url = (options?: RouteQueryOptions) => {
@@ -369,7 +645,7 @@ students.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:127
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:148
  * @route '/admin/students'
  */
 students.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -378,7 +654,7 @@ students.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:127
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:148
  * @route '/admin/students'
  */
 students.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -388,7 +664,7 @@ students.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:127
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:148
  * @route '/admin/students'
  */
     const studentsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -398,7 +674,7 @@ students.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:127
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:148
  * @route '/admin/students'
  */
         studentsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -407,7 +683,7 @@ students.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:127
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:148
  * @route '/admin/students'
  */
         studentsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -423,7 +699,7 @@ students.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     students.form = studentsForm
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::updateUserRole
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:362
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:434
  * @route '/admin/students/{user}/role'
  */
 export const updateUserRole = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -438,7 +714,7 @@ updateUserRole.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::updateUserRole
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:362
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:434
  * @route '/admin/students/{user}/role'
  */
 updateUserRole.url = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -471,7 +747,7 @@ updateUserRole.url = (args: { user: number | { id: number } } | [user: number | 
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::updateUserRole
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:362
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:434
  * @route '/admin/students/{user}/role'
  */
 updateUserRole.patch = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -481,7 +757,7 @@ updateUserRole.patch = (args: { user: number | { id: number } } | [user: number 
 
     /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::updateUserRole
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:362
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:434
  * @route '/admin/students/{user}/role'
  */
     const updateUserRoleForm = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -496,7 +772,7 @@ updateUserRole.patch = (args: { user: number | { id: number } } | [user: number 
 
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::updateUserRole
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:362
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:434
  * @route '/admin/students/{user}/role'
  */
         updateUserRoleForm.patch = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -510,6 +786,6 @@ updateUserRole.patch = (args: { user: number | { id: number } } | [user: number 
         })
     
     updateUserRole.form = updateUserRoleForm
-const AdminPanelController = { dashboard, missions, storeMission, badges, storeBadge, students, updateUserRole }
+const AdminPanelController = { dashboard, missions, storeMission, badges, storeBadge, editBadge, updateBadge, students, updateUserRole }
 
 export default AdminPanelController
