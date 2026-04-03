@@ -83,7 +83,7 @@ dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     dashboard.form = dashboardForm
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::profile
- * @see app/Http/Controllers/Settings/ProfileController.php:34
+ * @see app/Http/Controllers/Settings/ProfileController.php:33
  * @route '/admin/profile'
  */
 export const profile = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -98,7 +98,7 @@ profile.definition = {
 
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::profile
- * @see app/Http/Controllers/Settings/ProfileController.php:34
+ * @see app/Http/Controllers/Settings/ProfileController.php:33
  * @route '/admin/profile'
  */
 profile.url = (options?: RouteQueryOptions) => {
@@ -107,7 +107,7 @@ profile.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::profile
- * @see app/Http/Controllers/Settings/ProfileController.php:34
+ * @see app/Http/Controllers/Settings/ProfileController.php:33
  * @route '/admin/profile'
  */
 profile.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -116,7 +116,7 @@ profile.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::profile
- * @see app/Http/Controllers/Settings/ProfileController.php:34
+ * @see app/Http/Controllers/Settings/ProfileController.php:33
  * @route '/admin/profile'
  */
 profile.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -126,7 +126,7 @@ profile.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\Settings\ProfileController::profile
- * @see app/Http/Controllers/Settings/ProfileController.php:34
+ * @see app/Http/Controllers/Settings/ProfileController.php:33
  * @route '/admin/profile'
  */
     const profileForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -136,7 +136,7 @@ profile.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\Settings\ProfileController::profile
- * @see app/Http/Controllers/Settings/ProfileController.php:34
+ * @see app/Http/Controllers/Settings/ProfileController.php:33
  * @route '/admin/profile'
  */
         profileForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -145,7 +145,7 @@ profile.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\Settings\ProfileController::profile
- * @see app/Http/Controllers/Settings/ProfileController.php:34
+ * @see app/Http/Controllers/Settings/ProfileController.php:33
  * @route '/admin/profile'
  */
         profileForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -395,7 +395,7 @@ badges.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     badges.form = badgesForm
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:103
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:119
  * @route '/admin/students'
  */
 export const students = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -410,7 +410,7 @@ students.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:103
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:119
  * @route '/admin/students'
  */
 students.url = (options?: RouteQueryOptions) => {
@@ -419,7 +419,7 @@ students.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:103
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:119
  * @route '/admin/students'
  */
 students.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -428,7 +428,7 @@ students.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:103
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:119
  * @route '/admin/students'
  */
 students.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -438,7 +438,7 @@ students.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:103
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:119
  * @route '/admin/students'
  */
     const studentsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -448,7 +448,7 @@ students.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:103
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:119
  * @route '/admin/students'
  */
         studentsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -457,7 +457,7 @@ students.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::students
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:103
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:119
  * @route '/admin/students'
  */
         studentsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

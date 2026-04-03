@@ -26,6 +26,7 @@ type SharedProps = {
             email: string;
             username?: string | null;
             role?: string;
+            profile_photo_url?: string | null;
             profile_photo_path?: string | null;
             email_verified_at?: string | null;
         };
@@ -62,9 +63,10 @@ export default function Profile({
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const avatarUrl = useMemo(() => {
+        if (user.profile_photo_url) return user.profile_photo_url;
         if (!user.profile_photo_path) return null;
         return `/storage/${String(user.profile_photo_path).replace(/^\/+/, '')}`;
-    }, [user.profile_photo_path]);
+    }, [user.profile_photo_path, user.profile_photo_url]);
 
     const initials = useMemo(() => {
         const value = String(user.name || 'U').trim();

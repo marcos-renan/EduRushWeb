@@ -11,7 +11,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -91,19 +90,21 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+        $photo = $validated['photo'];
+        $photoBlob = file_get_contents($photo->getRealPath());
+        $mime = $photo->getMimeType();
 
-        if ($user->profile_photo_path && Storage::disk('public')->exists($user->profile_photo_path)) {
-            Storage::disk('public')->delete($user->profile_photo_path);
-        }
-
-        $path = $validated['photo']->store('profile-photos', 'public');
-        $user->forceFill(['profile_photo_path' => $path])->save();
+        $user->forceFill([
+            'profile_photo_blob' => $photoBlob === false ? null : $photoBlob,
+            'profile_photo_mime' => $mime ?: null,
+            'profile_photo_path' => null,
+        ])->save();
 
         if ($request->expectsJson()) {
             return response()->json([
                 'message' => 'Foto atualizada com sucesso.',
                 'data' => [
-                    'profile_photo_url' => '/storage/'.ltrim($path, '/'),
+                    'profile_photo_url' => $user->profile_photo_url,
                 ],
             ]);
         }

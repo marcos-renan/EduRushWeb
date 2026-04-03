@@ -19,6 +19,7 @@ type SharedProps = {
         user?: {
             name?: string;
             email?: string;
+            profile_photo_url?: string | null;
             profile_photo_path?: string | null;
         } | null;
     };
@@ -50,9 +51,10 @@ export default function StudentLayout({
     const { resolvedAppearance, updateAppearance } = useAppearance();
 
     const photoUrl = useMemo(() => {
+        if (user?.profile_photo_url) return user.profile_photo_url;
         if (!user?.profile_photo_path) return null;
         return `/storage/${String(user.profile_photo_path).replace(/^\/+/, '')}`;
-    }, [user?.profile_photo_path]);
+    }, [user?.profile_photo_path, user?.profile_photo_url]);
 
     const initials = useMemo(() => {
         const name = String(user?.name ?? 'U').trim();

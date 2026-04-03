@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::role
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:296
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:348
  * @route '/admin/students/{user}/role'
  */
 export const role = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -16,7 +16,7 @@ role.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::role
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:296
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:348
  * @route '/admin/students/{user}/role'
  */
 role.url = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -49,7 +49,7 @@ role.url = (args: { user: number | { id: number } } | [user: number | { id: numb
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::role
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:296
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:348
  * @route '/admin/students/{user}/role'
  */
 role.patch = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -59,7 +59,7 @@ role.patch = (args: { user: number | { id: number } } | [user: number | { id: nu
 
     /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::role
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:296
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:348
  * @route '/admin/students/{user}/role'
  */
     const roleForm = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -74,7 +74,7 @@ role.patch = (args: { user: number | { id: number } } | [user: number | { id: nu
 
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminPanelController::role
- * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:296
+ * @see app/Http/Controllers/Web/Admin/AdminPanelController.php:348
  * @route '/admin/students/{user}/role'
  */
         roleForm.patch = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

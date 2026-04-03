@@ -401,11 +401,7 @@ class StudentFriendApiService
 
     private function profilePhotoUrl(User $user): ?string
     {
-        if (! $user->profile_photo_path) {
-            return null;
-        }
-
-        return '/storage/'.ltrim($user->profile_photo_path, '/');
+        return $user->profile_photo_url;
     }
 
     private function normalizeUsername(string $username, bool $strict = true): string

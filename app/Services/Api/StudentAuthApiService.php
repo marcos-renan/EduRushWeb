@@ -157,10 +157,6 @@ class StudentAuthApiService
 
     private function profilePhotoUrl(User $user): ?string
     {
-        if (! $user->profile_photo_path) {
-            return null;
-        }
-
-        return '/storage/'.ltrim($user->profile_photo_path, '/');
+        return $user->profile_photo_url;
     }
 }

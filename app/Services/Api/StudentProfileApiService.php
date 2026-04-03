@@ -6,7 +6,6 @@ use App\Models\StudentProfile;
 use App\Models\User;
 use App\Repositories\Contracts\StudentProfileRepositoryInterface;
 use App\Services\StudentEnergyService;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -77,11 +76,12 @@ class StudentProfileApiService
             ]);
         }
 
-        if ($user->profile_photo_path && Storage::disk('public')->exists($user->profile_photo_path)) {
-            Storage::disk('public')->delete($user->profile_photo_path);
-        }
+        $photoBlob = file_get_contents($photo->getRealPath());
+        $mime = $photo->getMimeType();
 
-        $user->profile_photo_path = $photo->store('profile-photos', 'public');
+        $user->profile_photo_blob = $photoBlob === false ? null : $photoBlob;
+        $user->profile_photo_mime = $mime ?: null;
+        $user->profile_photo_path = null;
         $user->save();
 
         return [
@@ -132,11 +132,7 @@ class StudentProfileApiService
 
     private function profilePhotoUrl(User $user): ?string
     {
-        if (! $user->profile_photo_path) {
-            return null;
-        }
-
-        return '/storage/'.ltrim($user->profile_photo_path, '/');
+        return $user->profile_photo_url;
     }
 
     private function normalizeUsername(string $username): string
