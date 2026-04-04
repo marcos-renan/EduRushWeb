@@ -51,7 +51,7 @@ export default function DeleteUser() {
                         <Button
                             variant="destructive"
                             data-test="delete-user-button"
-                            className="mx-auto"
+                            className="mx-auto cursor-pointer transition duration-200 hover:-translate-y-0.5 hover:scale-[1.02] hover:brightness-110 hover:shadow-md active:scale-95"
                             onClick={() => setConfirmStep('warning')}
                         >
                             Excluir conta
@@ -67,17 +67,23 @@ export default function DeleteUser() {
                                 <DialogDescription>
                                     Esta ação é permanente e não pode ser desfeita.
                                 </DialogDescription>
-                                <DialogFooter className="gap-2">
-                                    <DialogClose asChild>
-                                        <Button variant="secondary">Cancelar</Button>
-                                    </DialogClose>
-                                    <Button
-                                        variant="destructive"
-                                        onClick={() => setConfirmStep('password')}
-                                    >
-                                        Continuar
-                                    </Button>
-                                </DialogFooter>
+                                    <DialogFooter className="gap-2">
+                                        <DialogClose asChild>
+                                            <Button
+                                                variant="secondary"
+                                                className="cursor-pointer transition duration-200 hover:-translate-y-0.5 hover:scale-[1.02] active:scale-95"
+                                            >
+                                                Cancelar
+                                            </Button>
+                                        </DialogClose>
+                                        <Button
+                                            variant="destructive"
+                                            className="cursor-pointer transition duration-200 hover:-translate-y-0.5 hover:scale-[1.02] hover:brightness-110 hover:shadow-md active:scale-95"
+                                            onClick={() => setConfirmStep('password')}
+                                        >
+                                            Continuar
+                                        </Button>
+                                    </DialogFooter>
                             </>
                         ) : (
                             <>
@@ -120,6 +126,7 @@ export default function DeleteUser() {
                                                 <Button
                                                     type="button"
                                                     variant="secondary"
+                                                    className="cursor-pointer transition duration-200 hover:-translate-y-0.5 hover:scale-[1.02] active:scale-95"
                                                     onClick={() => {
                                                         resetAndClearErrors();
                                                         setConfirmStep('warning');
@@ -131,6 +138,7 @@ export default function DeleteUser() {
                                                 <Button
                                                     variant="destructive"
                                                     disabled={processing}
+                                                    className="cursor-pointer transition duration-200 hover:-translate-y-0.5 hover:scale-[1.02] hover:brightness-110 hover:shadow-md active:scale-95 disabled:cursor-not-allowed"
                                                     asChild
                                                 >
                                                     <button

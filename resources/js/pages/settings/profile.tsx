@@ -224,7 +224,7 @@ export default function Profile({
                         <button
                             type="button"
                             onClick={openPhotoModal}
-                            className="mt-5 inline-flex h-11 min-w-[220px] items-center justify-center gap-2 rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-5 text-sm font-black text-[#1565FF] shadow-sm transition duration-200 hover:-translate-y-0.5 hover:scale-[1.01] hover:border-[#93C5FF] hover:bg-[#EAF3FF] hover:shadow-lg dark:border-[#2B3F62] dark:bg-[#0B1428] dark:text-[#9CC0FF] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
+                            className="mt-5 inline-flex h-11 min-w-[220px] cursor-pointer items-center justify-center gap-2 rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-5 text-sm font-black text-[#1565FF] shadow-sm transition duration-200 hover:-translate-y-0.5 hover:scale-[1.02] hover:border-[#1565FF] hover:bg-[#1565FF] hover:text-white hover:shadow-[0_12px_24px_rgba(21,101,255,0.35)] active:scale-95 dark:border-[#2B3F62] dark:bg-[#0B1428] dark:text-[#9CC0FF] dark:hover:border-[#4E7FE1] dark:hover:bg-[#1B3A70] dark:hover:text-[#EAF1FF]"
                         >
                             <UploadCloud className="h-4 w-4" />
                             Alterar foto
@@ -396,7 +396,7 @@ export default function Profile({
                             <button
                                 type="submit"
                                 disabled={form.processing}
-                                className="inline-flex h-11 min-w-[220px] items-center justify-center rounded-xl bg-[#1565FF] px-5 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5 hover:brightness-110 hover:shadow-[0_14px_28px_rgba(21,101,255,0.45)] disabled:opacity-60"
+                                className="inline-flex h-11 min-w-[220px] cursor-pointer items-center justify-center rounded-xl bg-[#1565FF] px-5 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition duration-200 hover:-translate-y-0.5 hover:scale-[1.02] hover:brightness-110 hover:shadow-[0_14px_28px_rgba(21,101,255,0.45)] active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
                             >
                                 {form.processing ? 'Salvando...' : 'Salvar alterações'}
                             </button>
