@@ -13,7 +13,9 @@ class MediaController extends Controller
         if ($user->profile_photo_blob && $user->profile_photo_mime) {
             return response($user->profile_photo_blob, 200, [
                 'Content-Type' => $user->profile_photo_mime,
-                'Cache-Control' => 'public, max-age=86400',
+                'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+                'Pragma' => 'no-cache',
+                'Expires' => '0',
             ]);
         }
 
@@ -32,4 +34,3 @@ class MediaController extends Controller
         abort(404);
     }
 }
-

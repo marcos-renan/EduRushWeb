@@ -103,7 +103,7 @@ userPhoto.head = (args: { user: number | { id: number } } | [user: number | { id
     userPhoto.form = userPhotoForm
 /**
 * @see \App\Http\Controllers\MediaController::badgeImage
- * @see app/Http/Controllers/MediaController.php:23
+ * @see app/Http/Controllers/MediaController.php:25
  * @route '/media/badges/{badge}/image'
  */
 export const badgeImage = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -118,7 +118,7 @@ badgeImage.definition = {
 
 /**
 * @see \App\Http\Controllers\MediaController::badgeImage
- * @see app/Http/Controllers/MediaController.php:23
+ * @see app/Http/Controllers/MediaController.php:25
  * @route '/media/badges/{badge}/image'
  */
 badgeImage.url = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -151,7 +151,7 @@ badgeImage.url = (args: { badge: number | { id: number } } | [badge: number | { 
 
 /**
 * @see \App\Http\Controllers\MediaController::badgeImage
- * @see app/Http/Controllers/MediaController.php:23
+ * @see app/Http/Controllers/MediaController.php:25
  * @route '/media/badges/{badge}/image'
  */
 badgeImage.get = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -160,7 +160,7 @@ badgeImage.get = (args: { badge: number | { id: number } } | [badge: number | { 
 })
 /**
 * @see \App\Http\Controllers\MediaController::badgeImage
- * @see app/Http/Controllers/MediaController.php:23
+ * @see app/Http/Controllers/MediaController.php:25
  * @route '/media/badges/{badge}/image'
  */
 badgeImage.head = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -170,7 +170,7 @@ badgeImage.head = (args: { badge: number | { id: number } } | [badge: number | {
 
     /**
 * @see \App\Http\Controllers\MediaController::badgeImage
- * @see app/Http/Controllers/MediaController.php:23
+ * @see app/Http/Controllers/MediaController.php:25
  * @route '/media/badges/{badge}/image'
  */
     const badgeImageForm = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -180,7 +180,7 @@ badgeImage.head = (args: { badge: number | { id: number } } | [badge: number | {
 
             /**
 * @see \App\Http\Controllers\MediaController::badgeImage
- * @see app/Http/Controllers/MediaController.php:23
+ * @see app/Http/Controllers/MediaController.php:25
  * @route '/media/badges/{badge}/image'
  */
         badgeImageForm.get = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -189,7 +189,7 @@ badgeImage.head = (args: { badge: number | { id: number } } | [badge: number | {
         })
             /**
 * @see \App\Http\Controllers\MediaController::badgeImage
- * @see app/Http/Controllers/MediaController.php:23
+ * @see app/Http/Controllers/MediaController.php:25
  * @route '/media/badges/{badge}/image'
  */
         badgeImageForm.head = (args: { badge: number | { id: number } } | [badge: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

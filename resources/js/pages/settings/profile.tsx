@@ -200,7 +200,7 @@ export default function Profile({
                         <div className="relative">
                             {avatarUrl ? (
                                 <img
-                                    src={`${avatarUrl}?v=${avatarVersion}`}
+                                    src={`${avatarUrl}${avatarUrl.includes('?') ? '&' : '?'}v=${avatarVersion}`}
                                     alt={user.name}
                                     className="h-36 w-36 rounded-full border-4 border-[#DCEBFF] object-cover shadow-[0_14px_30px_rgba(21,101,255,0.2)] dark:border-[#263753]"
                                 />
@@ -224,7 +224,7 @@ export default function Profile({
                         <button
                             type="button"
                             onClick={openPhotoModal}
-                            className="mt-5 inline-flex h-11 min-w-[220px] items-center justify-center gap-2 rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-5 text-sm font-black text-[#1565FF] transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#EAF3FF] hover:shadow-md dark:border-[#2B3F62] dark:bg-[#0B1428] dark:text-[#9CC0FF] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
+                            className="mt-5 inline-flex h-11 min-w-[220px] items-center justify-center gap-2 rounded-xl border border-[#BFE0FF] bg-[#F8FBFF] px-5 text-sm font-black text-[#1565FF] shadow-sm transition duration-200 hover:-translate-y-0.5 hover:scale-[1.01] hover:border-[#93C5FF] hover:bg-[#EAF3FF] hover:shadow-lg dark:border-[#2B3F62] dark:bg-[#0B1428] dark:text-[#9CC0FF] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
                         >
                             <UploadCloud className="h-4 w-4" />
                             Alterar foto
@@ -458,7 +458,7 @@ export default function Profile({
                             <button
                                 type="button"
                                 onClick={closePhotoModal}
-                                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#C8E0FF] text-[#5B6B93] transition hover:border-[#93C5FF] hover:bg-[#EAF3FF] dark:border-[#2A3B5A] dark:text-[#8EA1C7] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
+                                className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-[#C8E0FF] text-[#5B6B93] transition duration-200 hover:-translate-y-0.5 hover:scale-[1.03] hover:border-[#93C5FF] hover:bg-[#EAF3FF] hover:shadow-md active:scale-95 dark:border-[#2A3B5A] dark:text-[#8EA1C7] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
                             >
                                 <X className="h-4 w-4" />
                             </button>
@@ -489,7 +489,7 @@ export default function Profile({
                                 <button
                                     type="button"
                                     onClick={() => fileInputRef.current?.click()}
-                                    className="mt-4 inline-flex h-10 items-center justify-center rounded-xl bg-[#1565FF] px-4 text-sm font-black text-white transition hover:-translate-y-0.5 hover:brightness-110"
+                                    className="mt-4 inline-flex h-10 cursor-pointer items-center justify-center rounded-xl bg-[#1565FF] px-4 text-sm font-black text-white shadow-[0_8px_20px_rgba(21,101,255,0.3)] transition duration-200 hover:-translate-y-0.5 hover:scale-[1.02] hover:brightness-110 hover:shadow-[0_12px_24px_rgba(21,101,255,0.4)] active:scale-95"
                                 >
                                     Escolher foto
                                 </button>
@@ -542,7 +542,7 @@ export default function Profile({
                                     <button
                                         type="button"
                                         onClick={() => setPhotoStep('pick')}
-                                        className="min-w-[170px] rounded-xl border border-[#C8E0FF] bg-[#F8FBFF] px-4 py-2 text-sm font-bold text-[#2F3E63] transition hover:-translate-y-0.5 hover:border-[#93C5FF] hover:bg-[#EAF3FF] dark:border-[#2A3B5A] dark:bg-[#0B1428] dark:text-[#B4C3E3] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
+                                        className="min-w-[170px] cursor-pointer rounded-xl border border-[#C8E0FF] bg-[#F8FBFF] px-4 py-2 text-sm font-bold text-[#2F3E63] shadow-sm transition duration-200 hover:-translate-y-0.5 hover:scale-[1.02] hover:border-[#93C5FF] hover:bg-[#EAF3FF] hover:shadow-md active:scale-95 dark:border-[#2A3B5A] dark:bg-[#0B1428] dark:text-[#B4C3E3] dark:hover:border-[#375786] dark:hover:bg-[#16233D]"
                                     >
                                         Trocar imagem
                                     </button>
@@ -550,7 +550,7 @@ export default function Profile({
                                         type="button"
                                         onClick={savePhoto}
                                         disabled={uploadingPhoto}
-                                        className="min-w-[170px] rounded-xl bg-[#1565FF] px-4 py-2 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5 hover:brightness-110 disabled:opacity-60"
+                                        className="min-w-[170px] cursor-pointer rounded-xl bg-[#1565FF] px-4 py-2 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition duration-200 hover:-translate-y-0.5 hover:scale-[1.02] hover:brightness-110 hover:shadow-[0_14px_28px_rgba(21,101,255,0.45)] active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
                                     >
                                         {uploadingPhoto
                                             ? 'Enviando...'
