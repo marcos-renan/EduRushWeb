@@ -9,7 +9,7 @@ use Carbon\CarbonInterface;
 class StudentEnergyService
 {
     public const DEFAULT_ENERGY = 10;
-    public const REGEN_CAP = 10;
+    public const REGEN_CAP = 30;
     public const REGEN_INTERVAL_MINUTES = 15;
     public const LESSON_PASS_BONUS = 1;
     public const LESSON_FAIL_COST = 1;
@@ -20,8 +20,13 @@ class StudentEnergyService
     public function refresh(StudentProfile $student, ?CarbonInterface $now = null): StudentProfile
     {
         $now = $this->normalizeNow($now);
-        $energy = max(0, (int) $student->energy);
+        $energy = max(0, min(self::REGEN_CAP, (int) $student->energy));
         $reference = $this->referenceAsCarbon($student);
+
+        if ((int) $student->energy !== $energy) {
+            $student->energy = $energy;
+            $student->save();
+        }
 
         if ($energy >= self::REGEN_CAP) {
             $student->energy = $energy;
@@ -144,8 +149,14 @@ class StudentEnergyService
 
         $now = $this->normalizeNow();
         $this->refresh($student, $now);
+        $current = max(0, min(self::REGEN_CAP, (int) $student->energy));
+        $grantable = min($amount, self::REGEN_CAP - $current);
 
-        $student->energy = max(0, (int) $student->energy + $amount);
+        if ($grantable <= 0) {
+            return 0;
+        }
+
+        $student->energy = $current + $grantable;
 
         if ((int) $student->energy >= self::REGEN_CAP) {
             $student->energy_recharge_reference_at = $now;
@@ -153,7 +164,7 @@ class StudentEnergyService
 
         $student->save();
 
-        return $amount;
+        return $grantable;
     }
 
     private function spendEnergy(StudentProfile $student, int $amount): int
@@ -185,7 +196,7 @@ class StudentEnergyService
 
     private function nextRechargeAt(StudentProfile $student): ?CarbonImmutable
     {
-        $energy = max(0, (int) $student->energy);
+        $energy = max(0, min(self::REGEN_CAP, (int) $student->energy));
 
         if ($energy >= self::REGEN_CAP) {
             return null;

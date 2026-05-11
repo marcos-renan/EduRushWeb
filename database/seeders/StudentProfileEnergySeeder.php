@@ -42,7 +42,13 @@ class StudentProfileEnergySeeder extends Seeder
                     $profile->level = max(1, (int) ($profile->level ?? 1));
                     $profile->current_streak = max(0, (int) ($profile->current_streak ?? 0));
                     $profile->longest_streak = max((int) $profile->current_streak, (int) ($profile->longest_streak ?? 0));
-                    $profile->energy = max(0, (int) ($profile->energy ?? StudentEnergyService::DEFAULT_ENERGY));
+                    $profile->energy = max(
+                        0,
+                        min(
+                            StudentEnergyService::REGEN_CAP,
+                            (int) ($profile->energy ?? StudentEnergyService::DEFAULT_ENERGY)
+                        )
+                    );
                     $profile->energy_recharge_reference_at = $profile->energy_recharge_reference_at ?: $now;
                     $profile->save();
                 }
