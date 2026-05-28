@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::store
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:276
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:422
  * @route '/admin/content/trails/{trail}/lessons'
  */
 export const store = (args: { trail: number | { id: number } } | [trail: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -16,7 +16,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::store
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:276
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:422
  * @route '/admin/content/trails/{trail}/lessons'
  */
 store.url = (args: { trail: number | { id: number } } | [trail: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -49,7 +49,7 @@ store.url = (args: { trail: number | { id: number } } | [trail: number | { id: n
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::store
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:276
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:422
  * @route '/admin/content/trails/{trail}/lessons'
  */
 store.post = (args: { trail: number | { id: number } } | [trail: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -59,7 +59,7 @@ store.post = (args: { trail: number | { id: number } } | [trail: number | { id: 
 
     /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::store
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:276
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:422
  * @route '/admin/content/trails/{trail}/lessons'
  */
     const storeForm = (args: { trail: number | { id: number } } | [trail: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -69,7 +69,7 @@ store.post = (args: { trail: number | { id: number } } | [trail: number | { id: 
 
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::store
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:276
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:422
  * @route '/admin/content/trails/{trail}/lessons'
  */
         storeForm.post = (args: { trail: number | { id: number } } | [trail: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -80,7 +80,7 @@ store.post = (args: { trail: number | { id: number } } | [trail: number | { id: 
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::show
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:110
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:113
  * @route '/admin/content/lessons/{lesson}'
  */
 export const show = (args: { lesson: number | { id: number } } | [lesson: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -95,7 +95,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::show
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:110
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:113
  * @route '/admin/content/lessons/{lesson}'
  */
 show.url = (args: { lesson: number | { id: number } } | [lesson: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -128,7 +128,7 @@ show.url = (args: { lesson: number | { id: number } } | [lesson: number | { id: 
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::show
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:110
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:113
  * @route '/admin/content/lessons/{lesson}'
  */
 show.get = (args: { lesson: number | { id: number } } | [lesson: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -137,7 +137,7 @@ show.get = (args: { lesson: number | { id: number } } | [lesson: number | { id: 
 })
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::show
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:110
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:113
  * @route '/admin/content/lessons/{lesson}'
  */
 show.head = (args: { lesson: number | { id: number } } | [lesson: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -147,7 +147,7 @@ show.head = (args: { lesson: number | { id: number } } | [lesson: number | { id:
 
     /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::show
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:110
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:113
  * @route '/admin/content/lessons/{lesson}'
  */
     const showForm = (args: { lesson: number | { id: number } } | [lesson: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -157,7 +157,7 @@ show.head = (args: { lesson: number | { id: number } } | [lesson: number | { id:
 
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::show
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:110
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:113
  * @route '/admin/content/lessons/{lesson}'
  */
         showForm.get = (args: { lesson: number | { id: number } } | [lesson: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -166,7 +166,7 @@ show.head = (args: { lesson: number | { id: number } } | [lesson: number | { id:
         })
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::show
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:110
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:113
  * @route '/admin/content/lessons/{lesson}'
  */
         showForm.head = (args: { lesson: number | { id: number } } | [lesson: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -182,7 +182,7 @@ show.head = (args: { lesson: number | { id: number } } | [lesson: number | { id:
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::update
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:312
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:458
  * @route '/admin/content/lessons/{lesson}'
  */
 export const update = (args: { lesson: number | { id: number } } | [lesson: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -197,7 +197,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::update
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:312
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:458
  * @route '/admin/content/lessons/{lesson}'
  */
 update.url = (args: { lesson: number | { id: number } } | [lesson: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -230,7 +230,7 @@ update.url = (args: { lesson: number | { id: number } } | [lesson: number | { id
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::update
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:312
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:458
  * @route '/admin/content/lessons/{lesson}'
  */
 update.patch = (args: { lesson: number | { id: number } } | [lesson: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -240,7 +240,7 @@ update.patch = (args: { lesson: number | { id: number } } | [lesson: number | { 
 
     /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::update
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:312
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:458
  * @route '/admin/content/lessons/{lesson}'
  */
     const updateForm = (args: { lesson: number | { id: number } } | [lesson: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -255,7 +255,7 @@ update.patch = (args: { lesson: number | { id: number } } | [lesson: number | { 
 
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::update
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:312
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:458
  * @route '/admin/content/lessons/{lesson}'
  */
         updateForm.patch = (args: { lesson: number | { id: number } } | [lesson: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -271,7 +271,7 @@ update.patch = (args: { lesson: number | { id: number } } | [lesson: number | { 
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::destroy
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:345
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:491
  * @route '/admin/content/lessons/{lesson}'
  */
 export const destroy = (args: { lesson: number | { id: number } } | [lesson: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -286,7 +286,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::destroy
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:345
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:491
  * @route '/admin/content/lessons/{lesson}'
  */
 destroy.url = (args: { lesson: number | { id: number } } | [lesson: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -319,7 +319,7 @@ destroy.url = (args: { lesson: number | { id: number } } | [lesson: number | { i
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::destroy
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:345
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:491
  * @route '/admin/content/lessons/{lesson}'
  */
 destroy.delete = (args: { lesson: number | { id: number } } | [lesson: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -329,7 +329,7 @@ destroy.delete = (args: { lesson: number | { id: number } } | [lesson: number | 
 
     /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::destroy
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:345
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:491
  * @route '/admin/content/lessons/{lesson}'
  */
     const destroyForm = (args: { lesson: number | { id: number } } | [lesson: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -344,7 +344,7 @@ destroy.delete = (args: { lesson: number | { id: number } } | [lesson: number | 
 
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::destroy
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:345
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:491
  * @route '/admin/content/lessons/{lesson}'
  */
         destroyForm.delete = (args: { lesson: number | { id: number } } | [lesson: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

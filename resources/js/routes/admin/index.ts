@@ -161,7 +161,7 @@ profile.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     profile.form = profileForm
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::content
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:18
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:21
  * @route '/admin/content'
  */
 export const content = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -176,7 +176,7 @@ content.definition = {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::content
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:18
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:21
  * @route '/admin/content'
  */
 content.url = (options?: RouteQueryOptions) => {
@@ -185,7 +185,7 @@ content.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::content
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:18
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:21
  * @route '/admin/content'
  */
 content.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -194,7 +194,7 @@ content.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::content
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:18
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:21
  * @route '/admin/content'
  */
 content.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -204,7 +204,7 @@ content.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::content
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:18
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:21
  * @route '/admin/content'
  */
     const contentForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -214,7 +214,7 @@ content.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::content
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:18
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:21
  * @route '/admin/content'
  */
         contentForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -223,7 +223,7 @@ content.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\Web\Admin\AdminContentController::content
- * @see app/Http/Controllers/Web/Admin/AdminContentController.php:18
+ * @see app/Http/Controllers/Web/Admin/AdminContentController.php:21
  * @route '/admin/content'
  */
         contentForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

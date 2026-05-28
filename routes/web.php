@@ -47,6 +47,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/dashboard', [AdminPanelController::class, 'dashboard'])->name('dashboard');
             Route::get('/profile', [SettingsProfileController::class, 'adminEdit'])->name('profile');
             Route::get('/content', [AdminContentController::class, 'index'])->name('content');
+            Route::post('/content/import-json', [AdminContentController::class, 'importJson'])->name('content.import-json');
             Route::post('/content/subjects', [AdminContentController::class, 'storeSubject'])->name('content.subject.store');
             Route::get('/content/subjects/{subject}', [AdminContentController::class, 'showSubject'])->name('content.subject.show');
             Route::patch('/content/subjects/{subject}', [AdminContentController::class, 'updateSubject'])->name('content.subject.update');

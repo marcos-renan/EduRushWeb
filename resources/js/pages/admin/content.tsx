@@ -1,5 +1,5 @@
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
-import { BookOpenCheck, Pencil, Plus, Trash2 } from 'lucide-react';
+import { BookOpenCheck, FileJson, Pencil, Plus, Trash2 } from 'lucide-react';
 import {
     Dialog,
     DialogContent,
@@ -33,6 +33,9 @@ type Props = {
 
 export default function AdminContentSubjects({ subjects }: Props) {
     const page = usePage<SharedProps>();
+    const importForm = useForm<{ content_file: File | null }>({
+        content_file: null,
+    });
     const createForm = useForm({
         name: '',
         slug: '',
@@ -72,39 +75,109 @@ export default function AdminContentSubjects({ subjects }: Props) {
                             </p>
                         </div>
 
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <button className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#1565FF] px-4 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5">
-                                    <Plus className="h-4 w-4" />
-                                    Criar nova matéria
-                                </button>
-                            </DialogTrigger>
-                            <DialogContent className="max-w-2xl rounded-2xl border-[#BFE0FF] bg-white dark:border-[#263753] dark:bg-[#111C33]">
-                                <DialogHeader>
-                                    <DialogTitle className="text-[#0F1A3B] dark:text-[#E7EEFF]">
-                                        Nova matéria
-                                    </DialogTitle>
-                                    <DialogDescription>
-                                        Preencha os dados da matéria para criar no sistema.
-                                    </DialogDescription>
-                                </DialogHeader>
+                        <div className="flex flex-wrap items-center gap-2">
+                            <Dialog>
+                                <DialogTrigger asChild>
+                                    <button className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-[#BFE0FF] bg-white px-4 text-sm font-black text-[#1565FF] shadow-sm transition hover:-translate-y-0.5 hover:border-[#1565FF] hover:bg-[#EAF3FF] dark:border-[#2A3B5A] dark:bg-[#0B1428] dark:text-[#9CC0FF] dark:hover:bg-[#16233D]">
+                                        <FileJson className="h-4 w-4" />
+                                        Importar JSON
+                                    </button>
+                                </DialogTrigger>
+                                <DialogContent className="max-w-2xl rounded-2xl border-[#BFE0FF] bg-white dark:border-[#263753] dark:bg-[#111C33]">
+                                    <DialogHeader>
+                                        <DialogTitle className="text-[#0F1A3B] dark:text-[#E7EEFF]">
+                                            Importar conteúdo por JSON
+                                        </DialogTitle>
+                                        <DialogDescription>
+                                            Envie um arquivo com matérias, trilhas, lições e questões.
+                                        </DialogDescription>
+                                    </DialogHeader>
 
-                                <form
-                                    className="grid gap-3 md:grid-cols-2"
-                                    onSubmit={(event) => {
-                                        event.preventDefault();
-                                        createForm.post('/admin/content/subjects', {
-                                            preserveScroll: true,
-                                            onSuccess: () =>
-                                                createForm.reset(
-                                                    'name',
-                                                    'slug',
-                                                    'description',
-                                                    'icon',
-                                                ),
-                                        });
-                                    }}
-                                >
+                                    <form
+                                        className="space-y-4"
+                                        onSubmit={(event) => {
+                                            event.preventDefault();
+                                            importForm.post('/admin/content/import-json', {
+                                                forceFormData: true,
+                                                preserveScroll: true,
+                                                onSuccess: () => importForm.reset(),
+                                            });
+                                        }}
+                                    >
+                                        <Field label="Arquivo JSON">
+                                            <input
+                                                type="file"
+                                                accept=".json,application/json"
+                                                onChange={(event) =>
+                                                    importForm.setData(
+                                                        'content_file',
+                                                        event.target.files?.[0] ?? null,
+                                                    )
+                                                }
+                                                className={inputClass}
+                                            />
+                                            <ErrorText
+                                                message={importForm.errors.content_file}
+                                            />
+                                        </Field>
+
+                                        <div className="rounded-2xl border border-[#D9E9FF] bg-[#F8FBFF] p-3 text-xs font-semibold text-[#5B6B93] dark:border-[#263753] dark:bg-[#0B1428] dark:text-[#8EA1C7]">
+                                            O JSON deve conter a chave <code>subjects</code>.
+                                            Cada matéria pode conter <code>trails</code>, cada
+                                            trilha pode conter <code>lessons</code> e cada lição
+                                            pode conter <code>questions</code>.
+                                        </div>
+
+                                        <button
+                                            type="submit"
+                                            disabled={
+                                                importForm.processing ||
+                                                !importForm.data.content_file
+                                            }
+                                            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#1565FF] px-5 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5 disabled:opacity-60"
+                                        >
+                                            <FileJson className="h-4 w-4" />
+                                            {importForm.processing
+                                                ? 'Importando...'
+                                                : 'Importar conteúdo'}
+                                        </button>
+                                    </form>
+                                </DialogContent>
+                            </Dialog>
+
+                            <Dialog>
+                                <DialogTrigger asChild>
+                                    <button className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#1565FF] px-4 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,101,255,0.35)] transition hover:-translate-y-0.5">
+                                        <Plus className="h-4 w-4" />
+                                        Criar nova matéria
+                                    </button>
+                                </DialogTrigger>
+                                <DialogContent className="max-w-2xl rounded-2xl border-[#BFE0FF] bg-white dark:border-[#263753] dark:bg-[#111C33]">
+                                    <DialogHeader>
+                                        <DialogTitle className="text-[#0F1A3B] dark:text-[#E7EEFF]">
+                                            Nova matéria
+                                        </DialogTitle>
+                                        <DialogDescription>
+                                            Preencha os dados da matéria para criar no sistema.
+                                        </DialogDescription>
+                                    </DialogHeader>
+
+                                    <form
+                                        className="grid gap-3 md:grid-cols-2"
+                                        onSubmit={(event) => {
+                                            event.preventDefault();
+                                            createForm.post('/admin/content/subjects', {
+                                                preserveScroll: true,
+                                                onSuccess: () =>
+                                                    createForm.reset(
+                                                        'name',
+                                                        'slug',
+                                                        'description',
+                                                        'icon',
+                                                    ),
+                                            });
+                                        }}
+                                    >
                                     <Field label="Nome">
                                         <input
                                             value={createForm.data.name}
@@ -194,9 +267,10 @@ export default function AdminContentSubjects({ subjects }: Props) {
                                                 : 'Criar matéria'}
                                         </button>
                                     </div>
-                                </form>
-                            </DialogContent>
-                        </Dialog>
+                                    </form>
+                                </DialogContent>
+                            </Dialog>
+                        </div>
                     </div>
 
                     {page.props.flash?.success ? (

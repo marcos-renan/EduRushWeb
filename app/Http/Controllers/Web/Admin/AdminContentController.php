@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Web\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Lesson;
+use App\Models\Question;
 use App\Models\Subject;
 use App\Models\Trail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -164,6 +167,149 @@ class AdminContentController extends Controller
         return redirect()
             ->route('admin.content')
             ->with('success', 'Matéria criada com sucesso.');
+    }
+
+    public function importJson(Request $request): RedirectResponse
+    {
+        $this->authorize('create', Subject::class);
+        $this->authorize('create', Trail::class);
+        $this->authorize('create', Lesson::class);
+
+        $validated = $request->validate([
+            'content_file' => ['required', 'file', 'mimetypes:application/json,text/plain', 'max:2048'],
+        ]);
+
+        $rawContent = file_get_contents($validated['content_file']->getRealPath());
+        $payload = json_decode((string) $rawContent, true);
+
+        if (! is_array($payload) || ! isset($payload['subjects']) || ! is_array($payload['subjects'])) {
+            throw ValidationException::withMessages([
+                'content_file' => 'O JSON precisa conter uma chave "subjects" com uma lista de matérias.',
+            ]);
+        }
+
+        $stats = DB::transaction(function () use ($payload): array {
+            $stats = [
+                'subjects' => 0,
+                'trails' => 0,
+                'lessons' => 0,
+                'questions' => 0,
+            ];
+
+            foreach ($payload['subjects'] as $subjectIndex => $subjectData) {
+                if (! is_array($subjectData) || empty($subjectData['name'])) {
+                    throw ValidationException::withMessages([
+                        'content_file' => 'Matéria inválida na posição '.($subjectIndex + 1).'.',
+                    ]);
+                }
+
+                $subject = Subject::query()->create([
+                    'name' => (string) $subjectData['name'],
+                    'slug' => $this->uniqueSlug(
+                        Subject::class,
+                        Str::slug((string) ($subjectData['slug'] ?? $subjectData['name']))
+                    ),
+                    'description' => $subjectData['description'] ?? null,
+                    'color_hex' => $this->validColor($subjectData['color_hex'] ?? null),
+                    'icon' => $subjectData['icon'] ?? null,
+                    'is_active' => $this->toBool($subjectData['is_active'] ?? true),
+                ]);
+                $stats['subjects']++;
+
+                foreach (($subjectData['trails'] ?? []) as $trailIndex => $trailData) {
+                    if (! is_array($trailData) || empty($trailData['title'])) {
+                        throw ValidationException::withMessages([
+                            'content_file' => "Trilha inválida em {$subject->name}, posição ".($trailIndex + 1).'.',
+                        ]);
+                    }
+
+                    $trail = Trail::query()->create([
+                        'subject_id' => $subject->id,
+                        'grade_year' => max(1, min(3, (int) ($trailData['grade_year'] ?? 1))),
+                        'title' => (string) $trailData['title'],
+                        'slug' => $this->uniqueSlug(
+                            Trail::class,
+                            Str::slug((string) ($trailData['slug'] ?? $trailData['title']))
+                        ),
+                        'position' => (int) ($trailData['position'] ?? ($trailIndex + 1)),
+                        'description' => $trailData['description'] ?? null,
+                        'is_active' => $this->toBool($trailData['is_active'] ?? true),
+                    ]);
+                    $stats['trails']++;
+
+                    $previousLesson = null;
+                    foreach (($trailData['lessons'] ?? []) as $lessonIndex => $lessonData) {
+                        if (! is_array($lessonData) || empty($lessonData['title'])) {
+                            throw ValidationException::withMessages([
+                                'content_file' => "Lição inválida em {$trail->title}, posição ".($lessonIndex + 1).'.',
+                            ]);
+                        }
+
+                        $lesson = Lesson::query()->create([
+                            'trail_id' => $trail->id,
+                            'prerequisite_lesson_id' => $lessonData['prerequisite_lesson_id'] ?? $previousLesson?->id,
+                            'title' => (string) $lessonData['title'],
+                            'slug' => $this->uniqueSlug(
+                                Lesson::class,
+                                Str::slug((string) ($lessonData['slug'] ?? $lessonData['title']))
+                            ),
+                            'position' => (int) ($lessonData['position'] ?? ($lessonIndex + 1)),
+                            'objective' => $lessonData['objective'] ?? null,
+                            'content' => $lessonData['content'] ?? null,
+                            'xp_reward' => max(0, min(5000, (int) ($lessonData['xp_reward'] ?? 20))),
+                            'difficulty' => $this->validDifficulty($lessonData['difficulty'] ?? $trailData['difficulty'] ?? 'basic'),
+                            'is_active' => $this->toBool($lessonData['is_active'] ?? true),
+                        ]);
+                        $stats['lessons']++;
+
+                        foreach (($lessonData['questions'] ?? []) as $questionIndex => $questionData) {
+                            if (! is_array($questionData)) {
+                                throw ValidationException::withMessages([
+                                    'content_file' => "Questão inválida em {$lesson->title}, posição ".($questionIndex + 1).'.',
+                                ]);
+                            }
+
+                            $options = $questionData['options'] ?? [];
+                            if (! is_array($options) || count($options) < 2 || empty($questionData['prompt'])) {
+                                throw ValidationException::withMessages([
+                                    'content_file' => "Questão em {$lesson->title} precisa de enunciado e ao menos duas alternativas.",
+                                ]);
+                            }
+
+                            $correctOption = (int) ($questionData['correct_option'] ?? 0);
+                            if ($correctOption < 0 || $correctOption >= count($options)) {
+                                throw ValidationException::withMessages([
+                                    'content_file' => "Questão em {$lesson->title} possui correct_option fora do intervalo.",
+                                ]);
+                            }
+
+                            Question::query()->create([
+                                'lesson_id' => $lesson->id,
+                                'position' => (int) ($questionData['position'] ?? ($questionIndex + 1)),
+                                'prompt' => (string) $questionData['prompt'],
+                                'options' => array_values($options),
+                                'correct_option' => $correctOption,
+                                'explanation' => $questionData['explanation'] ?? null,
+                                'xp_reward' => max(0, min(5000, (int) ($questionData['xp_reward'] ?? 5))),
+                                'is_active' => $this->toBool($questionData['is_active'] ?? true),
+                            ]);
+                            $stats['questions']++;
+                        }
+
+                        $previousLesson = $lesson;
+                    }
+                }
+            }
+
+            return $stats;
+        });
+
+        return redirect()
+            ->route('admin.content')
+            ->with(
+                'success',
+                "JSON importado: {$stats['subjects']} matérias, {$stats['trails']} trilhas, {$stats['lessons']} lições e {$stats['questions']} questões."
+            );
     }
 
     public function updateSubject(Request $request, Subject $subject): RedirectResponse
@@ -380,5 +526,19 @@ class AdminContentController extends Controller
         }
 
         return filter_var($value, FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE) ?? $default;
+    }
+
+    private function validColor(mixed $value): string
+    {
+        return is_string($value) && preg_match('/^#[0-9A-Fa-f]{6}$/', $value)
+            ? $value
+            : '#2563eb';
+    }
+
+    private function validDifficulty(mixed $value): string
+    {
+        return in_array($value, ['basic', 'intermediate', 'advanced'], true)
+            ? (string) $value
+            : 'basic';
     }
 }
